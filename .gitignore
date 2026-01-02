@@ -1,0 +1,24 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dotfiles specific
+/.dotfiles.config
+/dotfiles.conf
+
+# But keep example configs
+!example.dotfiles.config
+!example.dotfiles.conf

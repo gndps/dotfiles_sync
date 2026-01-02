@@ -1,0 +1,4487 @@
+{
+  "1password-4": {
+    "config_files": [
+      "Library/Preferences/com.agilebits.onepassword4.plist",
+      "Library/Preferences/ws.agile.1Password.plist"
+    ],
+    "name": "1Password 4"
+  },
+  "2do": {
+    "config_files": [
+      "Library/Preferences/com.guidedways.TodoMac.plist"
+    ],
+    "name": "2Do"
+  },
+  "ack": {
+    "config_files": [
+      ".ackrc"
+    ],
+    "name": "Ack"
+  },
+  "act": {
+    "config_files": [
+      ".actrc"
+    ],
+    "name": "act"
+  },
+  "activitywatch": {
+    "config_files": [
+      "Library/Application Support/activitywatch"
+    ],
+    "name": "Activity Watch"
+  },
+  "adium": {
+    "config_files": [
+      "Library/Application Support/Adium 2.0",
+      "Library/Preferences/com.adiumX.adiumX.plist"
+    ],
+    "name": "Adium"
+  },
+  "adobe-camera-raw": {
+    "config_files": [
+      "Library/Application Support/Adobe/CameraRaw"
+    ],
+    "name": "Adobe Camera Raw"
+  },
+  "aerc": {
+    "config_files": [
+      "Library/Preferences/aerc"
+    ],
+    "name": "aerc"
+  },
+  "aerospace": {
+    "config_files": [
+      ".aerospace.toml"
+    ],
+    "name": "aerospace"
+  },
+  "affinity-designer": {
+    "config_files": [
+      "Library/Containers/Affinity Designer/Data/Library/Application Support/user"
+    ],
+    "name": "Affinity Designer"
+  },
+  "affinity-photo": {
+    "config_files": [
+      "Library/Containers/Affinity Photo/Data/Library/Application Support/user"
+    ],
+    "name": "Affinity Photo"
+  },
+  "affinity-publisher": {
+    "config_files": [
+      "Library/Containers/Affinity Publisher/Data/Library/Application Support/user"
+    ],
+    "name": "Affinity Publisher"
+  },
+  "airflow": {
+    "config_files": [
+      "Library/Preferences/com.bitcavehq.Airflow.plist",
+      "Library/Application Support/Airflow"
+    ],
+    "name": "Airflow"
+  },
+  "airmail": {
+    "config_files": [
+      "Library/Containers/it.bloop.airmail2/Container.plist"
+    ],
+    "name": "Airmail"
+  },
+  "akamai-cli": {
+    "config_files": [
+      ".edgerc"
+    ],
+    "name": "Akamai-CLI"
+  },
+  "alacritty": {
+    "config_files": [
+      ".alacritty.yml",
+      ".alacritty.toml"
+    ],
+    "name": "Alacritty"
+  },
+  "aldente": {
+    "config_files": [
+      "Library/Application Support/AlDente",
+      "Library/Preferences/com.apphousekitchen.aldente-pro.plist"
+    ],
+    "name": "AlDente"
+  },
+  "alt-tab": {
+    "config_files": [
+      "Library/Preferences/com.lwouis.alt-tab-macos.plist"
+    ],
+    "name": "AltTab"
+  },
+  "amethyst": {
+    "config_files": [
+      "Library/Preferences/com.amethyst.Amethyst.plist"
+    ],
+    "name": "Amethyst"
+  },
+  "ancient-domains-of-mystery": {
+    "config_files": [
+      ".adom.data"
+    ],
+    "name": "Ancient Domains of Mystery"
+  },
+  "androidstudio-13": {
+    "config_files": [
+      "Library/Application Support/AndroidStudio1.3",
+      "Library/Preferences/AndroidStudio1.3"
+    ],
+    "name": "Android Studio 1.3"
+  },
+  "ansible": {
+    "config_files": [
+      ".ansible",
+      ".ansible.cfg"
+    ],
+    "name": "Ansible"
+  },
+  "appcleaner": {
+    "config_files": [
+      "Library/Preferences/net.freemacsoft.AppCleaner.plist",
+      "Library/Preferences/net.freemacsoft.AppCleaner-SmartDelete.plist"
+    ],
+    "name": "AppCleaner"
+  },
+  "appcode-2": {
+    "config_files": [
+      "Library/Application Support/appCode20",
+      "Library/Preferences/appCode20"
+    ],
+    "name": "AppCode 2"
+  },
+  "appcode-3": {
+    "config_files": [
+      "Library/Application Support/appCode30",
+      "Library/Preferences/appCode30"
+    ],
+    "name": "AppCode 3"
+  },
+  "appcode-31": {
+    "config_files": [
+      "Library/Application Support/appCode31",
+      "Library/Preferences/appCode31"
+    ],
+    "name": "AppCode 3.1"
+  },
+  "appcode-32": {
+    "config_files": [
+      "Library/Application Support/AppCode32",
+      "Library/Preferences/AppCode32"
+    ],
+    "name": "AppCode 3.2"
+  },
+  "apple-music": {
+    "config_files": [
+      "Library/Music/Scripts",
+      "Library/Preferences/com.apple.Music.eq.plist",
+      "Library/Preferences/com.apple.Music.plist"
+    ],
+    "name": "Apple Music"
+  },
+  "apptivate": {
+    "config_files": [
+      "Library/Application Support/Apptivate/hotkeys"
+    ],
+    "name": "Apptivate"
+  },
+  "arara": {
+    "config_files": [
+      ".araraconfig.yaml",
+      "araraconfig.yaml"
+    ],
+    "name": "Arara"
+  },
+  "aria2c": {
+    "config_files": [
+      ".aria2"
+    ],
+    "name": "aria2c"
+  },
+  "arm": {
+    "config_files": [
+      ".arm/armrc"
+    ],
+    "name": "Arm"
+  },
+  "asciinema": {
+    "config_files": [
+      "asciinema"
+    ],
+    "name": "asciinema"
+  },
+  "asdf": {
+    "config_files": [
+      ".asdfrc",
+      ".default-gems",
+      ".default-npm-packages",
+      ".default-python-packages",
+      ".default-golang-pkgs",
+      ".default-mix-commands",
+      ".tool-versions"
+    ],
+    "name": "asdf"
+  },
+  "aspell": {
+    "config_files": [
+      ".aspell.conf",
+      ".aspell.en.prepl",
+      ".aspell.en.pws"
+    ],
+    "name": "Aspell"
+  },
+  "astyle": {
+    "config_files": [
+      ".astylerc"
+    ],
+    "name": "Artistic Style"
+  },
+  "atlantis": {
+    "config_files": [
+      "Library/Application Support/Atlantis"
+    ],
+    "name": "Atlantis"
+  },
+  "atom": {
+    "config_files": [
+      "Library/Preferences/com.github.atom.plist",
+      ".atom/config.cson",
+      ".atom/init.coffee",
+      ".atom/keymap.cson",
+      ".atom/keymaps",
+      ".atom/snippets.cson",
+      ".atom/styles.less"
+    ],
+    "name": "Atom"
+  },
+  "audacious": {
+    "config_files": [
+      "audacious/config"
+    ],
+    "name": "Audacious"
+  },
+  "auskey": {
+    "config_files": [
+      "Library/Application Support/AUSkey/keystore.xml"
+    ],
+    "name": "AusKey"
+  },
+  "autokey": {
+    "config_files": [
+      "autokey"
+    ],
+    "name": "Autokey"
+  },
+  "awareness": {
+    "config_files": [
+      "Library/Preferences/com.futureproof.awareness.plist"
+    ],
+    "name": "Awareness"
+  },
+  "aws": {
+    "config_files": [
+      ".aws"
+    ],
+    "name": "AWS CLI"
+  },
+  "azure": {
+    "config_files": [
+      ".azure"
+    ],
+    "name": "Azure CLI"
+  },
+  "b-ryan_powerline-shell": {
+    "config_files": [
+      "powerline-shell/config.json"
+    ],
+    "name": "Powerline Shell Prompt"
+  },
+  "bartender": {
+    "config_files": [
+      "Library/Preferences/com.surteesstudios.Bartender.plist",
+      "Library/Preferences/com.surteesstudios.Bartender-setapp.plist",
+      "Library/Application Support/Bartender/Bartender.BartenderPreferences"
+    ],
+    "name": "Bartender"
+  },
+  "base": {
+    "config_files": [
+      "Library/Containers/uk.co.menial.Base/Data/Library/Preferences/uk.co.menial.Base.plist",
+      "Library/Containers/uk.co.menial.Base/Data/Library/Application Support/Base/"
+    ],
+    "name": "Base"
+  },
+  "bash": {
+    "config_files": [
+      ".aliases",
+      ".bash_aliases",
+      ".bash_login",
+      ".bash_logout",
+      ".bashrc",
+      ".profile",
+      ".bash_profile",
+      ".inputrc"
+    ],
+    "name": "Bash"
+  },
+  "bash-it": {
+    "config_files": [
+      ".bash_it/enabled"
+    ],
+    "name": "Bash it"
+  },
+  "bat": {
+    "config_files": [
+      "bat/config"
+    ],
+    "name": "Bat"
+  },
+  "bc": {
+    "config_files": [
+      ".bcrc"
+    ],
+    "name": "bc"
+  },
+  "beatport-pro": {
+    "config_files": [
+      "Library/Preferences/com.beatport.BeatportPro.plist"
+    ],
+    "name": "Beatport Pro"
+  },
+  "beets": {
+    "config_files": [
+      "beets/config.yaml"
+    ],
+    "name": "Beets"
+  },
+  "bettersnaptool": {
+    "config_files": [
+      "Library/Preferences/com.hegenberg.BetterSnapTool.plist",
+      "Library/Application Support/BetterSnapTool"
+    ],
+    "name": "BetterSnapTool"
+  },
+  "bettertouchtool": {
+    "config_files": [
+      "Library/Application Support/BetterTouchTool/bettertouchtool.license",
+      "Library/Application Support/BetterTouchTool/btt_data_store.v2",
+      "Library/Application Support/BetterTouchTool/btt_data_store.v2-shm",
+      "Library/Application Support/BetterTouchTool/btt_data_store.v2-wal",
+      "Library/Application Support/BetterTouchTool/bttdata2",
+      "Library/Preferences/com.hegenberg.BetterTouchTool.plist",
+      "Library/Application Support/BetterTouchTool/bettersnaptool.bttlicense"
+    ],
+    "name": "BetterTouchTool"
+  },
+  "beyond-compare": {
+    "config_files": [
+      "Library/Preferences/com.ScooterSoftware.BeyondCompare.plist",
+      "Library/Application Support/Beyond Compare/BC4Key.txt",
+      "Library/Application Support/Beyond Compare/BCColors.xml",
+      "Library/Application Support/Beyond Compare/BCCommands.xml",
+      "Library/Application Support/Beyond Compare/BCPreferences.xml"
+    ],
+    "name": "Beyond Compare"
+  },
+  "bibdesk": {
+    "config_files": [
+      "Library/Preferences/edu.ucsd.cs.mmccrack.bibdesk.plist",
+      "Library/Application Support/BibDesk"
+    ],
+    "name": "BibDesk"
+  },
+  "billings-pro-server-admin": {
+    "config_files": [
+      "Library/Preferences/com.marketcircle.BillingsProServerAdmin.plist"
+    ],
+    "name": "Billings Pro Server Admin"
+  },
+  "bitbar": {
+    "config_files": [
+      "Library/Preferences/com.matryer.BitBar.plist"
+    ],
+    "name": "BitBar"
+  },
+  "bitchx": {
+    "config_files": [
+      ".bitchxrc",
+      ".ircservers"
+    ],
+    "name": "Bitchx"
+  },
+  "blackfire": {
+    "config_files": [
+      ".blackfire.ini"
+    ],
+    "name": "Blackfire"
+  },
+  "blender": {
+    "config_files": [
+      "Library/Application Support/Blender"
+    ],
+    "name": "Blender"
+  },
+  "blesh": {
+    "config_files": [
+      ".blerc"
+    ],
+    "name": "ble.sh"
+  },
+  "boto": {
+    "config_files": [
+      ".boto"
+    ],
+    "name": "Boto"
+  },
+  "boxer": {
+    "config_files": [
+      "Library/Preferences/net.washboardabs.boxer.plist",
+      "Applications/DOS Games"
+    ],
+    "name": "Boxer"
+  },
+  "brackets": {
+    "config_files": [
+      "Library/Application Support/Brackets",
+      "Library/Preferences/io.brackets.appshell.plist"
+    ],
+    "name": "Brackets"
+  },
+  "brave": {
+    "config_files": [
+      "Library/Application Support/BraveSoftware/Brave-Browser/Default/Preferences"
+    ],
+    "name": "Brave"
+  },
+  "btop": {
+    "config_files": [
+      "btop"
+    ],
+    "name": "btop"
+  },
+  "bump": {
+    "config_files": [
+      ".bump.json"
+    ],
+    "name": "Bump"
+  },
+  "bundler": {
+    "config_files": [
+      ".bundle/config"
+    ],
+    "name": "Bundler"
+  },
+  "byobu": {
+    "config_files": [
+      ".byobu/.screenrc",
+      ".byobu/.tmux.conf",
+      ".byobu/backend",
+      ".byobu/color",
+      ".byobu/color.tmux",
+      ".byobu/datetime.tmux",
+      ".byobu/keybindings",
+      ".byobu/keybindings.tmux",
+      ".byobu/profile",
+      ".byobu/profile.tmux",
+      ".byobu/prompt",
+      ".byobu/prompt.tmux",
+      ".byobu/status",
+      ".byobu/statusrc",
+      ".byobu/windows",
+      ".byobu/windows.tmux",
+      ".byoburc",
+      ".byoburc.tmux",
+      ".byoburc.screen"
+    ],
+    "name": "Byobu"
+  },
+  "caffeine": {
+    "config_files": [
+      "Library/Preferences/com.lightheadsw.Caffeine.plist",
+      "Library/Preferences/com.intelliscapesolutions.caffeine.plist"
+    ],
+    "name": "Caffeine"
+  },
+  "calibre": {
+    "config_files": [
+      "Library/Preferences/calibre"
+    ],
+    "name": "Calibre"
+  },
+  "capture-one": {
+    "config_files": [
+      "Library/Application Support/Capture One"
+    ],
+    "name": "Capture One"
+  },
+  "cartographica": {
+    "config_files": [
+      "Library/Application Support/Cartographica",
+      "Library/Preferences/com.ClueTrust.Cartographica.plist"
+    ],
+    "name": "Cartographica"
+  },
+  "cerebro": {
+    "config_files": [
+      "Library/Application Support/Cerebro/config.json",
+      "Library/Application Support/Cerebro/plugins"
+    ],
+    "name": "Cerebro"
+  },
+  "charles": {
+    "config_files": [
+      "Library/Application Support/Charles",
+      "Library/Preferences/com.xk72.charles.config"
+    ],
+    "name": "Charles"
+  },
+  "cheat": {
+    "config_files": [
+      ".cheat"
+    ],
+    "name": "Cheat"
+  },
+  "chef": {
+    "config_files": [
+      ".chef"
+    ],
+    "name": "Chef"
+  },
+  "chicken": {
+    "config_files": [
+      "Library/Preferences/net.sourceforge.chicken.plist"
+    ],
+    "name": "Chicken"
+  },
+  "choosy": {
+    "config_files": [
+      "Library/Application Support/Choosy/behaviours.plist"
+    ],
+    "name": "Choosy"
+  },
+  "chunkwm": {
+    "config_files": [
+      ".chunkwmrc",
+      ".chunkwm_plugins"
+    ],
+    "name": "chunkwm"
+  },
+  "cider": {
+    "config_files": [
+      ".cider"
+    ],
+    "name": "Cider"
+  },
+  "clashx": {
+    "config_files": [
+      "clash"
+    ],
+    "name": "ClashX"
+  },
+  "clasp": {
+    "config_files": [
+      ".clasprc.json"
+    ],
+    "name": "Clasp"
+  },
+  "claude-code": {
+    "config_files": [
+      ".claude/plugins",
+      ".claude/settings",
+      ".claude/skills",
+      ".claude/agents",
+      ".claude/settings.json",
+      ".claude/CLAUDE.md"
+    ],
+    "name": "Claude Code"
+  },
+  "cleanshot": {
+    "config_files": [
+      "Library/Preferences/com.getcleanshot.app-setapp.plist",
+      "Library/Preferences/pl.maketheweb.cleanshotx.plist"
+    ],
+    "name": "CleanShot"
+  },
+  "clementine": {
+    "config_files": [
+      "Library/Preferences/org.clementine-player.Clementine.plist"
+    ],
+    "name": "Clementine"
+  },
+  "clion": {
+    "config_files": [
+      "Library/Preferences/CLion2016.2",
+      "Library/Application Support/CLion2016.2",
+      "Library/Application Support/JetBrains/CLion2023.1",
+      "Library/Application Support/JetBrains/CLion2023.2"
+    ],
+    "name": "CLion"
+  },
+  "clipmenu": {
+    "config_files": [
+      "Library/Application Support/ClipMenu",
+      "Library/Preferences/com.naotaka.ClipMenu.plist"
+    ],
+    "name": "ClipMenu"
+  },
+  "clipy": {
+    "config_files": [
+      "Library/Preferences/com.clipy-app.Clipy.plist"
+    ],
+    "name": "Clipy"
+  },
+  "cloudapp": {
+    "config_files": [
+      "Library/Preferences/com.linebreak.CloudAppMacOSX.plist"
+    ],
+    "name": "CloudApp"
+  },
+  "coda-2": {
+    "config_files": [
+      "Library/Application Support/Coda 2",
+      "Library/Preferences/com.panic.Coda2.plist"
+    ],
+    "name": "Coda 2"
+  },
+  "codex": {
+    "config_files": [
+      ".codex/config.toml",
+      ".codex/auth.json"
+    ],
+    "name": "Codex"
+  },
+  "colloquy": {
+    "config_files": [
+      "Library/Preferences/info.colloquy.plist",
+      "Library/Application Support/Colloquy"
+    ],
+    "name": "Colloquy"
+  },
+  "colorschemer-studio-2": {
+    "config_files": [
+      "Library/Preferences/com.colorschemer.studio2.plist",
+      "Library/Application Support/ColorSchemer"
+    ],
+    "name": "ColorSchemer Studio 2"
+  },
+  "colorslurp": {
+    "config_files": [
+      "Library/Preferences/com.IdeaPunch.ColorSlurp.plist",
+      "Library/Containers/com.IdeaPunch.ColorSlurp/Data/Library/Application Support/default.realm"
+    ],
+    "name": "ColorSlurp"
+  },
+  "colorsync": {
+    "config_files": [
+      "Library/ColorSync/Profiles"
+    ],
+    "name": "ColorSync"
+  },
+  "composer": {
+    "config_files": [
+      ".composer/auth.json",
+      ".composer/config.json",
+      ".composer/composer.json"
+    ],
+    "name": "composer"
+  },
+  "concentrate": {
+    "config_files": [
+      "Library/Application Support/Concentrate/Concentrate.sqlite3"
+    ],
+    "name": "Concentrate"
+  },
+  "conky": {
+    "config_files": [
+      ".conkyrc"
+    ],
+    "name": "Conky"
+  },
+  "consular": {
+    "config_files": [
+      ".consularc"
+    ],
+    "name": "Consular"
+  },
+  "contexts": {
+    "config_files": [
+      "Library/Preferences/com.contextsformac.Contexts.plist"
+    ],
+    "name": "Contexts"
+  },
+  "controlplane": {
+    "config_files": [
+      "Library/Preferences/com.dustinrue.ControlPlane.plist"
+    ],
+    "name": "ControlPlane"
+  },
+  "copyq": {
+    "config_files": [
+      "copyq"
+    ],
+    "name": "CopyQ"
+  },
+  "cord": {
+    "config_files": [
+      "Library/Application Support/CoRD"
+    ],
+    "name": "CoRD"
+  },
+  "coteditor": {
+    "config_files": [
+      "Library/Application Support/CotEditor",
+      "Library/Preferences/com.coteditor.CotEditor.plist"
+    ],
+    "name": "CotEditor"
+  },
+  "ctags": {
+    "config_files": [
+      ".ctags",
+      ".ctags.d"
+    ],
+    "name": "Ctags"
+  },
+  "curl": {
+    "config_files": [
+      ".netrc",
+      ".curlrc"
+    ],
+    "name": "Curl"
+  },
+  "cursor": {
+    "config_files": [
+      "Library/Application Support/Cursor/User/snippets",
+      "Library/Application Support/Cursor/User/keybindings.json",
+      "Library/Application Support/Cursor/User/settings.json"
+    ],
+    "name": "Cursor"
+  },
+  "cvim": {
+    "config_files": [
+      ".cvimrc"
+    ],
+    "name": "cVim"
+  },
+  "cyberduck": {
+    "config_files": [
+      "Library/Application Support/Cyberduck",
+      "Library/Containers/ch.sudo.cyberduck/Data/Library/Application Support/Cyberduck",
+      "Library/Group Containers/G69SCX94XU.duck/Library/Application Support/duck",
+      "Library/Preferences/ch.sudo.cyberduck.plist"
+    ],
+    "name": "Cyberduck"
+  },
+  "daisydisk": {
+    "config_files": [
+      "Library/Application Support/DaisyDisk/License.DaisyDisk",
+      "Library/Preferences/com.daisydiskapp.DaisyDiskStandAlone.plist"
+    ],
+    "name": "DaisyDisk"
+  },
+  "dash": {
+    "config_files": [
+      "Library/Application Support/Dash/library.dash",
+      "Library/Application Support/Dash/License/license.dash-license",
+      "Library/Preferences/com.kapeli.dash.plist",
+      "Library/Preferences/com.kapeli.dashdoc.plist"
+    ],
+    "name": "Dash"
+  },
+  "datagrip": {
+    "config_files": [
+      "Library/Application Support/DataGrip2017.3",
+      "Library/Preferences/DataGrip2017.3",
+      "Library/Application Support/DataGrip2018.1",
+      "Library/Preferences/DataGrip2018.1",
+      "Library/Application Support/DataGrip2018.2",
+      "Library/Preferences/DataGrip2018.2",
+      "Library/Application Support/DataGrip2018.3",
+      "Library/Preferences/DataGrip2018.3",
+      "Library/Application Support/DataGrip2019.1",
+      "Library/Preferences/DataGrip2019.1",
+      "Library/Preferences/DataGrip2019.2",
+      "Library/Application Support/JetBrains/DataGrip2023.1",
+      "Library/Application Support/JetBrains/DataGrip2023.2"
+    ],
+    "name": "DataGrip"
+  },
+  "day-o": {
+    "config_files": [
+      "Library/Preferences/com.shauninman.Day-O.plist"
+    ],
+    "name": "Day-O"
+  },
+  "dbeaver": {
+    "config_files": [
+      "Library/DBeaverData/workspace6/.metadata/.plugins/org.eclipse.core.runtime/.settings",
+      "Library/DBeaverData/workspace6/General"
+    ],
+    "name": "DBeaver"
+  },
+  "dbvisualizer": {
+    "config_files": [
+      ".dbvis"
+    ],
+    "name": "DbVisualizer"
+  },
+  "deal-alert": {
+    "config_files": [
+      "Library/Preferences/com.LittleFin.DealAlert.plist"
+    ],
+    "name": "Deal Alert"
+  },
+  "deepin-dde-dock": {
+    "config_files": [
+      "deepin/dde-dock.conf"
+    ],
+    "name": "deepin-dde-dock"
+  },
+  "deepin-dde-file-manager": {
+    "config_files": [
+      "deepin/dde-file-manager.json"
+    ],
+    "name": "deepin-dde-file-manager"
+  },
+  "deepin-terminal": {
+    "config_files": [
+      "deepin/deepin-terminal/config.conf"
+    ],
+    "name": "deepin-terminal"
+  },
+  "default-folder-x": {
+    "config_files": [
+      "Library/Preferences/com.stclairsoft.DefaultFolderX.favorites.plist",
+      "Library/Preferences/com.stclairsoft.DefaultFolderX.plist",
+      "Library/Preferences/com.stclairsoft.DefaultFolderX.settings.plist"
+    ],
+    "name": "Default Folder X"
+  },
+  "defaultkeybinding": {
+    "config_files": [
+      "Library/KeyBindings/DefaultKeyBinding.dict"
+    ],
+    "name": "DefaultKeyBinding"
+  },
+  "devilspie": {
+    "config_files": [
+      ".devilspie"
+    ],
+    "name": "Devil's Pie"
+  },
+  "devilspie2": {
+    "config_files": [
+      "devilspie2"
+    ],
+    "name": "Devilspie2"
+  },
+  "dig": {
+    "config_files": [
+      ".digrc"
+    ],
+    "name": "dig"
+  },
+  "divvy": {
+    "config_files": [
+      "Library/Preferences/com.mizage.direct.Divvy.plist",
+      "Library/Preferences/com.mizage.Divvy.plist"
+    ],
+    "name": "Divvy"
+  },
+  "docker": {
+    "config_files": [
+      ".docker/config.json",
+      ".docker/daemon.json"
+    ],
+    "name": "Docker"
+  },
+  "dolphin": {
+    "config_files": [
+      "Library/Application Support/Dolphin",
+      "Library/Preferences/org.dolphin-emu.dolphin.plist"
+    ],
+    "name": "Dolphin"
+  },
+  "doom-emacs": {
+    "config_files": [
+      ".doom.d"
+    ],
+    "name": "Doom Emacs"
+  },
+  "doublecmd": {
+    "config_files": [
+      "doublecmd/wfx.ini"
+    ],
+    "name": "Double Commander"
+  },
+  "doxie": {
+    "config_files": [
+      "Library/Preferences/com.getdoxie.doxie.plist"
+    ],
+    "name": "Doxie"
+  },
+  "dozer": {
+    "config_files": [
+      "Library/Preferences/com.mortennn.Dozer.plist"
+    ],
+    "name": "Dozer"
+  },
+  "draft": {
+    "config_files": [
+      ".draft/config.toml"
+    ],
+    "name": "Draft"
+  },
+  "droplr": {
+    "config_files": [
+      "Library/Preferences/com.droplr.droplr-mac.plist"
+    ],
+    "name": "Droplr"
+  },
+  "dropzone": {
+    "config_files": [
+      "Library/Application Support/Dropzone 3",
+      "Library/Preferences/com.aptonic.Dropzone3.plist"
+    ],
+    "name": "Dropzone 3"
+  },
+  "drush": {
+    "config_files": [
+      ".drush"
+    ],
+    "name": "Drush"
+  },
+  "editorconfig": {
+    "config_files": [
+      ".editorconfig"
+    ],
+    "name": "EditorConfig"
+  },
+  "electrum": {
+    "config_files": [
+      ".electrum/config"
+    ],
+    "name": "Electrum"
+  },
+  "emacs": {
+    "config_files": [
+      ".emacs",
+      ".emacs.d"
+    ],
+    "name": "Emacs"
+  },
+  "enjoyable": {
+    "config_files": [
+      "Library/Preferences/com.yukkurigames.Enjoyable.plist"
+    ],
+    "name": "Enjoyable"
+  },
+  "environmental-station-alpha": {
+    "config_files": [
+      "Library/Application Support/MMFApplications"
+    ],
+    "name": "Environmental Station Alpha"
+  },
+  "eqmac-2": {
+    "config_files": [
+      "Library/Preferences/com.bitgapp.eqMac2.plist"
+    ],
+    "name": "eqMac2"
+  },
+  "eslint": {
+    "config_files": [
+      ".eslintrc.js",
+      ".eslintrc.yaml",
+      ".eslintrc.yml",
+      ".eslintrc.json",
+      ".eslintrc",
+      ".eslintignore"
+    ],
+    "name": "ESLint"
+  },
+  "espanso": {
+    "config_files": [
+      "Library/Preferences/espanso",
+      "Library/Application Support/espanso"
+    ],
+    "name": "espanso"
+  },
+  "exercism": {
+    "config_files": [
+      ".exercism",
+      ".exercism.json"
+    ],
+    "name": "Exercism"
+  },
+  "expandrive": {
+    "config_files": [
+      "Library/Application Support/ExpanDrive",
+      "Preferences/com.expandrive.ExpanDrive2.plist",
+      "Preferences/com.expandrive.ExpanDrive3.plist"
+    ],
+    "name": "ExpanDrive"
+  },
+  "factorio": {
+    "config_files": [
+      "Library/Application Support/factorio/config",
+      "Library/Application Support/factorio/mods",
+      "Library/Application Support/factorio/saves",
+      "Library/Application Support/factorio/player-data.json",
+      "Library/Application Support/factorio/blueprint-storage.dat"
+    ],
+    "name": "Factorio"
+  },
+  "factory-droid": {
+    "config_files": [
+      ".factory/commands",
+      ".factory/droids",
+      ".factory/AGENTS.md",
+      ".factory/config.json",
+      ".factory/settings.json",
+      ".factory/auth.json",
+      ".factory/mcp.json"
+    ],
+    "name": "Factory Droid"
+  },
+  "fantastical": {
+    "config_files": [
+      "Library/Preferences/com.flexibits.fantastical.plist",
+      "Library/Containers/com.flexibits.fantastical2.mac/Container.plist"
+    ],
+    "name": "Fantastical"
+  },
+  "fasd": {
+    "config_files": [
+      ".fasd",
+      ".fasdrc"
+    ],
+    "name": "fasd"
+  },
+  "fastlane": {
+    "config_files": [
+      ".fastlane/completions"
+    ],
+    "name": "fastlane"
+  },
+  "fastscripts": {
+    "config_files": [
+      "Library/Preferences/com.red-sweater.fastscripts.plist",
+      "Library/Application Support/FastScripts"
+    ],
+    "name": "FastScripts"
+  },
+  "feeds": {
+    "config_files": [
+      "Library/Preferences/com.feedsapp.Feeds.plist"
+    ],
+    "name": "Feeds"
+  },
+  "filezilla": {
+    "config_files": [
+      ".filezilla"
+    ],
+    "name": "FileZilla"
+  },
+  "finicky": {
+    "config_files": [
+      ".finicky.js"
+    ],
+    "name": "finicky"
+  },
+  "fish": {
+    "config_files": [
+      "fish/config.fish"
+    ],
+    "name": "Fish"
+  },
+  "fisher": {
+    "config_files": [
+      "fish/fish_plugins"
+    ],
+    "name": "Fisher"
+  },
+  "flake8": {
+    "config_files": [
+      ".flake8"
+    ],
+    "name": "flake8"
+  },
+  "flameshot": {
+    "config_files": [
+      "flameshot/flameshot.ini"
+    ],
+    "name": "Flameshot"
+  },
+  "flexget": {
+    "config_files": [
+      ".flexget/config.yml"
+    ],
+    "name": "FlexGet"
+  },
+  "flux": {
+    "config_files": [
+      "Library/Preferences/org.herf.Flux.plist"
+    ],
+    "name": "Flux"
+  },
+  "focus": {
+    "config_files": [
+      "Library/Application Support/Focus/default.cfg"
+    ],
+    "name": "Focus"
+  },
+  "fontconfig": {
+    "config_files": [
+      "fontconfig"
+    ],
+    "name": "Fontconfig"
+  },
+  "fontexplorer-x": {
+    "config_files": [
+      "Library/Application Support/Linotype/FontExplorer X",
+      "FontExplorer X"
+    ],
+    "name": "FontExplorer X"
+  },
+  "forge": {
+    "config_files": [
+      "Library/Application Support/Forge"
+    ],
+    "name": "Forge"
+  },
+  "fork": {
+    "config_files": [
+      "Library/Application Support/com.DanPristupov.Fork/custom-commands.json",
+      "Library/Preferences/com.DanPristupov.Fork.plist"
+    ],
+    "name": "Fork"
+  },
+  "forklift": {
+    "config_files": [
+      "Library/Preferences/com.binarynights.ForkLift2.plist",
+      "Library/Preferences/com.binarynights.ForkLift-3.plist",
+      "Library/Application Support/ForkLift/Favorites/Favorites.json"
+    ],
+    "name": "ForkLift"
+  },
+  "franz": {
+    "config_files": [
+      "Library/Application Support/Franz/settings"
+    ],
+    "name": "Franz"
+  },
+  "gasmask": {
+    "config_files": [
+      "Library/Gas Mask",
+      "Library/Preferences/ee.clockwise.gmask.plist"
+    ],
+    "name": "Gas Mask"
+  },
+  "gdb": {
+    "config_files": [
+      ".gdbinit"
+    ],
+    "name": "gdb"
+  },
+  "gearplayer": {
+    "config_files": [
+      "Library/Preferences/com.treasurebox.gear.plist",
+      "Library/Preferences/com.treasurebox.magickeys.plist",
+      "Library/Application Support/Gear Player/paddata.padl"
+    ],
+    "name": "Gear Player"
+  },
+  "geektool": {
+    "config_files": [
+      "Library/Preferences/org.tynsoe.GeekTool.plist",
+      "Library/Preferences/org.tynsoe.geeklet.file.plist",
+      "Library/Preferences/org.tynsoe.geeklet.image.plist",
+      "Library/Preferences/org.tynsoe.geeklet.shell.plist",
+      "Library/Preferences/org.tynsoe.geeklet.web.plist",
+      "Library/Preferences/org.tynsoe.geektool3.plist"
+    ],
+    "name": "GeekTool"
+  },
+  "ghci": {
+    "config_files": [
+      ".ghci"
+    ],
+    "name": "ghci"
+  },
+  "ghidra": {
+    "config_files": [
+      ".ghidra"
+    ],
+    "name": "Ghidra"
+  },
+  "ghostty": {
+    "config_files": [
+      "ghostty/config"
+    ],
+    "name": "Ghostty"
+  },
+  "ghostwriter": {
+    "config_files": [
+      "ghostwriter"
+    ],
+    "name": "Ghostwriter"
+  },
+  "gimp": {
+    "config_files": [
+      ".gimp/colorrc",
+      ".gimp/contextrc",
+      ".gimp/controllerrc",
+      ".gimp/devicerc",
+      ".gimp/dockrc",
+      ".gimp/gimprc",
+      ".gimp/gtkrc",
+      ".gimp/menurc",
+      ".gimp/parasiterc",
+      ".gimp/pluginrc",
+      ".gimp/profilerc",
+      ".gimp/sessionrc",
+      ".gimp/templaterc",
+      ".gimp/themerc",
+      ".gimp/toolrc",
+      ".gimp/unitrc",
+      "Library/Application Support/GIMP/2.8/colorrc",
+      "Library/Application Support/GIMP/2.8/contextrc",
+      "Library/Application Support/GIMP/2.8/controllerrc",
+      "Library/Application Support/GIMP/2.8/devicerc",
+      "Library/Application Support/GIMP/2.8/dockrc",
+      "Library/Application Support/GIMP/2.8/gimprc",
+      "Library/Application Support/GIMP/2.8/gtkrc",
+      "Library/Application Support/GIMP/2.8/menurc",
+      "Library/Application Support/GIMP/2.8/parasiterc",
+      "Library/Application Support/GIMP/2.8/pluginrc",
+      "Library/Application Support/GIMP/2.8/profilerc",
+      "Library/Application Support/GIMP/2.8/sessionrc",
+      "Library/Application Support/GIMP/2.8/templaterc",
+      "Library/Application Support/GIMP/2.8/themerc",
+      "Library/Application Support/GIMP/2.8/toolrc",
+      "Library/Application Support/GIMP/2.8/unitrc",
+      "Library/Application Support/GIMP/2.10/colorrc",
+      "Library/Application Support/GIMP/2.10/contextrc",
+      "Library/Application Support/GIMP/2.10/controllerrc",
+      "Library/Application Support/GIMP/2.10/devicerc",
+      "Library/Application Support/GIMP/2.10/dockrc",
+      "Library/Application Support/GIMP/2.10/gimprc",
+      "Library/Application Support/GIMP/2.10/gtkrc",
+      "Library/Application Support/GIMP/2.10/menurc",
+      "Library/Application Support/GIMP/2.10/parasiterc",
+      "Library/Application Support/GIMP/2.10/pluginrc",
+      "Library/Application Support/GIMP/2.10/profilerc",
+      "Library/Application Support/GIMP/2.10/sessionrc",
+      "Library/Application Support/GIMP/2.10/templaterc",
+      "Library/Application Support/GIMP/2.10/themerc",
+      "Library/Application Support/GIMP/2.10/toolrc",
+      "Library/Application Support/GIMP/2.10/unitrc"
+    ],
+    "name": "gimp"
+  },
+  "git": {
+    "config_files": [
+      ".gitconfig"
+    ],
+    "name": "Git"
+  },
+  "git-hooks": {
+    "config_files": [
+      ".git_hooks"
+    ],
+    "name": "Git Hooks"
+  },
+  "gitbox": {
+    "config_files": [
+      "Library/Preferences/com.oleganza.gitbox.plist"
+    ],
+    "name": "Gitbox"
+  },
+  "gitfox": {
+    "config_files": [
+      "Library/Preferences/com.bytieful.Gitfox.plist",
+      "Library/Preferences/com.bytieful.Gitfox-retail.plist",
+      "Library/Preferences/com.bytieful.Gitfox-setapp.plist"
+    ],
+    "name": "GitFox"
+  },
+  "github-cli": {
+    "config_files": [
+      "gh/config.yml"
+    ],
+    "name": "GitHub CLI"
+  },
+  "gitkraken": {
+    "config_files": [
+      ".gitkraken",
+      "Library/Preferences/com.axosoft.gitkraken.plist"
+    ],
+    "name": "GitKraken"
+  },
+  "gitup": {
+    "config_files": [
+      "Library/Preferences/co.gitup.mac.plist"
+    ],
+    "name": "GitUp"
+  },
+  "gmail-notifr": {
+    "config_files": [
+      "Library/Preferences/com.ashchan.GmailNotifr.plist"
+    ],
+    "name": "Gmail Notifr"
+  },
+  "gmailctl": {
+    "config_files": [
+      ".gmailctl/config.jsonnet",
+      ".gmailctl/credentials.json",
+      ".gmailctl/gmailctl.libsonnet"
+    ],
+    "name": "gmailctl"
+  },
+  "gmvault": {
+    "config_files": [
+      ".gmvault/gmvault_defaults.conf"
+    ],
+    "name": "GMVault"
+  },
+  "gnu-stow": {
+    "config_files": [
+      ".stowrc",
+      ".stow-global-ignore"
+    ],
+    "name": "GNU Stow"
+  },
+  "gnupg": {
+    "config_files": [
+      ".gnupg/gpg-agent.conf",
+      ".gnupg/gpg.conf",
+      ".gnupg/trustdb.gpg"
+    ],
+    "name": "GnuPG"
+  },
+  "go2shell": {
+    "config_files": [
+      "Library/Preferences/com.zipzapmac.Go2Shell.plist"
+    ],
+    "name": "Go2Shell"
+  },
+  "goku": {
+    "config_files": [
+      "karabiner.edn"
+    ],
+    "name": "Goku"
+  },
+  "goland": {
+    "config_files": [
+      "Library/Application Support/Gogland1.0",
+      "Library/Application Support/GoLand2017.3",
+      "Library/Application Support/GoLand2018.1",
+      "Library/Application Support/GoLand2018.2",
+      "Library/Application Support/GoLand2018.3",
+      "Library/Application Support/GoLand2019.2",
+      "Library/Preferences/com.jetbrains.gogland-EAP.plist",
+      "Library/Preferences/Gogland1.0",
+      "Library/Preferences/GoLand2017.3",
+      "Library/Preferences/GoLand2018.1",
+      "Library/Preferences/GoLand2018.2",
+      "Library/Preferences/GoLand2018.3",
+      "Library/Preferences/GoLand2019.2",
+      "Library/Application Support/JetBrains/GoLand2023.1",
+      "Library/Application Support/JetBrains/GoLand2023.2"
+    ],
+    "name": "GoLand"
+  },
+  "goldendict": {
+    "config_files": [
+      ".goldendict/config"
+    ],
+    "name": "Goldendict"
+  },
+  "goodsync": {
+    "config_files": [
+      ".goodsync"
+    ],
+    "name": "GoodSync"
+  },
+  "goshare": {
+    "config_files": [
+      "dictget/goshare"
+    ],
+    "name": "GoShare"
+  },
+  "gradle": {
+    "config_files": [
+      ".gradle/gradle.properties",
+      ".gradle/init.gradle",
+      ".gradle/init.d"
+    ],
+    "name": "Gradle"
+  },
+  "grandtotal-3": {
+    "config_files": [
+      "Library/Application Support/GrandTotal/AddressBook.plist",
+      "Library/Preferences/com.mediaatelier.GrandTotal3.plist"
+    ],
+    "name": "GrandTotal 3"
+  },
+  "grsync": {
+    "config_files": [
+      ".grsync/grsync.ini"
+    ],
+    "name": "grsync"
+  },
+  "gstm": {
+    "config_files": [
+      ".gSTM"
+    ],
+    "name": "Gnome SSH Tunnel Manager"
+  },
+  "hammerspoon": {
+    "config_files": [
+      ".hammerspoon"
+    ],
+    "name": "Hammerspoon"
+  },
+  "handbrake": {
+    "config_files": [
+      "Library/Containers/fr.handbrake.HandBrake/Data/Library/Application Support/HandBrake/UserPresets.json"
+    ],
+    "name": "HandBrake"
+  },
+  "hands-off": {
+    "config_files": [
+      "Library/Preferences/com.metakine.handsoff.plist"
+    ],
+    "name": "Hands Off!"
+  },
+  "hazel": {
+    "config_files": [
+      "Library/Application Support/Hazel",
+      "Library/Preferences/com.noodlesoft.Hazel.plist"
+    ],
+    "name": "Hazel"
+  },
+  "hero-lab": {
+    "config_files": [
+      "Library/Application Support/Hero Lab/customoutput",
+      "Library/Application Support/Hero Lab/data",
+      "Library/Application Support/Hero Lab/docs"
+    ],
+    "name": "Hero Lab"
+  },
+  "heroku": {
+    "config_files": [
+      ".heroku/accounts",
+      ".heroku/plugins"
+    ],
+    "name": "Heroku"
+  },
+  "hexchat": {
+    "config_files": [
+      "hexchat"
+    ],
+    "name": "HexChat"
+  },
+  "hexels": {
+    "config_files": [
+      "Library/Preferences/com.hex-ray.hexels.plist"
+    ],
+    "name": "Hexels"
+  },
+  "hocus-focus": {
+    "config_files": [
+      "Library/Preferences/com.uglyapps.HocusFocus.plist",
+      "Library/Application Support/com.uglyapps.HocusFocus/HocusFocus.db",
+      "Library/Application Support/com.uglyapps.HocusFocus/HocusFocus.db-shm",
+      "Library/Application Support/com.uglyapps.HocusFocus/HocusFocus.db-wal"
+    ],
+    "name": "Hocus Focus"
+  },
+  "homebrew": {
+    "config_files": [
+      ".Brewfile",
+      "Brewfile"
+    ],
+    "name": "Homebrew"
+  },
+  "homebridge": {
+    "config_files": [
+      ".homebridge"
+    ],
+    "name": "Homebridge"
+  },
+  "houdini": {
+    "config_files": [
+      "Library/Preferences/com.uglyapps.Houdini.plist",
+      "Library/Application Support/Houdini"
+    ],
+    "name": "Houdini"
+  },
+  "hstr": {
+    "config_files": [
+      ".hstr_favorites",
+      ".hstr_blacklist"
+    ],
+    "name": "hstr"
+  },
+  "htop": {
+    "config_files": [
+      ".htoprc"
+    ],
+    "name": "Htop"
+  },
+  "httpie": {
+    "config_files": [
+      ".httpie/config.json"
+    ],
+    "name": "HTTPie"
+  },
+  "hub": {
+    "config_files": [
+      "hub"
+    ],
+    "name": "hub"
+  },
+  "hyper": {
+    "config_files": [
+      ".hyper.js"
+    ],
+    "name": "Hyper.app"
+  },
+  "hyperdock": {
+    "config_files": [
+      "Library/Application Support/HyperDock",
+      "Library/Preferences/de.bahoom.HyperDock.plist",
+      "Library/Preferences/de.bahoom.HyperDock.prefpane.plist"
+    ],
+    "name": "HyperDock"
+  },
+  "hyperswitch": {
+    "config_files": [
+      "Library/Preferences/com.bahoom.HyperSwitch.plist"
+    ],
+    "name": "HyperSwitch"
+  },
+  "i2cssh": {
+    "config_files": [
+      ".i2csshrc"
+    ],
+    "name": "i2cssh"
+  },
+  "i3": {
+    "config_files": [
+      ".i3/config",
+      ".i3status.conf"
+    ],
+    "name": "i3"
+  },
+  "idapro": {
+    "config_files": [
+      ".idapro"
+    ],
+    "name": "IDA Pro"
+  },
+  "ideavim": {
+    "config_files": [
+      ".ideavimrc"
+    ],
+    "name": "IdeaVim"
+  },
+  "iina": {
+    "config_files": [
+      "Library/Application Support/com.colliderli.iina/input_conf",
+      "Library/Preferences/com.colliderli.iina.plist"
+    ],
+    "name": "IINA"
+  },
+  "illustrator": {
+    "config_files": [
+      "Library/Application Support/Adobe/Adobe Illustrator 17",
+      "Library/Application Support/Adobe/Adobe Illustrator 18",
+      "Library/Application Support/Adobe/Adobe Illustrator 19",
+      "Library/Application Support/Adobe/Adobe Illustrator 20",
+      "Library/Application Support/Adobe/Adobe Illustrator 23/en_US/Adobe SVG Filters.svg",
+      "Library/Application Support/Adobe/Adobe Illustrator 23/en_US/Swatches",
+      "Library/Application Support/Adobe/Adobe Illustrator 24/en_US/Adobe SVG Filters.svg",
+      "Library/Application Support/Adobe/Adobe Illustrator 24/en_US/Swatches",
+      "Library/Application Support/Adobe/OOBE",
+      "Library/Preferences/Adobe Illustrator 17 Settings",
+      "Library/Preferences/Adobe Illustrator 18 Settings",
+      "Library/Preferences/Adobe Illustrator 19 Settings",
+      "Library/Preferences/Adobe Illustrator 20 Settings",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Adobe Illustrator Prefs",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Last Used Artboard Export Settings",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Last Used Asset Export Settings",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Modified Workspaces",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Perspective grid Presets",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Print Presets",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Tools/Tools Panel Presets",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Transparency flattener presets",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/VariableWidthProfiles",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Vectorizing Presets",
+      "Library/Preferences/Adobe Illustrator 23 Settings/en_US/Workspaces",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Adobe Illustrator Prefs",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Last Used Artboard Export Settings",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Last Used Asset Export Settings",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Modified Workspaces",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Perspective grid Presets",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Print Presets",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Tools/Tools Panel Presets",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Transparency flattener presets",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/VariableWidthProfiles",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Vectorizing Presets",
+      "Library/Preferences/Adobe Illustrator 24 Settings/en_US/Workspaces",
+      "Library/Preferences/com.adobe.illustrator.plist"
+    ],
+    "name": "Adobe Illustrator"
+  },
+  "inkscape": {
+    "config_files": [
+      "inkscape/preferences.xml"
+    ],
+    "name": "inkscape"
+  },
+  "insomnia": {
+    "config_files": [
+      "Library/Application Support/Insomnia"
+    ],
+    "name": "Insomnia"
+  },
+  "intellijidea": {
+    "config_files": [
+      ".IntelliJIdea12/config",
+      ".IntelliJIdea13/config",
+      ".IntelliJIdea14/config",
+      ".IntelliJIdea15/config",
+      "IdeaIC2018.2/config",
+      "IdeaIC2018.3/config",
+      "IdeaIC2019.1/config",
+      "IdeaIC2019.2/config",
+      "IdeaIC2019.3/config",
+      "IntelliJIdea2016.1/config",
+      "IntelliJIdea2016.2/config",
+      "IntelliJIdea2016.3/config",
+      "IntelliJIdea2017.1/config",
+      "IntelliJIdea2017.2/config",
+      "IntelliJIdea2017.3/config",
+      "IntelliJIdea2018.1/config",
+      "IntelliJIdea2018.2/config",
+      "IntelliJIdea2018.3/config",
+      "IntelliJIdea2019.1/config",
+      "IntelliJIdea2019.2/config",
+      "IntelliJIdea2019.3/config",
+      "Library/Application Support/IdeaIC2016.1",
+      "Library/Application Support/IdeaIC2017.1",
+      "Library/Application Support/IdeaIC2017.2",
+      "Library/Application Support/IdeaIC2017.3",
+      "Library/Application Support/IdeaIC2018.2",
+      "Library/Application Support/IdeaIC2018.3",
+      "Library/Application Support/IdeaIC2019.1",
+      "Library/Application Support/IntelliJIdea12",
+      "Library/Application Support/IntelliJIdea13",
+      "Library/Application Support/IntelliJIdea14",
+      "Library/Application Support/IntelliJIdea15",
+      "Library/Application Support/IntelliJIdea2016.1",
+      "Library/Application Support/IntelliJIdea2016.2",
+      "Library/Application Support/IntelliJIdea2016.3",
+      "Library/Application Support/IntelliJIdea2017.1",
+      "Library/Application Support/IntelliJIdea2017.2",
+      "Library/Application Support/IntelliJIdea2017.3",
+      "Library/Application Support/IntelliJIdea2018.1",
+      "Library/Application Support/IntelliJIdea2018.2",
+      "Library/Application Support/IntelliJIdea2018.3",
+      "Library/Application Support/IntelliJIdea2019.1",
+      "Library/Application Support/IntelliJIdea2019.2",
+      "Library/Application Support/IntelliJIdea2019.3",
+      "Library/Application Support/JetBrains/IntelliJIdea2020.1",
+      "Library/Application Support/JetBrains/IntelliJIdea2020.2",
+      "Library/Application Support/JetBrains/IntelliJIdea2020.3",
+      "Library/Application Support/JetBrains/IntelliJIdea2021.1",
+      "Library/Application Support/JetBrains/IntelliJIdea2022.1",
+      "Library/Application Support/JetBrains/IntelliJIdea2022.2",
+      "Library/Application Support/JetBrains/IntelliJIdea2023.1",
+      "Library/Application Support/JetBrains/IntelliJIdea2023.2",
+      "Library/Preferences/IdeaIC2016.1",
+      "Library/Preferences/IdeaIC2016.2",
+      "Library/Preferences/IdeaIC2016.3",
+      "Library/Preferences/IdeaIC2017.1",
+      "Library/Preferences/IdeaIC2017.2",
+      "Library/Preferences/IdeaIC2017.3",
+      "Library/Preferences/IdeaIC2018.2",
+      "Library/Preferences/IdeaIC2018.3",
+      "Library/Preferences/IdeaIC2019.1",
+      "Library/Preferences/IntelliJIdea12",
+      "Library/Preferences/IntelliJIdea13",
+      "Library/Preferences/IntelliJIdea14",
+      "Library/Preferences/IntelliJIdea15",
+      "Library/Preferences/IntelliJIdea2016.1",
+      "Library/Preferences/IntelliJIdea2016.2",
+      "Library/Preferences/IntelliJIdea2016.3",
+      "Library/Preferences/IntelliJIdea2017.1",
+      "Library/Preferences/IntelliJIdea2017.2",
+      "Library/Preferences/IntelliJIdea2017.3",
+      "Library/Preferences/IntelliJIdea2018.1",
+      "Library/Preferences/IntelliJIdea2018.2",
+      "Library/Preferences/IntelliJIdea2018.3",
+      "Library/Preferences/IntelliJIdea2019.1",
+      "Library/Preferences/IntelliJIdea2019.2",
+      "Library/Preferences/IntelliJIdea2019.3"
+    ],
+    "name": "IntelliJ IDEA"
+  },
+  "ipython": {
+    "config_files": [
+      ".ipython"
+    ],
+    "name": "IPython"
+  },
+  "irssi": {
+    "config_files": [
+      ".irssi"
+    ],
+    "name": "Irssi"
+  },
+  "istat-menus": {
+    "config_files": [
+      "Library/Preferences/com.bjango.istatmenus.menubar.7.plist",
+      "Library/Preferences/com.bjango.istatmenus.plist",
+      "Library/Preferences/com.bjango.istatmenus.status.plist",
+      "Library/Preferences/com.bjango.istatmenus5.extras.plist",
+      "Library/Preferences/com.bjango.istatmenus6.extras.plist"
+    ],
+    "name": "iStat Menus"
+  },
+  "iterm2": {
+    "config_files": [
+      "Library/Preferences/com.googlecode.iterm2.plist"
+    ],
+    "name": "iTerm2"
+  },
+  "itermocil": {
+    "config_files": [
+      ".itermocil"
+    ],
+    "name": "iTermocil"
+  },
+  "itsycal": {
+    "config_files": [
+      "Library/Preferences/com.mowglii.ItsycalApp.plist"
+    ],
+    "name": "Itsycal"
+  },
+  "itunes-scripts": {
+    "config_files": [
+      "Library/iTunes/Scripts"
+    ],
+    "name": "iTunes Scripts"
+  },
+  "jankyborders": {
+    "config_files": [
+      "borders/bordersrc"
+    ],
+    "name": "Janky Borders"
+  },
+  "janus": {
+    "config_files": [
+      ".janus",
+      ".vimrc.before",
+      ".vimrc.after"
+    ],
+    "name": "Janus"
+  },
+  "jitouch": {
+    "config_files": [
+      "Library/Preferences/com.jitouch.Jitouch.plist"
+    ],
+    "name": "Jitouch"
+  },
+  "joplin": {
+    "config_files": [
+      "joplin-desktop/userchrome.css"
+    ],
+    "name": "Joplin"
+  },
+  "jrnl": {
+    "config_files": [
+      ".jrnl_config"
+    ],
+    "name": "jrnl"
+  },
+  "jsbeautifier": {
+    "config_files": [
+      ".jsbeautifyrc"
+    ],
+    "name": "JS Beautifier"
+  },
+  "jshint": {
+    "config_files": [
+      ".jshintrc"
+    ],
+    "name": "JSHint"
+  },
+  "julia": {
+    "config_files": [
+      ".juliarc.jl",
+      ".julia/config/startup.jl"
+    ],
+    "name": "Julia"
+  },
+  "jumpcut": {
+    "config_files": [
+      "Library/Application Support/Jumpcut",
+      "Library/Preferences/net.sf.Jumpcut.plist"
+    ],
+    "name": "Jumpcut"
+  },
+  "jupyter": {
+    "config_files": [
+      ".jupyter"
+    ],
+    "name": "Jupyter"
+  },
+  "k9s": {
+    "config_files": [
+      "k9s/config.yml"
+    ],
+    "name": "k9s"
+  },
+  "kaggle": {
+    "config_files": [
+      ".kaggle/kaggle.json"
+    ],
+    "name": "Kaggle"
+  },
+  "kaleidoscope": {
+    "config_files": [
+      "Library/Preferences/com.blackpixel.kaleidoscope.plist",
+      "Library/Application Support/Kaleidoscope"
+    ],
+    "name": "Kaleidoscope"
+  },
+  "karabiner": {
+    "config_files": [
+      "Library/Preferences/org.pqrs.Karabiner.plist",
+      "Library/Preferences/org.pqrs.Karabiner-AXNotifier.plist",
+      "Library/Preferences/org.pqrs.Karabiner.multitouchextension.plist",
+      "Library/Application Support/Karabiner"
+    ],
+    "name": "Karabiner"
+  },
+  "karabiner-elements": {
+    "config_files": [
+      "karabiner"
+    ],
+    "name": "Karabiner Elements"
+  },
+  "kdenlive": {
+    "config_files": [
+      "kdenlive"
+    ],
+    "name": "Kdenlive"
+  },
+  "keepassx": {
+    "config_files": [
+      ".keepassx",
+      "Library/Preferences/org.keepassx.keepassx.plist",
+      "Library/Application Support/keepassx/keepassx2.ini"
+    ],
+    "name": "KeePassX"
+  },
+  "keepassxc": {
+    "config_files": [
+      "Library/Preferences/org.keepassxc.keepassxc.plist",
+      "Library/Application Support/keepassxc/keepassxc.ini"
+    ],
+    "name": "KeePassXC"
+  },
+  "keepingyouawake": {
+    "config_files": [
+      "Library/Preferences/info.marcel-dierkes.KeepingYouAwake.plist"
+    ],
+    "name": "KeepingYouAwake"
+  },
+  "keka": {
+    "config_files": [
+      "Library/Preferences/com.aone.keka.plist"
+    ],
+    "name": "Keka"
+  },
+  "keybase": {
+    "config_files": [
+      ".keybase/config.json"
+    ],
+    "name": "Keybase"
+  },
+  "keyboard-maestro": {
+    "config_files": [
+      "Library/Application Support/Keyboard Maestro"
+    ],
+    "name": "Keyboard Maestro"
+  },
+  "keymo": {
+    "config_files": [
+      "Library/Preferences/com.manytricks.Keymo.plist"
+    ],
+    "name": "Keymo"
+  },
+  "keyremap4macbook": {
+    "config_files": [
+      "Library/Preferences/org.pqrs.KeyRemap4MacBook.plist",
+      "Library/Preferences/org.pqrs.KeyRemap4MacBook.multitouchextension.plist",
+      "Library/Application Support/KeyRemap4MacBook/private.xml"
+    ],
+    "name": "KeyRemap4MacBook"
+  },
+  "khd": {
+    "config_files": [
+      ".khdrc"
+    ],
+    "name": "khd"
+  },
+  "kiro": {
+    "config_files": [
+      "Library/Application Support/Kiro/User/snippets",
+      "Library/Application Support/Kiro/User/keybindings.json",
+      "Library/Application Support/Kiro/User/settings.json"
+    ],
+    "name": "Kiro"
+  },
+  "kitty": {
+    "config_files": [
+      "kitty/kitty.conf"
+    ],
+    "name": "kitty"
+  },
+  "krew": {
+    "config_files": [
+      ".krew"
+    ],
+    "name": "Krew"
+  },
+  "kubectl": {
+    "config_files": [
+      ".kube/config"
+    ],
+    "name": "kubectl"
+  },
+  "kwm": {
+    "config_files": [
+      ".kwm"
+    ],
+    "name": "Kwm"
+  },
+  "latexit": {
+    "config_files": [
+      "Library/Preferences/fr.chachatelier.pierre.LaTeXiT.plist"
+    ],
+    "name": "LaTeXiT"
+  },
+  "launchbar": {
+    "config_files": [
+      "Library/Preferences/at.obdev.LaunchBar.plist",
+      "Library/Application Support/LaunchBar/Actions",
+      "Library/Application Support/LaunchBar/Snippets",
+      "Library/Application Support/LaunchBar/Configuration.plist",
+      "Library/Application Support/LaunchBar/CustomShortcuts.plist"
+    ],
+    "name": "LaunchBar"
+  },
+  "lazydocker": {
+    "config_files": [
+      "Library/Application Support/jesseduffield/lazydocker/config.yml"
+    ],
+    "name": "lazydocker"
+  },
+  "lazygit": {
+    "config_files": [
+      "Library/Application Support/jesseduffield/lazygit/config.yml",
+      "Library/Application Support/lazygit/config.yml"
+    ],
+    "name": "lazygit"
+  },
+  "ledger": {
+    "config_files": [
+      ".ledgerrc"
+    ],
+    "name": "ledger"
+  },
+  "leiningen": {
+    "config_files": [
+      ".lein"
+    ],
+    "name": "Leiningen"
+  },
+  "lf": {
+    "config_files": [
+      "lf/lfrc"
+    ],
+    "name": "lf"
+  },
+  "libreoffice": {
+    "config_files": [
+      "libreoffice"
+    ],
+    "name": "LibreOffice"
+  },
+  "liftoff": {
+    "config_files": [
+      ".liftoffrc"
+    ],
+    "name": "liftoff"
+  },
+  "light-table": {
+    "config_files": [
+      "Library/Application Support/LightTable/plugins",
+      "Library/Application Support/LightTable/settings",
+      "Library/Application Support/LightTable/User",
+      "Library/Preferences/com.kodowa.LightTable.plist"
+    ],
+    "name": "Light Table"
+  },
+  "lightpaper": {
+    "config_files": [
+      ".lightpaper",
+      "Library/Application Support/LightPaper/customCSS.css",
+      "Library/Preferences/com.42squares.LightPaper.plist"
+    ],
+    "name": "LightPaper"
+  },
+  "lightroom": {
+    "config_files": [
+      "Library/Application Support/Adobe/Lightroom",
+      "Library/Preferences/com.adobe.Lightroom4.plist",
+      "Library/Preferences/com.adobe.Lightroom5.plist",
+      "Library/Preferences/com.adobe.Lightroom6.plist"
+    ],
+    "name": "Adobe Lightroom"
+  },
+  "lightroom-classic": {
+    "config_files": [
+      "Library/Preferences/com.adobe.LightroomClassicCC7.plist"
+    ],
+    "name": "Adobe Lightroom Classic"
+  },
+  "limechat": {
+    "config_files": [
+      "Library/Preferences/net.limechat.LimeChat-AppStore.plist"
+    ],
+    "name": "LimeChat"
+  },
+  "liquidprompt": {
+    "config_files": [
+      ".liquidpromptrc"
+    ],
+    "name": "Liquid Prompt"
+  },
+  "littlesnitch": {
+    "config_files": [
+      "Library/Preferences/at.obdev.LittleSnitchNetworkMonitor.plist",
+      "Library/Preferences/at.obdev.littlesnitch.networkmonitor.plist",
+      "Library/Application Support/Little Snitch/rules.usr.xpl",
+      "Library/Application Support/Little Snitch/configuration.xpl",
+      "Library/Application Support/Little Snitch/configuration.user.xpl",
+      "Library/Application Support/Little Snitch/configuration4.user.xpl"
+    ],
+    "name": "LittleSnitch"
+  },
+  "livestreamer": {
+    "config_files": [
+      ".livestreamerrc"
+    ],
+    "name": "Livestreamer"
+  },
+  "logitech-options": {
+    "config_files": [
+      "Library/Preferences/com.logitech.manager.setting.ffff.plist"
+    ],
+    "name": "Logitech Options"
+  },
+  "logseq": {
+    "config_files": [
+      ".logseq"
+    ],
+    "name": "Logseq"
+  },
+  "lollypop": {
+    "config_files": [
+      ".local/share/lollypop"
+    ],
+    "name": "Lollypop"
+  },
+  "loopback": {
+    "config_files": [
+      "Library/Preferences/com.rogueamoeba.Loopback.plist",
+      "Library/Application Support/Loopback/Devices.plist"
+    ],
+    "name": "Loopback"
+  },
+  "luftrausers": {
+    "config_files": [
+      ".LUFTRAUSERS"
+    ],
+    "name": "Luftrausers"
+  },
+  "lunarvim": {
+    "config_files": [
+      "lvim/config.lua"
+    ],
+    "name": "LunarVim"
+  },
+  "macdive2": {
+    "config_files": [
+      "Library/Application Support/MacDive",
+      "Library/Preferences/com.mintsoftware.MacDive2.plist"
+    ],
+    "name": "MacDive"
+  },
+  "macdown": {
+    "config_files": [
+      "Library/Preferences/com.uranusjr.macdown.plist",
+      "Library/Application Support/MacDown/Styles",
+      "Library/Application Support/MacDown/Themes"
+    ],
+    "name": "MacDown"
+  },
+  "mackup": {
+    "config_files": [
+      ".mackup.cfg",
+      ".mackup"
+    ],
+    "name": "Mackup"
+  },
+  "macosx": {
+    "config_files": [
+      ".MacOSX",
+      "Library/KeyBindings/DefaultKeyBinding.dict",
+      "Library/PDF Services",
+      "Library/Preferences/com.apple.symbolichotkeys.plist",
+      "Library/Preferences/.GlobalPreferences.plist",
+      "Library/Scripts",
+      "Library/Speech/Speakable Items",
+      "Library/Workflows"
+    ],
+    "name": "MacOSX"
+  },
+  "macvim": {
+    "config_files": [
+      "Library/Preferences/org.vim.MacVim.LSSharedFileList.plist",
+      "Library/Preferences/org.vim.MacVim.plist"
+    ],
+    "name": "MacVim"
+  },
+  "magic-launch": {
+    "config_files": [
+      "Library/Preferences/com.metakine.magic-launch.agent.plist"
+    ],
+    "name": "Magic Launch"
+  },
+  "magicprefs": {
+    "config_files": [
+      "Library/Preferences/com.vladalexa.MagicPrefs.MagicPrefsPlugins.plist",
+      "Library/Preferences/com.vladalexa.MagicPrefs.plist"
+    ],
+    "name": "MagicPrefs"
+  },
+  "magnet": {
+    "config_files": [
+      "Library/Preferences/com.crowdcafe.windowmagnet.plist"
+    ],
+    "name": "Magnet"
+  },
+  "maid": {
+    "config_files": [
+      ".maid"
+    ],
+    "name": "Maid"
+  },
+  "mail": {
+    "config_files": [
+      "Library/Preferences/com.apple.mail.plist"
+    ],
+    "name": "Mail"
+  },
+  "mailmate": {
+    "config_files": [
+      "Library/Preferences/com.freron.MailMate.plist",
+      "Library/Application Support/Mailmate/com.freron.MailMate.pid",
+      "Library/Application Support/Mailmate/Identities.plist",
+      "Library/Application Support/Mailmate/Mailboxes.plist",
+      "Library/Application Support/Mailmate/Signatures.plist",
+      "Library/Application Support/Mailmate/Sources.plist",
+      "Library/Application Support/Mailmate/Submission.plist",
+      "Library/Application Support/Mailmate/Tags.plist",
+      "Library/Application Support/Mailmate/Resources/KeyBindings"
+    ],
+    "name": "Mailmate"
+  },
+  "mailplane": {
+    "config_files": [
+      "Library/Preferences/com.mailplaneapp.Mailplane.plist",
+      "Library/Preferences/com.mailplaneapp.Mailplane3.plist"
+    ],
+    "name": "Mailplane"
+  },
+  "mako": {
+    "config_files": [
+      "mako/config"
+    ],
+    "name": "mako"
+  },
+  "marked2": {
+    "config_files": [
+      "Library/Application Support/Marked 2",
+      "Library/Preferences/com.brettterpstra.marked2.plist"
+    ],
+    "name": "Marked 2"
+  },
+  "marta": {
+    "config_files": [
+      "Library/Application Support/org.yanex.marta/conf.json",
+      "Library/Application Support/org.yanex.marta/favorites.json",
+      "Library/Application Support/org.yanex.marta/conf.marco",
+      "Library/Application Support/org.yanex.marta/favorites.marco"
+    ],
+    "name": "Marta"
+  },
+  "matlab": {
+    "config_files": [
+      ".matlab"
+    ],
+    "name": "MATLAB"
+  },
+  "maven": {
+    "config_files": [
+      ".m2/settings-security.xml",
+      ".m2/settings.xml",
+      ".m2/toolchains.xml"
+    ],
+    "name": "Maven"
+  },
+  "max": {
+    "config_files": [
+      "Library/Preferences/org.sbooth.Max.plist"
+    ],
+    "name": "Max"
+  },
+  "mendeley": {
+    "config_files": [
+      "Library/Application Support/Mendeley Desktop"
+    ],
+    "name": "Mendelay Desktop"
+  },
+  "menumeters": {
+    "config_files": [
+      "Library/Preferences/com.ragingmenace.MenuMeters.plist"
+    ],
+    "name": "MenuMeters"
+  },
+  "mercurial": {
+    "config_files": [
+      ".hgrc",
+      ".hgignore_global"
+    ],
+    "name": "Mercurial"
+  },
+  "mercurymover": {
+    "config_files": [
+      "Library/Preferences/com.heliumfoot.MyWiAgent.plist"
+    ],
+    "name": "MercuryMover"
+  },
+  "messages": {
+    "config_files": [
+      "Library/Preferences/com.apple.iChat.AIM.plist",
+      "Library/Preferences/com.apple.iChat.Jabber.plist",
+      "Library/Preferences/com.apple.iChat.StatusMessages.plist",
+      "Library/Preferences/com.apple.iChat.Yahoo.plist"
+    ],
+    "name": "Messages"
+  },
+  "micro": {
+    "config_files": [
+      "micro/colorschemes"
+    ],
+    "name": "Micro"
+  },
+  "microsoft-remote-desktop": {
+    "config_files": [
+      "Library/Containers/com.microsoft.rdc.macos/Data/Library/Preferences/com.microsoft.rdc.macos.plist"
+    ],
+    "name": "Microsoft Remote Desktop"
+  },
+  "mise": {
+    "config_files": [
+      "mise.toml",
+      "mise/config.toml",
+      ".mise.toml",
+      ".mise/config.toml"
+    ],
+    "name": "mise-en-place"
+  },
+  "mitmproxy": {
+    "config_files": [
+      ".mitmproxy/config.yaml"
+    ],
+    "name": "mitmproxy"
+  },
+  "mkcert": {
+    "config_files": [
+      "Library/Application Support/mkcert"
+    ],
+    "name": "mkcert"
+  },
+  "mole": {
+    "config_files": [
+      "mole/whitelist"
+    ],
+    "name": "Mole"
+  },
+  "monodevelop": {
+    "config_files": [
+      "Library/MonoDevelop-Unity-5.0/KeyBindings/Custom.mac-kb.xml",
+      "Library/Preferences/MonoDevelop-Unity-5.0/MonoDevelopProperties.xml",
+      "Library/MonoDevelop-Unity-5.0/Policies/Default.mdpolicy.xml"
+    ],
+    "name": "MonoDevelop"
+  },
+  "moom": {
+    "config_files": [
+      "Library/Preferences/com.manytricks.Moom.plist",
+      "Library/Application Support/Many Tricks"
+    ],
+    "name": "Moom"
+  },
+  "mosaic": {
+    "config_files": [
+      "Library/Application Support/com.lightpillar.Mosaic/MosaicCoreData.storedata"
+    ],
+    "name": "Mosaic"
+  },
+  "mou": {
+    "config_files": [
+      "Library/Preferences/com.mouapp.Mou.plist",
+      "Library/Preferences/com.mouapp.Mou.LSSharedFileList.plist",
+      "Library/Application Support/Mou"
+    ],
+    "name": "Mou"
+  },
+  "mpd": {
+    "config_files": [
+      ".mpd",
+      ".mpdconf"
+    ],
+    "name": "mpd"
+  },
+  "mplayerx": {
+    "config_files": [
+      "Library/Preferences/org.niltsh.MPlayerX.plist"
+    ],
+    "name": "MPlayerX"
+  },
+  "mps-youtube": {
+    "config_files": [
+      "mps-youtube/config"
+    ],
+    "name": "MPS Youtube"
+  },
+  "mpv": {
+    "config_files": [
+      ".mpv/channels.conf",
+      ".mpv/config",
+      ".mpv/input.conf"
+    ],
+    "name": "MPV"
+  },
+  "mtmr": {
+    "config_files": [
+      "Library/Application Support/MTMR/items.json"
+    ],
+    "name": "mtmr"
+  },
+  "multitouch": {
+    "config_files": [
+      "Library/Preferences/com.brassmonkery.Multitouch.plist"
+    ],
+    "name": "Multitouch"
+  },
+  "mumu": {
+    "config_files": [
+      "Library/Application Support/Mumu"
+    ],
+    "name": "Mumu"
+  },
+  "musicbrainz-picard": {
+    "config_files": [
+      "MusicBrainz"
+    ],
+    "name": "MusicBrainz Picard"
+  },
+  "mutespotifyads": {
+    "config_files": [
+      "Library/Preferences/de.simonmeusel.MuteSpotifyAds.plist"
+    ],
+    "name": "MuteSpotifyAds"
+  },
+  "mycli": {
+    "config_files": [
+      ".myclirc"
+    ],
+    "name": "mycli"
+  },
+  "myrepos": {
+    "config_files": [
+      ".mrconfig"
+    ],
+    "name": "myrepos"
+  },
+  "mysql": {
+    "config_files": [
+      ".my.cnf"
+    ],
+    "name": "MySQL"
+  },
+  "mysqlworkbench": {
+    "config_files": [
+      "Library/Application Support/MySQL/Workbench/connections.xml",
+      "Library/Application Support/MySQL/Workbench/server_instances.xml",
+      "Library/Application Support/MySQL/Workbench/wb_options.xml",
+      "Library/Preferences/com.oracle.mysql.workbench.plist"
+    ],
+    "name": "MySQL Workbench"
+  },
+  "name-mangler": {
+    "config_files": [
+      "Library/Application Support/Name Mangler",
+      "Library/Preferences/com.manytricks.NameMangler.plist"
+    ],
+    "name": "Name Mangler"
+  },
+  "nano": {
+    "config_files": [
+      ".nanorc"
+    ],
+    "name": "Nano"
+  },
+  "navicat": {
+    "config_files": [
+      "Library/Application Support/PremiumSoft CyberTech",
+      "Library/Application Support/Navicat for MySQL",
+      "Library/Application Support/Navicat Premium",
+      "Library/Preferences/com.prect.Navicat.plist",
+      "Library/Preferences/com.prect.NavicatPremium.plist",
+      "Library/Preferences/com.prect.NavicatPremiumEssentials.plist"
+    ],
+    "name": "Navicat"
+  },
+  "ncmpcpp": {
+    "config_files": [
+      ".ncmpcpp"
+    ],
+    "name": "ncmpcpp"
+  },
+  "neofetch": {
+    "config_files": [
+      "neofetch/config.conf"
+    ],
+    "name": "Neofetch"
+  },
+  "neovim": {
+    "config_files": [
+      ".nvimrc",
+      ".nvim"
+    ],
+    "name": "neovim"
+  },
+  "nethack": {
+    "config_files": [
+      ".nethackrc"
+    ],
+    "name": "Nethack"
+  },
+  "netlify": {
+    "config_files": [
+      ".netlify/config.json"
+    ],
+    "name": "Netlify"
+  },
+  "newsbeuter": {
+    "config_files": [
+      ".newsbeuter/config",
+      ".newsbeuter/urls"
+    ],
+    "name": "newsbeuter"
+  },
+  "ngrok": {
+    "config_files": [
+      ".ngrok",
+      ".ngrok2"
+    ],
+    "name": "ngrok"
+  },
+  "ni": {
+    "config_files": [
+      ".nirc"
+    ],
+    "name": "ni"
+  },
+  "nomacs": {
+    "config_files": [
+      "nomacs"
+    ],
+    "name": "Nomacs"
+  },
+  "nosqlbooster-for-mongodb": {
+    "config_files": [
+      "Documents/NoSQLBooster"
+    ],
+    "name": "NoSQLBooster for MongoDB"
+  },
+  "notion-enhancer": {
+    "config_files": [
+      ".notion-enhancer"
+    ],
+    "name": "notion-enhancer"
+  },
+  "nova": {
+    "config_files": [
+      "Library/Preferences/com.panic.Nova.plist"
+    ],
+    "name": "Nova"
+  },
+  "npm": {
+    "config_files": [
+      ".npmrc"
+    ],
+    "name": "npm"
+  },
+  "npmrc": {
+    "config_files": [
+      ".npmrcs"
+    ],
+    "name": "npmrc"
+  },
+  "nslogger": {
+    "config_files": [
+      "Library/Preferences/com.florentpillet.NSLogger.plist"
+    ],
+    "name": "NSLogger"
+  },
+  "nuget": {
+    "config_files": [
+      ".nuget/NuGet/NuGet.Config"
+    ],
+    "name": "nuget"
+  },
+  "nushell": {
+    "config_files": [
+      "Library/Application Support/nushell/env.nu",
+      "Library/Application Support/nushell/config.nu"
+    ],
+    "name": "Nushell"
+  },
+  "nvalt": {
+    "config_files": [
+      "Library/Preferences/net.elasticthreads.nv.plist",
+      "Library/Application Support/Notational Velocity"
+    ],
+    "name": "nvALT"
+  },
+  "nvm": {
+    "config_files": [
+      ".nvm/default-packages"
+    ],
+    "name": "nvm"
+  },
+  "nvpy": {
+    "config_files": [
+      ".nvpy.cfg"
+    ],
+    "name": "nvpy"
+  },
+  "obs": {
+    "config_files": [
+      "Library/Preferences/com.obsproject.obs-studio.plist",
+      "Library/Application Support/obs-studio/global.ini",
+      "Library/Application Support/obs-studio/basic"
+    ],
+    "name": "OBS"
+  },
+  "oci": {
+    "config_files": [
+      ".oci/config",
+      ".oci/oci_cli_rc"
+    ],
+    "name": "Oracle Cloud Infrastructure CLI"
+  },
+  "offlineimap": {
+    "config_files": [
+      ".offlineimaprc"
+    ],
+    "name": "OfflineIMAP"
+  },
+  "ogdesign-eagle": {
+    "config_files": [
+      "Library/Application Support/Eagle/Settings"
+    ],
+    "name": "Eagle (ogdesign)"
+  },
+  "oh-my-fish": {
+    "config_files": [
+      "omf"
+    ],
+    "name": "Oh My Fish"
+  },
+  "oh-my-tmux": {
+    "config_files": [
+      ".tmux.conf.local"
+    ],
+    "name": "Oh My Tmux"
+  },
+  "omnifocus": {
+    "config_files": [
+      "Library/Application Support/OmniFocus/Plug-Ins",
+      "Library/Application Support/OmniFocus/Themes",
+      "Library/Preferences/com.omnigroup.OmniFocus.plist"
+    ],
+    "name": "OmniFocus"
+  },
+  "omnigraffle": {
+    "config_files": [
+      "Library/Application Support/The Omni Group/OmniGraffle"
+    ],
+    "name": "OmniGraffle"
+  },
+  "openbox": {
+    "config_files": [
+      "openbox/menu.xml"
+    ],
+    "name": "openbox"
+  },
+  "opencode": {
+    "config_files": [
+      ".local/share/opencode/auth.json"
+    ],
+    "name": "OpenCode"
+  },
+  "openemu": {
+    "config_files": [
+      "Library/Preferences/org.openemu.OpenEmu.plist",
+      "Library/Application Support/OpenEmu"
+    ],
+    "name": "OpenEmu"
+  },
+  "opera": {
+    "config_files": [
+      "Library/Application Support/com.operasoftware.Opera",
+      "Library/Application Support/com.operasoftware.OperaDeveloper",
+      "Library/Application Support/com.operasoftware.OperaNext",
+      "Library/Preferences/com.operasoftware.Opera.plist",
+      "Library/Preferences/com.operasoftware.OperaDeveloper.plist",
+      "Library/Preferences/com.operasoftware.OperaNext.plist"
+    ],
+    "name": "Opera"
+  },
+  "p10k": {
+    "config_files": [
+      ".p10k.zsh"
+    ],
+    "name": "Powerlevel10k"
+  },
+  "paintbrush": {
+    "config_files": [
+      "Library/Preferences/com.soggywaffles.Paintbrush.plist"
+    ],
+    "name": "Paintbrush"
+  },
+  "pandoc": {
+    "config_files": [
+      ".pandoc"
+    ],
+    "name": "Pandoc"
+  },
+  "pass": {
+    "config_files": [
+      ".password-store"
+    ],
+    "name": "pass"
+  },
+  "pastebot": {
+    "config_files": [
+      "Library/Preferences/com.tapbots.PastebotSync.plist",
+      "Library/Preferences/com.tapbots.PastebotSync.prefPane.plist",
+      "Library/Preferences/com.tapbots.PastebotSync.stats.plist"
+    ],
+    "name": "Pastebot"
+  },
+  "path-finder": {
+    "config_files": [
+      "Library/Preferences/com.cocoatech.PathFinder.plist",
+      "Library/Application Support/Path Finder"
+    ],
+    "name": "Path Finder"
+  },
+  "pdfjam": {
+    "config_files": [
+      ".pdfjam.conf"
+    ],
+    "name": "PDFjam"
+  },
+  "pear": {
+    "config_files": [
+      ".pearrc"
+    ],
+    "name": "Pear"
+  },
+  "pentadactyl": {
+    "config_files": [
+      ".pentadactyl",
+      ".pentadactylrc"
+    ],
+    "name": "Pentadactyl"
+  },
+  "perl": {
+    "config_files": [
+      ".perltidyrc",
+      ".perlcriticrc",
+      ".proverc"
+    ],
+    "name": "Perl"
+  },
+  "pgsql": {
+    "config_files": [
+      ".pgpass",
+      ".psqlrc"
+    ],
+    "name": "PostgreSQL"
+  },
+  "phoenix": {
+    "config_files": [
+      ".phoenix.js"
+    ],
+    "name": "Phoenix"
+  },
+  "phoneview": {
+    "config_files": [
+      "Library/Preferences/com.ecamm.PhoneView.plist"
+    ],
+    "name": "PhoneView"
+  },
+  "photoshop": {
+    "config_files": [
+      "Library/Application Support/Adobe/Adobe Photoshop CC 2013/Presets",
+      "Library/Application Support/Adobe/Adobe Photoshop CC 2014/Presets",
+      "Library/Application Support/Adobe/Adobe Photoshop CC 2015/Presets",
+      "Library/Application Support/Adobe/Adobe Photoshop CC 2015.5/Presets",
+      "Library/Application Support/Adobe/Adobe Photoshop CC 2019/Presets",
+      "Library/Preferences/Adobe Photoshop CC 2013 Settings",
+      "Library/Preferences/Adobe Photoshop CC 2014 Settings",
+      "Library/Preferences/Adobe Photoshop CC 2015 Settings",
+      "Library/Preferences/Adobe Photoshop CC 2015.5 Settings",
+      "Library/Preferences/Adobe Photoshop CC 2019 Settings",
+      "Library/Preferences/com.adobe.Photoshop.plist"
+    ],
+    "name": "Adobe Photoshop"
+  },
+  "phpstorm": {
+    "config_files": [
+      "Library/Application Support/JetBrains/PhpStorm2020.1",
+      "Library/Application Support/JetBrains/PhpStorm2020.2",
+      "Library/Application Support/JetBrains/PhpStorm2020.3",
+      "Library/Application Support/JetBrains/PhpStorm2021.1",
+      "Library/Application Support/JetBrains/PhpStorm2021.2",
+      "Library/Application Support/JetBrains/PhpStorm2021.3",
+      "Library/Application Support/JetBrains/PhpStorm2022.1",
+      "Library/Application Support/JetBrains/PhpStorm2022.2",
+      "Library/Application Support/JetBrains/PhpStorm2022.3",
+      "Library/Application Support/JetBrains/PhpStorm2023.1",
+      "Library/Application Support/JetBrains/PhpStorm2023.2",
+      "Library/Application Support/JetBrains/PhpStorm2023.3",
+      "Library/Application Support/JetBrains/PhpStorm2024.1",
+      "Library/Application Support/PhpStorm2016.1",
+      "Library/Application Support/PhpStorm2016.2",
+      "Library/Application Support/PhpStorm2016.3",
+      "Library/Application Support/PhpStorm2017.1",
+      "Library/Application Support/PhpStorm2017.2",
+      "Library/Application Support/PhpStorm2017.3",
+      "Library/Application Support/PhpStorm2018.1",
+      "Library/Application Support/PhpStorm2018.2",
+      "Library/Application Support/PhpStorm2018.3",
+      "Library/Application Support/PhpStorm2019.1",
+      "Library/Application Support/PhpStorm2019.2",
+      "Library/Application Support/PhpStorm2019.3",
+      "Library/Application Support/PhpStorm2019.4",
+      "Library/Application Support/WebIde100",
+      "Library/Application Support/WebIde60",
+      "Library/Application Support/WebIde70",
+      "Library/Application Support/WebIde80",
+      "Library/Application Support/WebIde90",
+      "Library/Application Support/WebIde95",
+      "Library/Preferences/com.jetbrains.PhpStorm.plist",
+      "Library/Preferences/PhpStorm2016.1",
+      "Library/Preferences/PhpStorm2016.2",
+      "Library/Preferences/PhpStorm2016.3",
+      "Library/Preferences/PhpStorm2017.1",
+      "Library/Preferences/PhpStorm2017.2",
+      "Library/Preferences/PhpStorm2017.3",
+      "Library/Preferences/PhpStorm2018.1",
+      "Library/Preferences/PhpStorm2018.2",
+      "Library/Preferences/PhpStorm2018.3",
+      "Library/Preferences/PhpStorm2019.1",
+      "Library/Preferences/PhpStorm2019.2",
+      "Library/Preferences/PhpStorm2019.3",
+      "Library/Preferences/PhpStorm2019.4",
+      "Library/Preferences/WebIde100",
+      "Library/Preferences/WebIde60",
+      "Library/Preferences/WebIde70",
+      "Library/Preferences/WebIde80",
+      "Library/Preferences/WebIde90",
+      "Library/Preferences/WebIde95",
+      ".PhpStorm2016.1/config",
+      ".PhpStorm2016.2/config",
+      ".PhpStorm2016.3/config",
+      ".PhpStorm2017.1/config",
+      ".PhpStorm2017.2/config",
+      ".PhpStorm2017.3/config",
+      ".PhpStorm2018.1/config",
+      ".PhpStorm2018.2/config",
+      ".PhpStorm2018.3/config",
+      ".PhpStorm2019.1/config",
+      ".PhpStorm2019.2/config",
+      ".PhpStorm2019.3/config"
+    ],
+    "name": "PhpStorm"
+  },
+  "picgo": {
+    "config_files": [
+      "Library/Application Support/picgo/data.json"
+    ],
+    "name": "PicGo"
+  },
+  "pidgin": {
+    "config_files": [
+      ".purple"
+    ],
+    "name": "Pidgin"
+  },
+  "pip": {
+    "config_files": [
+      "Library/Application Support/pip/pip.conf",
+      ".pip/pip.conf"
+    ],
+    "name": "pip"
+  },
+  "pixelsnap": {
+    "config_files": [
+      "Library/Preferences/com.getpixelsnap.app.plist"
+    ],
+    "name": "PixelSnap"
+  },
+  "pixelsnap2": {
+    "config_files": [
+      "Library/Preferences/pl.maketheweb.pixelsnap2.plist"
+    ],
+    "name": "PixelSnap 2"
+  },
+  "planner": {
+    "config_files": [
+      ".var/app/com.github.alainm23.planner/config",
+      ".var/app/com.github.alainm23.planner/data"
+    ],
+    "name": "Planner"
+  },
+  "plover": {
+    "config_files": [
+      "Library/Application Support/Plover"
+    ],
+    "name": "Plover"
+  },
+  "pnpm": {
+    "config_files": [
+      ".pnpm/global_pnpmfile.js",
+      ".pnpm-store/2/store.json"
+    ],
+    "name": "pnpm"
+  },
+  "pock": {
+    "config_files": [
+      "Library/Preferences/com.pigigaldi.pock.plist"
+    ],
+    "name": "Pock"
+  },
+  "poedit": {
+    "config_files": [
+      "Library/Preferences/net.poedit.Poedit.cfg",
+      "Library/Preferences/net.poedit.Poedit.plist"
+    ],
+    "name": "Poedit"
+  },
+  "poetry": {
+    "config_files": [
+      "Library/Application Support/pypoetry/config.toml",
+      "Library/Preferences/pypoetry/config.toml"
+    ],
+    "name": "poetry"
+  },
+  "pokerstars": {
+    "config_files": [
+      "Library/Application Support/PokerStars",
+      "Library/Preferences/com.pokerstars.user.ini",
+      "Library/Preferences/com.pokerstars.PokerStars.plist",
+      "Library/Application Support/PokerStarsEU",
+      "Library/Preferences/com.pokerstars.eu.user.ini",
+      "Library/Preferences/com.pokerstars.PokerStarsEU.plist"
+    ],
+    "name": "PokerStars"
+  },
+  "polybar": {
+    "config_files": [
+      ".polybar/config",
+      ".polybar/launch.sh"
+    ],
+    "name": "polybar"
+  },
+  "popclip": {
+    "config_files": [
+      "Library/Preferences/com.pilotmoon.popclip.plist",
+      "Library/Application Support/PopClip/Extensions"
+    ],
+    "name": "PopClip"
+  },
+  "popcorn-time": {
+    "config_files": [
+      "Library/Application Support/Popcorn-Time/data/bookmarks.db",
+      "Library/Application Support/Popcorn-Time/data/settings.db",
+      "Library/Application Support/Popcorn-Time/data/watched.db",
+      "Library/Application Support/Popcorn-Time/data/movies.db",
+      "Library/Application Support/Popcorn-Time/data/shows.db"
+    ],
+    "name": "Popcorn-Time"
+  },
+  "postico": {
+    "config_files": [
+      "Library/Containers/at.eggerapps.Postico/Data/Library/Application Support/Postico",
+      "Library/Containers/at.eggerapps.Postico/Data/Library/Preferences/at.eggerapps.Postico.plist",
+      "Library/Preferences/at.eggerapps.Postico.plist"
+    ],
+    "name": "Postico"
+  },
+  "pow": {
+    "config_files": [
+      ".powconfig",
+      ".powenv",
+      ".powrc"
+    ],
+    "name": "Pow"
+  },
+  "powerline": {
+    "config_files": [
+      "powerline/config.json"
+    ],
+    "name": "Powerline"
+  },
+  "prezto": {
+    "config_files": [
+      ".zpreztorc"
+    ],
+    "name": "Prezto"
+  },
+  "processing": {
+    "config_files": [
+      "Library/Processing/preferences.txt"
+    ],
+    "name": "Processing"
+  },
+  "proselint": {
+    "config_files": [
+      ".proselintrc"
+    ],
+    "name": "proselint"
+  },
+  "proxychains": {
+    "config_files": [
+      ".proxychains"
+    ],
+    "name": "ProxyChains"
+  },
+  "proxyman": {
+    "config_files": [
+      "Library/Application Support/com.proxyman.NSProxy",
+      "Library/Preferences/com.proxyman.NSProxy.plist",
+      "Library/Application Support/com.proxyman.NSProxy-setapp",
+      "Library/Preferences/com.proxyman.NSProxy-setapp.plist"
+    ],
+    "name": "Proxyman"
+  },
+  "prusa-slicer": {
+    "config_files": [
+      "PrusaSlicer"
+    ],
+    "name": "PrusaSlicer"
+  },
+  "psysh": {
+    "config_files": [
+      "psysh/config.php"
+    ],
+    "name": "PsySH"
+  },
+  "punto-switcher": {
+    "config_files": [
+      "Library/Preferences/ru.yandex.punto.plist"
+    ],
+    "name": "Punto Switcher"
+  },
+  "pycharm": {
+    "config_files": [
+      ".PyCharm2016.1/config",
+      ".PyCharm2016.2/config",
+      ".PyCharm2016.3/config",
+      ".PyCharm2017.1/config",
+      ".PyCharm2017.2/config",
+      ".PyCharm2017.3/config",
+      ".PyCharm40/config",
+      ".PyCharm50/config",
+      ".PyCharmCE2016.1/config",
+      ".PyCharmCE2016.2/config",
+      ".PyCharmCE2016.3/config",
+      ".PyCharmCE2017.1/config",
+      ".PyCharmCE2017.2/config",
+      ".PyCharmCE2017.3/config",
+      ".PyCharmCE2019.3/config",
+      "Library/Application Support/JetBrains/PyCharm2020.1",
+      "Library/Application Support/JetBrains/PyCharm2020.2",
+      "Library/Application Support/JetBrains/PyCharm2020.3",
+      "Library/Application Support/JetBrains/PyCharm2020.4",
+      "Library/Application Support/JetBrains/PyCharm2023.1",
+      "Library/Application Support/JetBrains/PyCharm2023.2",
+      "Library/Application Support/JetBrains/PyCharmCE2020.1",
+      "Library/Application Support/PyCharm",
+      "Library/Application Support/PyCharm2016.1",
+      "Library/Application Support/PyCharm2016.2",
+      "Library/Application Support/PyCharm2016.3",
+      "Library/Application Support/PyCharm2017.1",
+      "Library/Application Support/PyCharm2017.2",
+      "Library/Application Support/PyCharm2017.3",
+      "Library/Application Support/PyCharm2019.2",
+      "Library/Application Support/PyCharm2019.3",
+      "Library/Application Support/PyCharm40",
+      "Library/Application Support/PyCharm50",
+      "Library/Application Support/PyCharmCE2016.1",
+      "Library/Application Support/PyCharmCE2016.2",
+      "Library/Application Support/PyCharmCE2016.3",
+      "Library/Application Support/PyCharmCE2017.1",
+      "Library/Application Support/PyCharmCE2017.2",
+      "Library/Application Support/PyCharmCE2017.3",
+      "Library/Preferences/PyCharm2016.1",
+      "Library/Preferences/PyCharm2016.2",
+      "Library/Preferences/PyCharm2016.3",
+      "Library/Preferences/PyCharm2017.1",
+      "Library/Preferences/PyCharm2017.2",
+      "Library/Preferences/PyCharm2017.3",
+      "Library/Preferences/PyCharm2019.2",
+      "Library/Preferences/PyCharm2019.3",
+      "Library/Preferences/PyCharm40",
+      "Library/Preferences/PyCharm50",
+      "Library/Preferences/PyCharmCE2016.1",
+      "Library/Preferences/PyCharmCE2016.2",
+      "Library/Preferences/PyCharmCE2016.3",
+      "Library/Preferences/PyCharmCE2017.1",
+      "Library/Preferences/PyCharmCE2017.2",
+      "Library/Preferences/PyCharmCE2017.3"
+    ],
+    "name": "PyCharm"
+  },
+  "pypi": {
+    "config_files": [
+      ".pypirc"
+    ],
+    "name": "PyPI"
+  },
+  "pyradio": {
+    "config_files": [
+      ".pyradio/stations.csv"
+    ],
+    "name": "PyRadio"
+  },
+  "querious": {
+    "config_files": [
+      "Library/Preferences/com.araeliumgroup.querious.plist",
+      "Library/Application Support/Querious"
+    ],
+    "name": "Querious"
+  },
+  "quicklook": {
+    "config_files": [
+      "Library/Quicklook"
+    ],
+    "name": "Quicklook"
+  },
+  "quicksilver": {
+    "config_files": [
+      "Library/Preferences/com.blacktree.Quicksilver.plist",
+      "Library/Application Support/Quicksilver"
+    ],
+    "name": "Quicksilver"
+  },
+  "quitter": {
+    "config_files": [
+      "Library/Preferences/com.marcoarment.quitter.plist"
+    ],
+    "name": "Quitter"
+  },
+  "qutebrowser": {
+    "config_files": [
+      ".qutebrowser/config.py"
+    ],
+    "name": "Qutebrowser"
+  },
+  "qv2ray": {
+    "config_files": [
+      "Library/Preferences/qv2ray/Qv2ray.conf",
+      "Library/Preferences/qv2ray/plugin_settings"
+    ],
+    "name": "Qv2ray"
+  },
+  "r": {
+    "config_files": [
+      ".R",
+      ".Rhistory",
+      ".Rprofile",
+      ".Rprofile.d",
+      ".Renviron",
+      ".Renviron.d",
+      "Library/Preferences/org.R-project.R.plist"
+    ],
+    "name": "R"
+  },
+  "rails": {
+    "config_files": [
+      ".railsrc"
+    ],
+    "name": "Rails"
+  },
+  "ranger": {
+    "config_files": [
+      "ranger/commands.py"
+    ],
+    "name": "Ranger"
+  },
+  "rbenv": {
+    "config_files": [
+      ".rbenv/default_gems"
+    ],
+    "name": "rbenv"
+  },
+  "rclone": {
+    "config_files": [
+      "rclone"
+    ],
+    "name": "rclone"
+  },
+  "rectangle": {
+    "config_files": [
+      "Library/Preferences/com.knollsoft.Rectangle.plist"
+    ],
+    "name": "Rectangle"
+  },
+  "redshift": {
+    "config_files": [
+      "redshift.conf"
+    ],
+    "name": "Redshift"
+  },
+  "redshift-scheduler": {
+    "config_files": [
+      "redshift-scheduler/rules.conf"
+    ],
+    "name": "Redshift Scheduler"
+  },
+  "remote-desktop-manager": {
+    "config_files": [
+      "Library/Application Support/com.devolutions.remotedesktopmanager.free/Connections.db",
+      "Library/Application Support/com.devolutions.remotedesktopmanager/Connections.db"
+    ],
+    "name": "Remote Desktop Manager"
+  },
+  "rhythmbox": {
+    "config_files": [
+      ".gconf/apps/rhythmbox"
+    ],
+    "name": "Rhythmbox"
+  },
+  "rime": {
+    "config_files": [
+      "Library/Rime/default.custom.yaml",
+      "Library/Rime/default.yaml",
+      "Library/Rime/installation.yaml",
+      "Library/Rime/squirrel.custom.yaml",
+      "Library/Rime/squirrel.yaml",
+      "Library/Rime/symbols.yaml",
+      "Library/Rime/user.yaml"
+    ],
+    "name": "Rime"
+  },
+  "ripgrep": {
+    "config_files": [
+      ".ripgreprc"
+    ],
+    "name": "ripgrep"
+  },
+  "robo3t": {
+    "config_files": [
+      "Library/Preferences/com.3t.Robomongo.plist",
+      ".3T"
+    ],
+    "name": "Robo 3T"
+  },
+  "rocket": {
+    "config_files": [
+      "Library/Preferences/net.matthewpalmer.Rocket.plist",
+      "Library/Application Support/Rocket"
+    ],
+    "name": "Rocket"
+  },
+  "rofi": {
+    "config_files": [
+      "rofi/config.rasi"
+    ],
+    "name": "rofi"
+  },
+  "royaltsx": {
+    "config_files": [
+      "Library/Application Support/Royal TSX/License.xml",
+      "Library/Application Support/Royal TSX/UserPreferences.config",
+      "Library/Preferences/com.lemonmojo.RoyalTSX.App.plist"
+    ],
+    "name": "Royal TSX"
+  },
+  "rstudio": {
+    "config_files": [
+      ".rstudio-desktop",
+      "Library/Preferences/org.rstudio.RStudio.plist"
+    ],
+    "name": "RStudio"
+  },
+  "rtorrent": {
+    "config_files": [
+      ".rtorrent.rc"
+    ],
+    "name": "rTorrent"
+  },
+  "rtx": {
+    "config_files": [
+      "rtx",
+      ".rtx.toml",
+      ".tool-versions",
+      ".default-go-packages",
+      ".default-gems",
+      ".default-nodejs-packages",
+      ".default-node-packages",
+      ".default-npm-packages",
+      ".default-python-packages",
+      ".default-mix-commands"
+    ],
+    "name": "rtx"
+  },
+  "rubitrack5": {
+    "config_files": [
+      "Library/Preferences/com.shiftoption.rubitrack5.pro.plist"
+    ],
+    "name": "rubiTrack 5"
+  },
+  "rubocop": {
+    "config_files": [
+      ".rubocop.yml"
+    ],
+    "name": "Rubocop"
+  },
+  "ruby": {
+    "config_files": [
+      ".gemrc",
+      ".irbrc",
+      ".gem/credentials",
+      ".pryrc",
+      ".aprc"
+    ],
+    "name": "Ruby"
+  },
+  "ruby-version": {
+    "config_files": [
+      ".ruby-version"
+    ],
+    "name": "Ruby Version"
+  },
+  "rubymine": {
+    "config_files": [
+      "Library/Application Support/RubyMine40",
+      "Library/Preferences/RubyMine40",
+      "Library/Application Support/RubyMine50",
+      "Library/Preferences/RubyMine50",
+      "Library/Application Support/RubyMine60",
+      "Library/Preferences/RubyMine60",
+      "Library/Application Support/RubyMine70",
+      "Library/Preferences/RubyMine70",
+      "Library/Application Support/RubyMine80",
+      "Library/Preferences/RubyMine80",
+      "Library/Application Support/RubyMine2016.1",
+      "Library/Preferences/RubyMine2016.1",
+      "Library/Application Support/RubyMine2016.2",
+      "Library/Preferences/RubyMine2016.2",
+      "Library/Application Support/RubyMine2016.3",
+      "Library/Preferences/RubyMine2016.3",
+      "Library/Application Support/RubyMine2017.3",
+      "Library/Preferences/RubyMine2017.3",
+      "Library/Application Support/RubyMine2018.1",
+      "Library/Preferences/RubyMine2018.1",
+      "Library/Application Support/JetBrains/RubyMine2023.1",
+      "Library/Application Support/JetBrains/RubyMine2023.2"
+    ],
+    "name": "RubyMine"
+  },
+  "rust": {
+    "config_files": [
+      ".cargo/config.toml",
+      ".cargo/config"
+    ],
+    "name": "Rust"
+  },
+  "rustrover": {
+    "config_files": [
+      "Library/Preferences/RustRover2025.2",
+      "Library/Preferences/RustRover2025.3",
+      "Library/Application Support/JetBrains/RustRover2025.2",
+      "Library/Application Support/JetBrains/RustRover2025.3"
+    ],
+    "name": "RustRover"
+  },
+  "rvm": {
+    "config_files": [
+      ".rvmrc"
+    ],
+    "name": "Ruby Version Manager"
+  },
+  "s3cmd": {
+    "config_files": [
+      ".s3cfg"
+    ],
+    "name": "S3cmd"
+  },
+  "sabnzbd": {
+    "config_files": [
+      "Library/Application Support/SABnzbd/sabnzbd.ini",
+      "Library/Application Support/SABnzbd/admin/rss_data.sab"
+    ],
+    "name": "SABnzbd"
+  },
+  "sbcl": {
+    "config_files": [
+      ".sbclrc"
+    ],
+    "name": "SBCL"
+  },
+  "sbt": {
+    "config_files": [
+      ".sbtconfig",
+      ".sbt/0.12/global.sbt",
+      ".sbt/0.12/build.sbt",
+      ".sbt/0.12/plugins/plugins.sbt",
+      ".sbt/0.12/plugins/build.sbt",
+      ".sbt/0.13/global.sbt",
+      ".sbt/0.13/build.sbt",
+      ".sbt/0.13/plugins/plugins.sbt",
+      ".sbt/0.13/plugins/build.sbt",
+      ".sbt/1.0/global.sbt",
+      ".sbt/1.0/build.sbt",
+      ".sbt/1.0/plugins/plugins.sbt",
+      ".sbt/1.0/plugins/build.sbt"
+    ],
+    "name": "SBT"
+  },
+  "scenario": {
+    "config_files": [
+      "Library/Preferences/com.lagente.scenario.plist",
+      "Library/Scenario"
+    ],
+    "name": "Scenario"
+  },
+  "screen": {
+    "config_files": [
+      ".screenrc"
+    ],
+    "name": "Screen"
+  },
+  "screenhero": {
+    "config_files": [
+      "Library/Preferences/com.screenhero.screenhero.plist"
+    ],
+    "name": "Screenhero"
+  },
+  "scrivener": {
+    "config_files": [
+      "Library/Preferences/com.literatureandlatte.scrivener2.plist",
+      "Library/Application Support/Scrivener"
+    ],
+    "name": "Scrivener"
+  },
+  "scroll-reverser": {
+    "config_files": [
+      "Library/Preferences/com.pilotmoon.scroll-reverser.plist"
+    ],
+    "name": "Scroll Reverser"
+  },
+  "secure-pipes": {
+    "config_files": [
+      "Library/Preferences/net.edgeservices.connections.plist",
+      "Library/Preferences/net.edgeservices.Secure-Pipes.plist",
+      "Library/Preferences/net.edgeservices.sp-config.plist",
+      "Library/Application Support/Secure Pipes"
+    ],
+    "name": "Secure Pipes"
+  },
+  "securecrt": {
+    "config_files": [
+      "Library/Application Support/VanDyke/SecureCRT/Config",
+      "Library/Preferences/com.vandyke.SecureCRT.plist"
+    ],
+    "name": "SecureCRT"
+  },
+  "seil": {
+    "config_files": [
+      "Library/Preferences/org.pqrs.PCKeyboardHack.plist",
+      "Library/Preferences/org.pqrs.Seil.plist"
+    ],
+    "name": "Seil"
+  },
+  "selfcontrol": {
+    "config_files": [
+      "Library/Preferences/org.eyebeam.SelfControl.plist"
+    ],
+    "name": "SelfControl"
+  },
+  "sequel-pro": {
+    "config_files": [
+      "Library/Application Support/Sequel Pro/Data",
+      "Library/Application Support/Sequel Pro/Bundles",
+      "Library/Application Support/Sequel Pro/Themes",
+      "Library/Preferences/com.sequelpro.SequelPro.plist"
+    ],
+    "name": "Sequel Pro"
+  },
+  "shadowsocksx-ng": {
+    "config_files": [
+      ".ShadowsocksX-NG"
+    ],
+    "name": "ShadowsocksX-NG"
+  },
+  "shiftit": {
+    "config_files": [
+      "Library/Preferences/org.shiftitapp.ShiftIt.plist"
+    ],
+    "name": "ShiftIt"
+  },
+  "shifty": {
+    "config_files": [
+      "Library/Preferences/io.natethompson.Shifty.plist"
+    ],
+    "name": "Shifty"
+  },
+  "shimo": {
+    "config_files": [
+      "Library/Application Support/Shimo/ShimoProfiles.xml",
+      "Library/Preferences/com.chungwasoft.Shimo.plist"
+    ],
+    "name": "Shimo"
+  },
+  "showyedge": {
+    "config_files": [
+      "Library/Preferences/org.pqrs.ShowyEdge.plist"
+    ],
+    "name": "ShowyEdge"
+  },
+  "shsh-blobs": {
+    "config_files": [
+      ".shsh"
+    ],
+    "name": "SHSH Blobs"
+  },
+  "shuttle": {
+    "config_files": [
+      ".shuttle.json"
+    ],
+    "name": "Shuttle"
+  },
+  "sizeup": {
+    "config_files": [
+      "Library/Preferences/com.irradiatedsoftware.SizeUp.plist",
+      "Library/Application Support/SizeUp/SizeUp.sizeuplicense"
+    ],
+    "name": "SizeUp"
+  },
+  "sizzy": {
+    "config_files": [
+      "Library/Application Support/Sizzy/config.json",
+      "Library/Application Support/Sizzy/window-state.json"
+    ],
+    "name": "Sizzy"
+  },
+  "sketchybar": {
+    "config_files": [
+      "sketchybar/sketchybarrc"
+    ],
+    "name": "SketchyBar"
+  },
+  "skhd": {
+    "config_files": [
+      ".skhdrc"
+    ],
+    "name": "skhd"
+  },
+  "skim": {
+    "config_files": [
+      "Library/Preferences/net.sourceforge.skim-app.skim.plist"
+    ],
+    "name": "Skim"
+  },
+  "skitch": {
+    "config_files": [
+      "Library/Preferences/com.plasq.skitch.plist",
+      "Library/Preferences/com.plasq.skitch.history"
+    ],
+    "name": "Skitch"
+  },
+  "slate": {
+    "config_files": [
+      ".slate",
+      ".slate.js",
+      "Library/Application Support/com.slate.Slate"
+    ],
+    "name": "Slate"
+  },
+  "slic3r": {
+    "config_files": [
+      "Library/Application Support/Slic3r"
+    ],
+    "name": "Slic3r"
+  },
+  "slogger": {
+    "config_files": [
+      "Slogger"
+    ],
+    "name": "Slogger"
+  },
+  "smartgit": {
+    "config_files": [
+      "Library/Preferences/SmartGit/smartgit.vmoptions"
+    ],
+    "name": "SmartGit"
+  },
+  "smooth-mouse": {
+    "config_files": [
+      "Library/Preferences/com.cyberic.SmoothMouse.plist"
+    ],
+    "name": "Smooth Mouse"
+  },
+  "soulver": {
+    "config_files": [
+      "Library/Application Support/Soulver",
+      "Library/Preferences/com.acqualia.soulver.plist",
+      "Library/Application Support/Soulver 3",
+      "Library/Preferences/app.soulver.mac.plist"
+    ],
+    "name": "Soulver"
+  },
+  "sourcetree": {
+    "config_files": [
+      "Library/Application Support/SourceTree/sourcetree.license",
+      "Library/Application Support/SourceTree/browser.plist",
+      "Library/Application Support/SourceTree/hgrc_sourcetree",
+      "Library/Application Support/SourceTree/hostingservices.plist"
+    ],
+    "name": "SourceTree"
+  },
+  "spacelauncher": {
+    "config_files": [
+      "Library/Preferences/name.guoc.SpaceLauncher.plist"
+    ],
+    "name": "SpaceLauncher"
+  },
+  "spacemacs": {
+    "config_files": [
+      ".spacemacs",
+      ".spacemacs.d"
+    ],
+    "name": "Spacemacs"
+  },
+  "spacevim": {
+    "config_files": [
+      ".SpaceVim.d"
+    ],
+    "name": "SpaceVim"
+  },
+  "spamsieve": {
+    "config_files": [
+      "Library/Application Support/SpamSieve",
+      "Library/Preferences/com.c-command.SpamSieve.plist"
+    ],
+    "name": "SpamSieve"
+  },
+  "spark": {
+    "config_files": [
+      "Library/Application Support/Spark"
+    ],
+    "name": "Spark"
+  },
+  "spectacle": {
+    "config_files": [
+      "Library/Preferences/com.divisiblebyzero.Spectacle.plist",
+      "Library/Application Support/Spectacle"
+    ],
+    "name": "Spectacle"
+  },
+  "spectrwm": {
+    "config_files": [
+      ".spectrwm.conf"
+    ],
+    "name": "Spectrwm"
+  },
+  "splice": {
+    "config_files": [
+      "Library/Preferences/com.splice.Splice.plist"
+    ],
+    "name": "Splice"
+  },
+  "spotify": {
+    "config_files": [
+      "Library/Preferences/com.spotify.client.plist"
+    ],
+    "name": "Spotify"
+  },
+  "spotify-notifications": {
+    "config_files": [
+      "Library/Preferences/io.citruspi.Spotify-Notifications.plist"
+    ],
+    "name": "Spotify-Notifications"
+  },
+  "sqitch": {
+    "config_files": [
+      ".sqitch/sqitch.conf"
+    ],
+    "name": "Sqitch"
+  },
+  "ssh": {
+    "config_files": [
+      ".ssh/config",
+      ".ssh/authorized_keys"
+    ],
+    "name": "SSH"
+  },
+  "starship": {
+    "config_files": [
+      ".config/starship.toml"
+    ],
+    "name": "Starship"
+  },
+  "startupizer2": {
+    "config_files": [
+      "Library/Application Support/Startupizer"
+    ],
+    "name": "Startupizer2"
+  },
+  "stata": {
+    "config_files": [
+      "Library/Application Support/Stata",
+      "Library/Preferences/com.stata.stata12.plist",
+      "Library/Preferences/com.stata.stata13.plist",
+      "Library/Preferences/Stata 13 Preferences"
+    ],
+    "name": "Stata"
+  },
+  "stats": {
+    "config_files": [
+      "Library/Preferences/eu.exelban.Stats.plist"
+    ],
+    "name": "Stats"
+  },
+  "stay": {
+    "config_files": [
+      "Library/Preferences/com.cordlessdog.Stay.plist",
+      "Library/Application Support/Stay"
+    ],
+    "name": "Stay"
+  },
+  "storyist-3": {
+    "config_files": [
+      "Library/Preferences/.com.storyist.storyist.plist",
+      "Library/Preferences/com.storyist.storyist.plist"
+    ],
+    "name": "storyist-3"
+  },
+  "streamdeck": {
+    "config_files": [
+      "Library/Application Support/com.elgato.StreamDeck"
+    ],
+    "name": "Elgato StreamDeck"
+  },
+  "subler": {
+    "config_files": [
+      "Library/Application Support/Subler"
+    ],
+    "name": "Subler"
+  },
+  "sublime-merge": {
+    "config_files": [
+      "Library/Application Support/Sublime Merge/Packages/User"
+    ],
+    "name": "Sublime Merge"
+  },
+  "sublime-text": {
+    "config_files": [
+      "Library/Application Support/Sublime Text/Packages/User"
+    ],
+    "name": "Sublime Text"
+  },
+  "sublime-text-2": {
+    "config_files": [
+      "Library/Application Support/Sublime Text 2/Packages/User"
+    ],
+    "name": "Sublime Text 2"
+  },
+  "sublime-text-3": {
+    "config_files": [
+      "Library/Application Support/Sublime Text 3/Packages/User"
+    ],
+    "name": "Sublime Text 3"
+  },
+  "subversion": {
+    "config_files": [
+      ".subversion"
+    ],
+    "name": "Subversion"
+  },
+  "superduper": {
+    "config_files": [
+      "Library/Application Support/SuperDuper!"
+    ],
+    "name": "SuperDuper!"
+  },
+  "surge": {
+    "config_files": [
+      ".surge.conf"
+    ],
+    "name": "Surge"
+  },
+  "swaywm": {
+    "config_files": [
+      "sway"
+    ],
+    "name": "Swaywm"
+  },
+  "swinsian": {
+    "config_files": [
+      "Library/Application Support/Swinsian/Library.sqlite",
+      "Library/Application Support/Swinsian/License.swinsianlicense",
+      "Library/Preferences/com.swinsian.Swinsian.plist",
+      "Library/Preferences/com.swinsian.SwinsianDesktopWindow.plist"
+    ],
+    "name": "Swinsian"
+  },
+  "swish": {
+    "config_files": [
+      "Library/Preferences/co.highlyopinionated.swish.plist"
+    ],
+    "name": "Swish"
+  },
+  "switchhosts": {
+    "config_files": [
+      ".SwitchHosts/data/collection/hosts"
+    ],
+    "name": "SwitchHosts"
+  },
+  "t": {
+    "config_files": [
+      ".trc"
+    ],
+    "name": "t"
+  },
+  "tableplus": {
+    "config_files": [
+      "Library/Application Support/com.tinyapp.TablePlus/Cache/Favorite",
+      "Library/Application Support/com.tinyapp.TablePlus/Cache/History",
+      "Library/Application Support/com.tinyapp.TablePlus/Data",
+      "Library/Application Support/com.tinyapp.TablePlus/Plugins",
+      "Library/Preferences/com.tinyapp.TablePlus.plist"
+    ],
+    "name": "TablePlus"
+  },
+  "taskpaper": {
+    "config_files": [
+      "Library/Preferences/com.hogbaysoftware.TaskPaper.mac.plist",
+      "Library/Application Support/TaskPaper"
+    ],
+    "name": "Task Paper"
+  },
+  "taskwarrior": {
+    "config_files": [
+      ".taskrc"
+    ],
+    "name": "Taskwarrior"
+  },
+  "teamocil": {
+    "config_files": [
+      ".teamocil"
+    ],
+    "name": "Teamocil"
+  },
+  "telegram_macos": {
+    "config_files": [
+      "Library/Preferences/ru.keepcoder.Telegram.plist"
+    ],
+    "name": "Telegram for macOS"
+  },
+  "terminal": {
+    "config_files": [
+      "Library/Preferences/com.apple.Terminal.plist"
+    ],
+    "name": "Terminal"
+  },
+  "terminator": {
+    "config_files": [
+      "terminator/config"
+    ],
+    "name": "Terminator"
+  },
+  "termite": {
+    "config_files": [
+      "termite/config"
+    ],
+    "name": "termite"
+  },
+  "termux": {
+    "config_files": [
+      ".termux/colors.properties",
+      ".termux/termux.properties",
+      ".termux/font.ttf"
+    ],
+    "name": "Configuration for Termux"
+  },
+  "terraform": {
+    "config_files": [
+      ".terraformrc",
+      ".terraform.d"
+    ],
+    "name": "Terraform"
+  },
+  "textexpander": {
+    "config_files": [
+      "Library/Application Support/TextExpander/Settings.textexpander",
+      "Library/Preferences/com.smileonmymac.textexpander.plist"
+    ],
+    "name": "TextExpander"
+  },
+  "textmate": {
+    "config_files": [
+      "Library/Application Support/TextMate/Bundles",
+      "Library/Application Support/TextMate/PlugIns",
+      "Library/Application Support/TextMate/Pristine Copy",
+      "Library/Application Support/TextMate/Managed/Bundles",
+      "Library/Preferences/com.macromates.textmate.latex_config.plist",
+      ".tm_properties"
+    ],
+    "name": "TextMate"
+  },
+  "textual": {
+    "config_files": [
+      "Library/Application Support/Textual IRC",
+      "Library/Preferences/com.codeux.irc.textual.plist",
+      "Library/Containers/com.codeux.irc.textual/Data/Library/Preferences/com.codeux.irc.textual.plist"
+    ],
+    "name": "Textual"
+  },
+  "things": {
+    "config_files": [
+      "Library/Preferences/com.culturedcode.things.plist",
+      "Library/Application Support/Cultured Code/Licenses.plist"
+    ],
+    "name": "Things"
+  },
+  "tidy": {
+    "config_files": [
+      ".tidyrc"
+    ],
+    "name": "HTML Tidy"
+  },
+  "tig": {
+    "config_files": [
+      ".tigrc"
+    ],
+    "name": "Tig"
+  },
+  "tiles": {
+    "config_files": [
+      "Library/Preferences/com.sempliva.Tiles.plist"
+    ],
+    "name": "Tiles"
+  },
+  "tilix": {
+    "config_files": [
+      "tilix.dconf"
+    ],
+    "name": "tilix"
+  },
+  "timeout": {
+    "config_files": [
+      "Library/Group Containers/6Z7QW53WB6.com.dejal.timeout"
+    ],
+    "name": "TimeOut"
+  },
+  "tint2": {
+    "config_files": [
+      "tint2/tint2rc"
+    ],
+    "name": "tint2"
+  },
+  "tinyfugue": {
+    "config_files": [
+      ".tfrc"
+    ],
+    "name": "TinyFugue"
+  },
+  "tmux": {
+    "config_files": [
+      ".tmux.conf"
+    ],
+    "name": "Tmux"
+  },
+  "tmuxinator": {
+    "config_files": [
+      "tmuxinator"
+    ],
+    "name": "Tmuxinator"
+  },
+  "tmuxp": {
+    "config_files": [
+      ".tmuxp"
+    ],
+    "name": "tmuxp"
+  },
+  "todotxt-cli": {
+    "config_files": [
+      ".todo/config"
+    ],
+    "name": "Todo.txt CLI"
+  },
+  "toothfairy": {
+    "config_files": [
+      "Library/Application Scripts/com.robinlu.mac.Tooth-Fairy"
+    ],
+    "name": "ToothFairy"
+  },
+  "totalspaces2": {
+    "config_files": [
+      "Library/Preferences/com.binaryage.TotalSpaces2.plist"
+    ],
+    "name": "TotalSpaces2"
+  },
+  "tower": {
+    "config_files": [
+      "Library/Application Support/Tower",
+      "Library/Application Support/com.fournova.Tower3",
+      "Library/Preferences/com.fournova.Tower.plist",
+      "Library/Preferences/com.fournova.Tower3.plist"
+    ],
+    "name": "Tower"
+  },
+  "tower-2": {
+    "config_files": [
+      "Library/Application Support/com.fournova.Tower2",
+      "Library/Preferences/com.fournova.Tower2.plist"
+    ],
+    "name": "Tower 2"
+  },
+  "tower-3": {
+    "config_files": [
+      "Library/Application Support/com.fournova.Tower3",
+      "Library/Preferences/com.fournova.Tower3.plist"
+    ],
+    "name": "Tower 3"
+  },
+  "transmission": {
+    "config_files": [
+      "Library/Preferences/org.m0k.transmission.plist",
+      "Library/Application Support/Transmission/blocklists"
+    ],
+    "name": "Transmission"
+  },
+  "transmit": {
+    "config_files": [
+      "Library/Preferences/com.panic.Transmit.plist",
+      "Library/Application Support/Transmit/Metadata",
+      "Library/Application Support/Transmit/Favorites"
+    ],
+    "name": "Transmit"
+  },
+  "tripmode": {
+    "config_files": [
+      "Library/Application Support/TripMode"
+    ],
+    "name": "TripMode"
+  },
+  "trizen": {
+    "config_files": [
+      "trizen/trizen.conf"
+    ],
+    "name": "Trizen"
+  },
+  "tunnelblick": {
+    "config_files": [
+      "Library/Application Support/Tunnelblick/Configurations"
+    ],
+    "name": "Tunnelblick"
+  },
+  "tvnamer": {
+    "config_files": [
+      ".tvnamer.json"
+    ],
+    "name": "tvnamer"
+  },
+  "twitterrific": {
+    "config_files": [
+      "Library/Application Support/Twitterrific"
+    ],
+    "name": "Twitterrific"
+  },
+  "typinator": {
+    "config_files": [
+      "Library/Application Support/Typinator",
+      "Library/Preferences/com.macility.typinator2.plist"
+    ],
+    "name": "Typinator"
+  },
+  "typora": {
+    "config_files": [
+      "Library/Application Support/abnerworks.Typora/themes"
+    ],
+    "name": "Typora"
+  },
+  "ubersicht": {
+    "config_files": [
+      "Library/Application Support/\u00dcbersicht/widgets",
+      "Library/Preferences/tracesOf.Uebersicht.plist"
+    ],
+    "name": "Ubersicht"
+  },
+  "ulauncher": {
+    "config_files": [
+      "ulauncher/extensions.json"
+    ],
+    "name": "Ulauncher"
+  },
+  "ventrilo": {
+    "config_files": [
+      "Library/Preferences/Ventrilo"
+    ],
+    "name": "Ventrilo"
+  },
+  "verdaccio": {
+    "config_files": [
+      "verdaccio/config.yaml"
+    ],
+    "name": "Verdaccio"
+  },
+  "versions": {
+    "config_files": [
+      "Library/Application Support/Versions/License",
+      "Library/Preferences/com.blackpixel.versions.plist"
+    ],
+    "name": "Versions"
+  },
+  "vim": {
+    "config_files": [
+      ".gvimrc",
+      ".gvimrc.after",
+      ".gvimrc.before",
+      ".vim/autoload",
+      ".vim/after",
+      ".vim/bundle",
+      ".vim/colors",
+      ".vim/doc",
+      ".vim/ftdetect",
+      ".vim/ftplugin",
+      ".vim/indent",
+      ".vim/pack",
+      ".vim/plugin/settings",
+      ".vim/spell",
+      ".vim/syntax",
+      ".vim/vimrc",
+      ".vimrc",
+      ".vimrc.after",
+      ".vimrc.before"
+    ],
+    "name": "Vim"
+  },
+  "vimperator": {
+    "config_files": [
+      ".vimperator",
+      ".vimperatorrc"
+    ],
+    "name": "Vimperator"
+  },
+  "vimwiki": {
+    "config_files": [
+      "vimwiki"
+    ],
+    "name": "Vimwiki"
+  },
+  "viscosity": {
+    "config_files": [
+      "Library/Application Support/Viscosity/OpenVPN",
+      "Library/Preferences/com.viscosityvpn.Viscosity.plist"
+    ],
+    "name": "Viscosity"
+  },
+  "vlc": {
+    "config_files": [
+      "Library/Application Support/org.videolan.vlc",
+      "Library/Preferences/org.videolan.vlc",
+      "Library/Preferences/org.videolan.vlc.LSSharedFileList.plist",
+      "Library/Preferences/org.videolan.vlc.plist"
+    ],
+    "name": "VLC"
+  },
+  "volt": {
+    "config_files": [
+      "volt/lock.json",
+      "volt/plugconf",
+      "volt/rc"
+    ],
+    "name": "Volt"
+  },
+  "vs4mac": {
+    "config_files": [
+      "Library/VisualStudio",
+      "Library/Preferences/VisualStudio/7.0/EditingLayout.xml",
+      "Library/Preferences/VisualStudio/7.0/MonoDevelopProperties.xml",
+      "Library/Preferences/VisualStudio/8.0/EditingLayout.xml",
+      "Library/Preferences/VisualStudio/8.0/MonoDevelopProperties.xml"
+    ],
+    "name": "Visual Studio for Mac"
+  },
+  "vscode": {
+    "config_files": [
+      "Library/Application Support/Code/User/snippets",
+      "Library/Application Support/Code/User/prompts",
+      "Library/Application Support/Code/User/keybindings.json",
+      "Library/Application Support/Code/User/settings.json"
+    ],
+    "name": "Visual Studio Code"
+  },
+  "vscode-insiders": {
+    "config_files": [
+      "Library/Application Support/Code - Insiders/User/snippets",
+      "Library/Application Support/Code - Insiders/User/prompts",
+      "Library/Application Support/Code - Insiders/User/keybindings.json",
+      "Library/Application Support/Code - Insiders/User/settings.json"
+    ],
+    "name": "Visual Studio Code Insiders"
+  },
+  "vscode-oss": {
+    "config_files": [
+      "Library/Application Support/Code - OSS/User/snippets",
+      "Library/Application Support/Code - OSS/User/keybindings.json",
+      "Library/Application Support/Code - OSS/User/settings.json"
+    ],
+    "name": "Visual Studio Code Open Source Edition"
+  },
+  "vscodium": {
+    "config_files": [
+      "Library/Application Support/VSCodium/User/snippets",
+      "Library/Application Support/VSCodium/User/keybindings.json",
+      "Library/Application Support/VSCodium/User/settings.json"
+    ],
+    "name": "VSCodium"
+  },
+  "wakatime": {
+    "config_files": [
+      ".wakatime.cfg"
+    ],
+    "name": "Wakatime"
+  },
+  "warp": {
+    "config_files": [
+      ".warp"
+    ],
+    "name": "Warp"
+  },
+  "waybar": {
+    "config_files": [
+      "waybar"
+    ],
+    "name": "waybar"
+  },
+  "webstorm": {
+    "config_files": [
+      "Library/Application Support/JetBrains/WebStorm2020.1",
+      "Library/Application Support/JetBrains/WebStorm2020.2",
+      "Library/Application Support/JetBrains/WebStorm2020.3",
+      "Library/Application Support/JetBrains/WebStorm2020.4",
+      "Library/Application Support/JetBrains/WebStorm2021.1",
+      "Library/Application Support/JetBrains/WebStorm2021.2",
+      "Library/Application Support/JetBrains/WebStorm2021.3",
+      "Library/Application Support/JetBrains/WebStorm2023.1",
+      "Library/Application Support/JetBrains/WebStorm2023.2",
+      "Library/Application Support/WebStorm",
+      "Library/Application Support/WebStorm10",
+      "Library/Application Support/WebStorm11",
+      "Library/Application Support/WebStorm2016.1",
+      "Library/Application Support/WebStorm2016.2",
+      "Library/Application Support/WebStorm2016.3",
+      "Library/Application Support/WebStorm2017.1",
+      "Library/Application Support/WebStorm2017.2",
+      "Library/Application Support/WebStorm2017.3",
+      "Library/Application Support/WebStorm2018.1",
+      "Library/Application Support/WebStorm2018.2",
+      "Library/Application Support/WebStorm2018.3",
+      "Library/Application Support/WebStorm2019.1",
+      "Library/Application Support/WebStorm2019.2",
+      "Library/Application Support/WebStorm2019.3",
+      "Library/Application Support/WebStorm2019.4",
+      "Library/Application Support/WebStorm8",
+      "Library/Application Support/WebStorm9",
+      "Library/Preferences/WebStorm10",
+      "Library/Preferences/WebStorm11",
+      "Library/Preferences/WebStorm2016.1",
+      "Library/Preferences/WebStorm2016.2",
+      "Library/Preferences/WebStorm2016.3",
+      "Library/Preferences/WebStorm2017.1",
+      "Library/Preferences/WebStorm2017.2",
+      "Library/Preferences/WebStorm2017.3",
+      "Library/Preferences/WebStorm2018.1",
+      "Library/Preferences/WebStorm2018.2",
+      "Library/Preferences/WebStorm2018.3",
+      "Library/Preferences/WebStorm2019.1",
+      "Library/Preferences/WebStorm2019.2",
+      "Library/Preferences/WebStorm2019.3",
+      "Library/Preferences/WebStorm2019.4",
+      "Library/Preferences/WebStorm8",
+      "Library/Preferences/WebStorm9"
+    ],
+    "name": "WebStorm"
+  },
+  "wezterm": {
+    "config_files": [
+      "wezterm",
+      ".wezterm.lua"
+    ],
+    "name": "WezTerm"
+  },
+  "wget": {
+    "config_files": [
+      ".wgetrc",
+      ".wget-hsts"
+    ],
+    "name": "Wget"
+  },
+  "whatsapp": {
+    "config_files": [
+      "Library/Application Support/WhatsApp/Preferences",
+      "Library/Application Support/WhatsApp/settings.json",
+      "Library/Preferences/WhatsApp-Helper.plist",
+      "Library/Preferences/WhatsApp.plist"
+    ],
+    "name": "WhatsApp Web"
+  },
+  "windsurf": {
+    "config_files": [
+      "Library/Application Support/Windsurf/User/snippets",
+      "Library/Application Support/Windsurf/User/keybindings.json",
+      "Library/Application Support/Windsurf/User/settings.json"
+    ],
+    "name": "Windsurf"
+  },
+  "wireshark": {
+    "config_files": [
+      "wireshark"
+    ],
+    "name": "Wireshark 2"
+  },
+  "witch": {
+    "config_files": [
+      "Library/Preferences/com.manytricks.Witch.plist"
+    ],
+    "name": "Witch"
+  },
+  "wordgrinder": {
+    "config_files": [
+      ".wordgrinder.settings"
+    ],
+    "name": "wordgrinder"
+  },
+  "workrave": {
+    "config_files": [
+      ".workrave/id",
+      ".workrave/historystats"
+    ],
+    "name": "Workrave"
+  },
+  "wp-cli": {
+    "config_files": [
+      ".wp-cli"
+    ],
+    "name": "WP-CLI"
+  },
+  "x11": {
+    "config_files": [
+      ".Xmodmap",
+      ".Xresources",
+      ".fonts",
+      ".xinitrc"
+    ],
+    "name": "X11"
+  },
+  "xamarinstudio-5": {
+    "config_files": [
+      "Library/Preferences/XamarinStudio-5.0"
+    ],
+    "name": "Xamarin Studio 5"
+  },
+  "xbar": {
+    "config_files": [
+      "Library/Application Support/xbar/xbar.config.json",
+      "Library/Application Support/xbar/plugins"
+    ],
+    "name": "xbar"
+  },
+  "xbindkeys": {
+    "config_files": [
+      ".xbindkeysrc"
+    ],
+    "name": "xbindkeys"
+  },
+  "xchat": {
+    "config_files": [
+      ".xchat2"
+    ],
+    "name": "XChat"
+  },
+  "xcode": {
+    "config_files": [
+      "Library/Preferences/com.apple.dt.Xcode.plist",
+      "Library/Application Support/Developer/Shared/Xcode/Plug-ins",
+      "Library/Developer/Xcode/UserData/CodeSnippets",
+      "Library/Developer/Xcode/UserData/FontAndColorThemes",
+      "Library/Developer/Xcode/UserData/KeyBindings",
+      "Library/Developer/Xcode/UserData/Debugger",
+      "Library/Developer/Xcode/UserData/xcdebugger",
+      "Library/Developer/Xcode/UserData/SearchScopes.xcsclist",
+      "Library/Developer/Xcode/Templates"
+    ],
+    "name": "Xcode"
+  },
+  "xee": {
+    "config_files": [
+      "Library/Preferences/cx.c3.Xee3.plist"
+    ],
+    "name": "Xee"
+  },
+  "xemacs": {
+    "config_files": [
+      ".xemacs"
+    ],
+    "name": "XEmacs"
+  },
+  "xld": {
+    "config_files": [
+      "Library/Application Support/XLD",
+      "Library/Preferences/jp.tmkk.XLD.plist"
+    ],
+    "name": "XLD"
+  },
+  "xonsh": {
+    "config_files": [
+      ".xonshrc"
+    ],
+    "name": "Xonsh"
+  },
+  "xtrafinder": {
+    "config_files": [
+      "Library/Preferences/com.trankynam.XtraFinder.plist"
+    ],
+    "name": "XtraFinder"
+  },
+  "yabai": {
+    "config_files": [
+      ".yabairc"
+    ],
+    "name": "yabai"
+  },
+  "yarn": {
+    "config_files": [
+      ".yarnrc"
+    ],
+    "name": "yarn"
+  },
+  "yazi": {
+    "config_files": [
+      "yazi/yazi.toml"
+    ],
+    "name": "yazi"
+  },
+  "youtube-dl": {
+    "config_files": [
+      "youtube-dl/config"
+    ],
+    "name": "youtube-dl"
+  },
+  "yummyftp": {
+    "config_files": [
+      "Library/Preferences/com.yummysoftware.yummy-ftp.plist",
+      "Library/Application Support/Yummy FTP/DefaultBookmark.bkmk",
+      "Library/Application Support/Yummy FTP/Bookmarks"
+    ],
+    "name": "Yummy FTP"
+  },
+  "zabbix-cli": {
+    "config_files": [
+      ".zabbix-cli/zabbix-cli.conf"
+    ],
+    "name": "Zabbix CLI"
+  },
+  "zathura": {
+    "config_files": [
+      "zathura/zathurarc"
+    ],
+    "name": "zathura"
+  },
+  "zed": {
+    "config_files": [
+      "zed/keymap.json"
+    ],
+    "name": "Zed"
+  },
+  "zoom": {
+    "config_files": [
+      "Library/Preferences/us.zoom.Transcode.plist",
+      "Library/Preferences/us.zoom.xos.Hotkey.plist",
+      "Library/Preferences/us.zoom.xos.plist",
+      "Library/Preferences/us.zoom.ZoomAutoUpdater.plist",
+      "Library/Preferences/ZoomChat.plist"
+    ],
+    "name": "Zoom"
+  },
+  "zoxide": {
+    "config_files": [
+      "Library/Application Support/zoxide"
+    ],
+    "name": "zoxide"
+  },
+  "zsh": {
+    "config_files": [
+      ".zshenv",
+      ".zprofile",
+      ".zshrc",
+      ".zlogin",
+      ".zlogout"
+    ],
+    "name": "Zsh"
+  }
+}
