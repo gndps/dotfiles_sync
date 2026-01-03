@@ -1,6 +1,6 @@
 [package]
-name = "dotfiles"
-version = "1.0.1"
+name = "dotfiles_sync"
+version = "1.0.4"
 edition = "2021"
 authors = ["Gundeep Singh <gndp@live.com>"]
 description = "A clean, hassle-free dotfiles manager with git integration"
@@ -9,7 +9,7 @@ repository = "https://github.com/gndps/dotfiles_sync"
 homepage = "https://github.com/gndps/dotfiles_sync"
 
 [[bin]]
-name = "dotfiles"
+name = "dotfiles_sync"
 path = "src/main.rs"
 
 [dependencies]
