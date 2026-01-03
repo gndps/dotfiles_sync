@@ -9,7 +9,7 @@ repository = "https://github.com/gndps/dotfiles_sync"
 homepage = "https://github.com/gndps/dotfiles_sync"
 
 [[bin]]
-name = "dotfiles_sync"
+name = "dotfiles"
 path = "src/main.rs"
 
 [dependencies]
