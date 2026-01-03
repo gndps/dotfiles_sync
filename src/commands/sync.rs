@@ -214,6 +214,11 @@ fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile]) -> Resu
             continue;
         }
         
+        // Skip directories - we only backup files
+        if home_path.is_dir() {
+            continue;
+        }
+        
         // Create backup path mirroring the home structure
         let relative_path = file.path.trim_start_matches("~/").trim_start_matches('/');
         let backup_file = backup_dir.join(relative_path);
@@ -246,6 +251,11 @@ fn sync_home_to_repo(manager: &ConfigManager, files: &[TrackedFile], encryption_
         let home_path = FileSyncer::expand_tilde(&file.path);
         
         if !home_path.exists() {
+            continue;
+        }
+        
+        // Skip directories - we only sync files
+        if home_path.is_dir() {
             continue;
         }
         
@@ -318,6 +328,11 @@ fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile], encryption_
     for file in files {
         let home_path = FileSyncer::expand_tilde(&file.path);
         let repo_file = repo_path.join(file.path.trim_start_matches("~/").trim_start_matches('/'));
+
+        // Skip directories - we only sync files
+        if repo_file.exists() && repo_file.is_dir() {
+            continue;
+        }
 
         if file.encrypted {
             if let Some(key) = encryption_key {
