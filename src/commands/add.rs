@@ -1,4 +1,5 @@
 use anyhow::{bail, Context, Result};
+use colored::Colorize;
 use crate::config::{ConfigManager, TrackedFile};
 use crate::db::ConfigDatabase;
 use crate::encryption::FileEncryptor;

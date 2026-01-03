@@ -116,7 +116,7 @@ pub fn execute(dir: Option<std::path::PathBuf>, _password: Option<String>) -> Re
     // --- STEP 4: BACKUP & EXPORT (Repo -> Home) ---
     // We only reach here if Step 3 succeeded (Repo is clean, merged, and valid)
     print_info("Step 4/6: Creating backup of current home files...");
-    let backup_created = backup_home_files(&repo_path, &tracked, encryption_key.as_ref())?;
+    let backup_created = backup_home_files(&repo_path, &tracked)?;
     if backup_created {
         print_success("Backup created");
     } else {
