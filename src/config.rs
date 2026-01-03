@@ -44,6 +44,26 @@ impl ConfigManager {
         Self { repo_path }
     }
 
+    /// Resolve repo path from local config (home directory) or use provided path
+    pub fn resolve_repo_path() -> Result<PathBuf> {
+        // Check if local config exists in home directory
+        if let Some(home) = dirs::home_dir() {
+            let local_config_path = home.join(".dotfiles.local.config.json");
+            if local_config_path.exists() {
+                let content = fs::read_to_string(&local_config_path)
+                    .context("Failed to read local config file")?;
+                let local: DotfilesConfig = serde_json::from_str(&content)
+                    .context("Failed to parse local config file")?;
+                
+                // Return the repo path from local config
+                return Ok(local.repo_path);
+            }
+        }
+        
+        // Fall back to current directory if no local config exists
+        std::env::current_dir().context("Failed to get current directory")
+    }
+
     pub fn get_config_path(&self) -> PathBuf {
         self.repo_path.join(DOTFILES_CONFIG)
     }

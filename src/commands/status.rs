@@ -14,7 +14,7 @@ enum FileStatus {
 }
 
 pub fn execute() -> Result<()> {
-    let repo_path = std::env::current_dir()?;
+    let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path.clone());
 
     if !manager.is_initialized() {

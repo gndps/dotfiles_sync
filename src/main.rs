@@ -20,7 +20,7 @@ fn main() -> Result<()> {
         Commands::Remove { stub_or_path } => commands::remove::execute(stub_or_path)?,
         Commands::List { all, stubs } => commands::list::execute(all, stubs)?,
         Commands::Status => commands::status::execute()?,
-        Commands::Sync { all, encrypted, dir, password } => commands::sync::execute(all, encrypted, dir, password)?,
+        Commands::Sync { dir, password } => commands::sync::execute(dir, password)?,
         Commands::SyncLocal => commands::sync_local::execute()?,
         Commands::Pull => commands::pull::execute()?,
         Commands::Push => commands::push::execute()?,

@@ -13,7 +13,10 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
             .context("Failed to create directory")?;
     }
 
-    let manager = ConfigManager::new(repo_path.clone());
+    let canonical_repo_path = repo_path.canonicalize()
+        .unwrap_or_else(|_| repo_path.clone());
+    
+    let manager = ConfigManager::new(canonical_repo_path.clone());
     
     if manager.is_initialized() {
         print_info("Dotfiles repository already initialized");
@@ -23,8 +26,7 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
     print_info("Initializing dotfiles repository...");
 
     let mut config = DotfilesConfig::default();
-    config.repo_path = repo_path.canonicalize()
-        .unwrap_or_else(|_| repo_path.clone());
+    config.repo_path = canonical_repo_path.clone();
     config.tag = tag.clone();
     
     if let Some(home) = dirs::home_dir() {
@@ -34,6 +36,10 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
     manager.save_config(&config)
         .context("Failed to save config")?;
     print_success("Created dotfiles.config.json");
+    
+    // Save repo path to local config in home directory
+    manager.save_local_config(canonical_repo_path.clone())?;
+    print_success(&format!("Saved dotfiles directory to local config: {}", canonical_repo_path.display()));
     
     if let Some(ref t) = tag {
         print_info(&format!("Using tag: {}", t));
@@ -66,8 +72,26 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
             .context("Failed to read .gitignore")?;
     }
     
+    let mut updated = false;
+    
     if !gitignore_content.contains("dotfiles.local.config.json") {
         gitignore_content.push_str("\n# Dotfiles local configuration\ndotfiles.local.config.json\n");
+        updated = true;
+    }
+    
+    // Ensure old encryption key file is ignored (security - should be in home dir only)
+    if !gitignore_content.contains(".dotfiles.encryption.key") {
+        gitignore_content.push_str("\n# Encryption key (stored in home directory, NOT in repo!)\n.dotfiles.encryption.key\n");
+        updated = true;
+    }
+    
+    // Ensure backups stay local (they contain unencrypted sensitive data)
+    if !gitignore_content.contains(".backup/") {
+        gitignore_content.push_str("\n# Local backups (unencrypted, for emergency recovery)\n.backup/\n");
+        updated = true;
+    }
+    
+    if updated {
         fs::write(&gitignore_path, gitignore_content)
             .context("Failed to write .gitignore")?;
         print_success("Updated .gitignore");

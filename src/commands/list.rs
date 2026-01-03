@@ -7,7 +7,7 @@ use colored::Colorize;
 use std::collections::HashMap;
 
 pub fn execute(all: bool, stub_filters: Vec<String>) -> Result<()> {
-    let repo_path = std::env::current_dir()?;
+    let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path.clone());
 
     if !manager.is_initialized() {

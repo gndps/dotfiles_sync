@@ -6,7 +6,7 @@ use crate::git::GitRepo;
 use crate::sync::FileSyncer;
 use crate::utils::{print_error, print_info, print_success, print_warning};
 
-pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::PathBuf>, _password: Option<String>) -> Result<()> {
+pub fn execute(dir: Option<std::path::PathBuf>, _password: Option<String>) -> Result<()> {
     // Handle --dir argument to change and save repo directory
     let repo_path = if let Some(dir_path) = dir {
         let canonical_path = dir_path.canonicalize()
@@ -19,7 +19,7 @@ pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::Path
         
         canonical_path
     } else {
-        std::env::current_dir()?
+        ConfigManager::resolve_repo_path()?
     };
     
     let manager = ConfigManager::new(repo_path.clone());
@@ -37,15 +37,20 @@ pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::Path
     }
 
     // --- SETUP ---
-    let tracked = manager.load_tracked_files()?;
-    let files_to_sync = filter_files(&tracked, sync_all, sync_encrypted);
+    let tracked = manager.load_tracked_files()?.clone();
     
-    if files_to_sync.is_empty() {
-        print_info("No files to sync with current filter");
+    if tracked.is_empty() {
+        print_info("No files to track. Use 'dotfiles add' to add files.");
         return Ok(());
     }
 
-    let encryption_key = resolve_encryption_key(&repo_path, &tracked, sync_all, sync_encrypted)?;
+    // Always sync all files - check if any are encrypted
+    let has_encrypted = tracked.iter().any(|f| f.encrypted);
+    let encryption_key = if has_encrypted {
+        Some(resolve_encryption_key(&repo_path)?)
+    } else {
+        None
+    };
 
     // Check for remote and warn if local-only
     let has_remote = git.has_remote()?;
@@ -60,7 +65,7 @@ pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::Path
 
     // --- STEP 1: IMPORT (Home -> Repo) ---
     print_info("Step 1/5: Importing local changes...");
-    sync_home_to_repo(&manager, &files_to_sync, encryption_key.as_ref())?;
+    sync_home_to_repo(&manager, &tracked, encryption_key.as_ref())?;
 
     // --- STEP 2: STAGE & COMMIT ---
     // Check if the import actually changed anything in the repo structure
@@ -111,7 +116,7 @@ pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::Path
     // --- STEP 4: BACKUP & EXPORT (Repo -> Home) ---
     // We only reach here if Step 3 succeeded (Repo is clean, merged, and valid)
     print_info("Step 4/6: Creating backup of current home files...");
-    let backup_created = backup_home_files(&repo_path, &files_to_sync, encryption_key.as_ref())?;
+    let backup_created = backup_home_files(&repo_path, &tracked, encryption_key.as_ref())?;
     if backup_created {
         print_success("Backup created");
     } else {
@@ -119,15 +124,9 @@ pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::Path
     }
     
     print_info("Step 5/6: Exporting to Home directory...");
-    sync_repo_to_home(&manager, &files_to_sync, encryption_key.as_ref())?;
+    sync_repo_to_home(&manager, &tracked, encryption_key.as_ref())?;
 
-    // Commit backup if it was created
-    if backup_created && git.is_dirty()? {
-        git.add_all()?;
-        let timestamp = chrono::Local::now().format("%Y-%m-%d %H:%M:%S");
-        git.commit(&format!("backup: pre-export snapshot {}", timestamp))?;
-        print_success("Backup committed to repository");
-    }
+    // Note: Backups are local-only (in .gitignore), not committed
 
     // --- STEP 6: PUSH ---
     if has_remote {
@@ -150,49 +149,38 @@ pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::Path
 
 // --- HELPER FUNCTIONS ---
 
-fn filter_files(tracked: &[TrackedFile], sync_all: bool, sync_encrypted: bool) -> Vec<TrackedFile> {
-    if sync_encrypted {
-        tracked.iter().filter(|f| f.encrypted).cloned().collect()
-    } else if sync_all {
-        tracked.to_vec()
-    } else {
-        tracked.iter().filter(|f| !f.encrypted).cloned().collect()
-    }
-}
-
-fn resolve_encryption_key(
-    repo_path: &std::path::Path,
-    tracked: &[TrackedFile], 
-    sync_all: bool, 
-    sync_encrypted: bool
-) -> Result<Option<[u8; 32]>> {
-    let needs_encryption = sync_encrypted || (sync_all && tracked.iter().any(|f| f.encrypted));
+fn resolve_encryption_key(repo_path: &std::path::Path) -> Result<[u8; 32]> {
+    let has_marker = FileEncryptor::is_encryption_setup(repo_path);
+    let has_key = FileEncryptor::has_local_key();
     
-    if needs_encryption {
-        if FileEncryptor::is_encryption_setup(repo_path) {
-            // Load existing key from repo
-            Ok(Some(FileEncryptor::load_key_from_repo(repo_path)?))
-        } else {
-            // Key not found - check if there are encrypted files in the repo
-            // This happens when cloning a repo with encrypted files to a new machine
-            let has_encrypted_files_in_repo = check_for_encrypted_files_in_repo(repo_path);
-            
-            if has_encrypted_files_in_repo {
-                print_info("Encrypted files detected but encryption key not found.");
-                print_info("Please enter your 12-word seed phrase to restore encryption.");
-                
-                let mnemonic = FileEncryptor::prompt_for_seed_phrase()?;
-                let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
-                FileEncryptor::save_key_to_repo(repo_path, &key)?;
-                print_success("Encryption key restored and saved to repository");
-                
-                Ok(Some(key))
-            } else {
-                bail!("No encrypted files found. Use 'dotfiles add --encrypt <file>' to add encrypted files.");
-            }
-        }
+    if has_marker && has_key {
+        // Load existing key from home directory
+        FileEncryptor::load_key_from_home()
+    } else if has_marker && !has_key {
+        // Marker exists but no key - need seed phrase
+        print_info("Encrypted files detected but encryption key not found in home directory.");
+        print_info("Please enter your 12-word seed phrase to restore encryption.");
+        
+        let mnemonic = FileEncryptor::prompt_for_seed_phrase()?;
+        let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
+        FileEncryptor::save_key_to_home(&key)?;
+        print_success("Encryption key restored and saved to home directory");
+        
+        Ok(key)
+    } else if !has_marker && check_for_encrypted_files_in_repo(repo_path) {
+        // Old repo without marker but has encrypted files
+        print_warning("Encrypted files detected but no encryption marker file.");
+        print_info("Please enter your 12-word seed phrase to restore encryption.");
+        
+        let mnemonic = FileEncryptor::prompt_for_seed_phrase()?;
+        let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
+        FileEncryptor::save_key_to_home(&key)?;
+        FileEncryptor::create_encryption_marker(repo_path)?;
+        print_success("Encryption key restored and marker file created");
+        
+        Ok(key)
     } else {
-        Ok(None)
+        bail!("No encrypted files found. Use 'dotfiles add --encrypt <file>' to add encrypted files.");
     }
 }
 
@@ -209,7 +197,7 @@ fn check_for_encrypted_files_in_repo(repo_path: &std::path::Path) -> bool {
     false
 }
 
-fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile], encryption_key: Option<&[u8; 32]>) -> Result<bool> {
+fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile]) -> Result<bool> {
     use std::fs;
     
     // Create timestamp directory name
@@ -235,18 +223,11 @@ fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile], encrypt
             fs::create_dir_all(parent)?;
         }
         
-        // Copy the file (encrypt if needed for encrypted files)
-        if file.encrypted {
-            // For encrypted files, backup them encrypted with .enc extension
-            if let Some(key) = encryption_key {
-                let encrypted_backup = backup_file.with_extension("enc");
-                FileEncryptor::encrypt_file(&home_path, &encrypted_backup, key)?;
-                any_backed_up = true;
-            }
-        } else {
-            FileSyncer::sync_file(&home_path, &backup_file)?;
-            any_backed_up = true;
-        }
+        // IMPORTANT: Backups are ALWAYS stored UNENCRYPTED locally
+        // This is safe because .backup/ is in .gitignore (never pushed to remote)
+        // This allows emergency recovery without needing seed phrase
+        FileSyncer::sync_file(&home_path, &backup_file)?;
+        any_backed_up = true;
     }
     
     // If no files were backed up, remove the empty directory
@@ -259,6 +240,7 @@ fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile], encrypt
 
 fn sync_home_to_repo(manager: &ConfigManager, files: &[TrackedFile], encryption_key: Option<&[u8; 32]>) -> Result<()> {
     let repo_path = manager.get_repo_path();
+    let mut synced_count = 0;
 
     for file in files {
         let home_path = FileSyncer::expand_tilde(&file.path);
@@ -272,17 +254,66 @@ fn sync_home_to_repo(manager: &ConfigManager, files: &[TrackedFile], encryption_
         if file.encrypted {
             if let Some(key) = encryption_key {
                 let encrypted_path = repo_file.with_extension("enc");
-                FileEncryptor::encrypt_file(&home_path, &encrypted_path, key)?;
+                
+                // Check if file needs syncing (compare after encryption)
+                let needs_sync = if encrypted_path.exists() {
+                    // Encrypt to temp and compare
+                    let temp_encrypted = std::env::temp_dir().join(format!("dotfiles_temp_{}", uuid::Uuid::new_v4()));
+                    FileEncryptor::encrypt_file(&home_path, &temp_encrypted, key)?;
+                    let is_different = !files_are_identical(&temp_encrypted, &encrypted_path)?;
+                    let _ = std::fs::remove_file(temp_encrypted);
+                    is_different
+                } else {
+                    true
+                };
+                
+                if needs_sync {
+                    FileEncryptor::encrypt_file(&home_path, &encrypted_path, key)?;
+                    synced_count += 1;
+                }
             }
         } else {
-            FileSyncer::sync_file(&home_path, &repo_file)?;
+            // Check if non-encrypted file needs syncing
+            let needs_sync = if repo_file.exists() {
+                !files_are_identical(&home_path, &repo_file)?
+            } else {
+                true
+            };
+            
+            if needs_sync {
+                FileSyncer::sync_file(&home_path, &repo_file)?;
+                synced_count += 1;
+            }
         }
     }
+    
+    if synced_count > 0 {
+        print_info(&format!("Synced {} file(s) with changes", synced_count));
+    } else {
+        print_info("All files already in sync (no changes)");
+    }
+    
     Ok(())
+}
+
+fn files_are_identical(path1: &std::path::Path, path2: &std::path::Path) -> Result<bool> {
+    use std::io::Read;
+    
+    let mut file1 = std::fs::File::open(path1)?;
+    let mut file2 = std::fs::File::open(path2)?;
+    
+    let mut buf1 = Vec::new();
+    let mut buf2 = Vec::new();
+    
+    file1.read_to_end(&mut buf1)?;
+    file2.read_to_end(&mut buf2)?;
+    
+    Ok(buf1 == buf2)
 }
 
 fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile], encryption_key: Option<&[u8; 32]>) -> Result<()> {
     let repo_path = manager.get_repo_path();
+    let mut synced_count = 0;
 
     for file in files {
         let home_path = FileSyncer::expand_tilde(&file.path);
@@ -296,7 +327,23 @@ fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile], encryption_
                     if let Some(parent) = home_path.parent() {
                         std::fs::create_dir_all(parent)?;
                     }
-                    FileEncryptor::decrypt_file(&encrypted_path, &home_path, key)?;
+                    
+                    // Check if decryption is needed (compare decrypted content)
+                    let needs_sync = if home_path.exists() {
+                        // Decrypt to temp and compare
+                        let temp_decrypted = std::env::temp_dir().join(format!("dotfiles_temp_{}", uuid::Uuid::new_v4()));
+                        FileEncryptor::decrypt_file(&encrypted_path, &temp_decrypted, key)?;
+                        let is_different = !files_are_identical(&temp_decrypted, &home_path)?;
+                        let _ = std::fs::remove_file(temp_decrypted);
+                        is_different
+                    } else {
+                        true
+                    };
+                    
+                    if needs_sync {
+                        FileEncryptor::decrypt_file(&encrypted_path, &home_path, key)?;
+                        synced_count += 1;
+                    }
                 }
             }
         } else if repo_file.exists() {
@@ -304,8 +351,26 @@ fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile], encryption_
             if let Some(parent) = home_path.parent() {
                 std::fs::create_dir_all(parent)?;
             }
-            FileSyncer::sync_file(&repo_file, &home_path)?;
+            
+            // Check if file needs syncing
+            let needs_sync = if home_path.exists() {
+                !files_are_identical(&repo_file, &home_path)?
+            } else {
+                true
+            };
+            
+            if needs_sync {
+                FileSyncer::sync_file(&repo_file, &home_path)?;
+                synced_count += 1;
+            }
         }
     }
+    
+    if synced_count > 0 {
+        print_info(&format!("Exported {} file(s) with changes", synced_count));
+    } else {
+        print_info("All files already in sync (no changes)");
+    }
+    
     Ok(())
 }

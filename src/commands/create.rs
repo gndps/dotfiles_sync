@@ -4,7 +4,7 @@ use crate::db::ConfigDatabase;
 use crate::utils::{print_error, print_info, print_success};
 
 pub fn execute(stub: String, paths: Vec<String>, tag: Option<String>) -> Result<()> {
-    let repo_path = std::env::current_dir()?;
+    let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path.clone());
 
     if !manager.is_initialized() {

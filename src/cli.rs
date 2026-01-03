@@ -54,12 +54,6 @@ pub enum Commands {
 
     #[command(about = "Full bidirectional sync (pull + sync_local + push)")]
     Sync {
-        #[arg(long, help = "Sync all files including encrypted ones")]
-        all: bool,
-        
-        #[arg(long, help = "Sync only encrypted files")]
-        encrypted: bool,
-        
         #[arg(long, help = "Set dotfiles directory and save to local config")]
         dir: Option<PathBuf>,
         

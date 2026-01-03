@@ -13,19 +13,36 @@ use std::path::{Path, PathBuf};
 const NONCE_SIZE: usize = 12;
 const KEY_SIZE: usize = 32;
 const PBKDF2_ITERATIONS: u32 = 100_000;
+// Key stored in HOME directory for security - NEVER in repo!
 const ENCRYPTION_KEY_FILE: &str = ".dotfiles.encryption.key";
+// Marker file in repo to indicate encryption is used
+const ENCRYPTION_MARKER_FILE: &str = ".dotfiles.encryption.enabled";
 
 pub struct FileEncryptor;
 
 impl FileEncryptor {
-    /// Get the path to the encryption key file in the repository
-    pub fn get_key_file_path(repo_path: &Path) -> PathBuf {
-        repo_path.join(ENCRYPTION_KEY_FILE)
+    /// Get the path to the encryption key file in HOME directory (NOT repo!)
+    pub fn get_key_file_path() -> Result<PathBuf> {
+        let home = dirs::home_dir()
+            .ok_or_else(|| anyhow::anyhow!("Could not find home directory"))?;
+        Ok(home.join(ENCRYPTION_KEY_FILE))
     }
 
-    /// Check if encryption is already set up in the repository
+    /// Get the path to the encryption marker file in the repository
+    fn get_marker_file_path(repo_path: &Path) -> PathBuf {
+        repo_path.join(ENCRYPTION_MARKER_FILE)
+    }
+
+    /// Check if encryption is enabled in the repository
     pub fn is_encryption_setup(repo_path: &Path) -> bool {
-        Self::get_key_file_path(repo_path).exists()
+        Self::get_marker_file_path(repo_path).exists()
+    }
+
+    /// Check if encryption key exists in home directory
+    pub fn has_local_key() -> bool {
+        Self::get_key_file_path()
+            .map(|p| p.exists())
+            .unwrap_or(false)
     }
 
     /// Generate a new BIP39 mnemonic (12 words)
@@ -45,21 +62,29 @@ impl FileEncryptor {
         key
     }
 
-    /// Save encryption key to repository
-    pub fn save_key_to_repo(repo_path: &Path, key: &[u8; KEY_SIZE]) -> Result<()> {
-        let key_path = Self::get_key_file_path(repo_path);
+    /// Save encryption key to HOME directory (NEVER to repo!)
+    pub fn save_key_to_home(key: &[u8; KEY_SIZE]) -> Result<()> {
+        let key_path = Self::get_key_file_path()?;
         let encoded = base64::encode(key);
         fs::write(&key_path, encoded)
-            .context("Failed to write encryption key to repository")?;
+            .context("Failed to write encryption key to home directory")?;
         Ok(())
     }
 
-    /// Load encryption key from repository
-    pub fn load_key_from_repo(repo_path: &Path) -> Result<[u8; KEY_SIZE]> {
-        let key_path = Self::get_key_file_path(repo_path);
+    /// Create marker file in repo to indicate encryption is used
+    pub fn create_encryption_marker(repo_path: &Path) -> Result<()> {
+        let marker_path = Self::get_marker_file_path(repo_path);
+        fs::write(&marker_path, "This repository uses BIP39 seed phrase encryption.\nThe encryption key is stored in your home directory, NOT in this repo.\nYou will need your 12-word seed phrase to decrypt files on a new machine.")
+            .context("Failed to create encryption marker file")?;
+        Ok(())
+    }
+
+    /// Load encryption key from HOME directory
+    pub fn load_key_from_home() -> Result<[u8; KEY_SIZE]> {
+        let key_path = Self::get_key_file_path()?;
         
         if !key_path.exists() {
-            bail!("Encryption key not found. Please set up encryption first with 'dotfiles add --encrypt <file>'");
+            bail!("Encryption key not found in home directory. You need to enter your seed phrase.");
         }
 
         let encoded = fs::read_to_string(&key_path)

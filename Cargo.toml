@@ -1,6 +1,6 @@
 [package]
 name = "dotfiles_sync"
-version = "1.0.10"
+version = "1.0.11"
 edition = "2021"
 authors = ["Gundeep Singh <gndp@live.com>"]
 description = "A clean, hassle-free dotfiles manager with git integration"
@@ -30,6 +30,7 @@ rand = "0.8"
 bip39 = "2.0"
 sha2 = "0.10"
 pbkdf2 = { version = "0.12", features = ["simple"] }
+uuid = { version = "1.6", features = ["v4"] }
 
 [dev-dependencies]
 tempfile = "3.9"

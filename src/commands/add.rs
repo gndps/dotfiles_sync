@@ -6,7 +6,7 @@ use crate::sync::FileSyncer;
 use crate::utils::{print_success, print_error, print_info};
 
 pub fn execute(stubs_or_paths: Vec<String>, encrypt: bool, _password: Option<String>) -> Result<()> {
-    let repo_path = std::env::current_dir()?;
+    let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path.clone());
 
     if !manager.is_initialized() {
@@ -51,36 +51,46 @@ pub fn execute(stubs_or_paths: Vec<String>, encrypt: bool, _password: Option<Str
 }
 
 fn setup_encryption_if_needed(repo_path: &std::path::Path) -> Result<[u8; 32]> {
-    if FileEncryptor::is_encryption_setup(repo_path) {
-        // Encryption already set up, load the key
-        print_info("Using existing encryption key from repository");
-        FileEncryptor::load_key_from_repo(repo_path)
-    } else {
-        // First time encryption - generate seed phrase
-        print_info("Setting up encryption for the first time...");
-        
-        let mnemonic = FileEncryptor::generate_mnemonic()?;
-        FileEncryptor::display_seed_phrase(&mnemonic);
-        
-        // Prompt user to confirm they saved it
-        use std::io::{self, Write};
-        print!("Type 'yes' to confirm you have saved the seed phrase: ");
-        io::stdout().flush()?;
-        
-        let mut confirmation = String::new();
-        io::stdin().read_line(&mut confirmation)?;
-        
-        if confirmation.trim().to_lowercase() != "yes" {
-            bail!("Encryption setup cancelled. Please save your seed phrase before continuing.");
-        }
-        
-        // Derive and save the key
+    // Check if encryption is already configured
+    let has_marker = FileEncryptor::is_encryption_setup(repo_path);
+    let has_key = FileEncryptor::has_local_key();
+    
+    if has_marker && has_key {
+        // Both marker and key exist - load key
+        print_info("Using existing encryption key from home directory");
+        return FileEncryptor::load_key_from_home();
+    } else if has_marker && !has_key {
+        // Marker exists but no key - need seed phrase
+        print_info("Encryption is enabled but key not found in home directory.");
+        print_info("Please enter your 12-word seed phrase to restore encryption.");
+        let mnemonic = FileEncryptor::prompt_for_seed_phrase()?;
         let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
-        FileEncryptor::save_key_to_repo(repo_path, &key)?;
-        print_success("Encryption key saved to repository");
-        
-        Ok(key)
+        FileEncryptor::save_key_to_home(&key)?;
+        print_success("Encryption key restored and saved to home directory");
+        return Ok(key);
     }
+    
+    // First time setup
+    print_info("Setting up encryption for the first time...");
+    let mnemonic = FileEncryptor::generate_mnemonic()?;
+    FileEncryptor::display_seed_phrase(&mnemonic);
+    
+    // Prompt user to confirm they've saved it
+    println!("\n{}", "Press Enter after you have safely stored your seed phrase...".bright_yellow());
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input)?;
+    
+    let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
+    
+    // Save key to HOME directory (not repo!)
+    FileEncryptor::save_key_to_home(&key)?;
+    print_success("Encryption key saved to home directory");
+    
+    // Create marker file in repo
+    FileEncryptor::create_encryption_marker(repo_path)?;
+    print_success("Encryption marker file created in repository");
+    
+    Ok(key)
 }
 
 fn add_from_stub(

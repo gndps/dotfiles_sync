@@ -4,7 +4,7 @@ use crate::sync::FileSyncer;
 use crate::utils::{print_success, print_error, print_warning};
 
 pub fn execute(stub_or_path: String) -> Result<()> {
-    let repo_path = std::env::current_dir()?;
+    let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path);
 
     if !manager.is_initialized() {

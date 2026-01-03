@@ -5,7 +5,7 @@ use crate::git::GitRepo;
 use crate::utils::{print_error, print_info, print_success, print_warning};
 
 pub fn execute() -> Result<()> {
-    let repo_path = std::env::current_dir()?;
+    let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path.clone());
 
     if !manager.is_initialized() {
