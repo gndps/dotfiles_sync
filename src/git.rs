@@ -41,6 +41,50 @@ impl GitRepo {
         Ok(merge_head.exists())
     }
 
+    pub fn is_in_rebase(&self) -> Result<bool> {
+        let rebase_merge = self.repo_path.join(".git/rebase-merge");
+        let rebase_apply = self.repo_path.join(".git/rebase-apply");
+        Ok(rebase_merge.exists() || rebase_apply.exists())
+    }
+
+    pub fn has_conflicts(&self) -> Result<bool> {
+        let output = Command::new("git")
+            .current_dir(&self.repo_path)
+            .args(&["diff", "--name-only", "--diff-filter=U"])
+            .output()
+            .context("Failed to check for conflicts")?;
+
+        Ok(!output.stdout.is_empty())
+    }
+
+    pub fn get_conflicted_files(&self) -> Result<Vec<String>> {
+        let output = Command::new("git")
+            .current_dir(&self.repo_path)
+            .args(&["diff", "--name-only", "--diff-filter=U"])
+            .output()
+            .context("Failed to get conflicted files")?;
+
+        let files = String::from_utf8_lossy(&output.stdout)
+            .lines()
+            .map(|s| s.to_string())
+            .collect();
+
+        Ok(files)
+    }
+
+    pub fn rebase_continue(&self) -> Result<()> {
+        let output = Command::new("git")
+            .current_dir(&self.repo_path)
+            .args(&["rebase", "--continue"])
+            .output()?;
+
+        if !output.status.success() {
+            let error_msg = String::from_utf8_lossy(&output.stderr);
+            bail!("Git rebase --continue failed: {}", error_msg);
+        }
+        Ok(())
+    }
+
     pub fn add_all(&self) -> Result<()> {
         let status = Command::new("git")
             .current_dir(&self.repo_path)

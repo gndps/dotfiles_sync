@@ -5,8 +5,11 @@ use crate::encryption::FileEncryptor;
 use crate::git::GitRepo;
 use crate::sync::FileSyncer;
 use crate::utils::{print_error, print_info, print_success, print_warning};
+use std::path::{Path, PathBuf};
 
-pub fn execute(dir: Option<std::path::PathBuf>, _password: Option<String>) -> Result<()> {
+const TEMP_CONFLICTS_DIR: &str = ".dotfiles_conflicts_temp";
+
+pub fn execute(dir: Option<PathBuf>, encryption_key_path: Option<PathBuf>, _password: Option<String>) -> Result<()> {
     // Handle --dir argument to change and save repo directory
     let repo_path = if let Some(dir_path) = dir {
         let canonical_path = dir_path.canonicalize()
@@ -22,6 +25,25 @@ pub fn execute(dir: Option<std::path::PathBuf>, _password: Option<String>) -> Re
         ConfigManager::resolve_repo_path()?
     };
     
+    // Handle --encryption-key-path argument
+    if let Some(key_path) = encryption_key_path {
+        let canonical_key_path = key_path.canonicalize()
+            .context("Failed to resolve encryption key path")?;
+        
+        let temp_manager = ConfigManager::new(repo_path.clone());
+        let mut config = temp_manager.load_config()?;
+        config.encryption_key_path = Some(canonical_key_path.clone());
+        
+        // Save to local config
+        let local_config_path = temp_manager.get_local_config_path();
+        let content = serde_json::to_string_pretty(&config)
+            .context("Failed to serialize local config")?;
+        std::fs::write(&local_config_path, content)
+            .context("Failed to write local config file")?;
+        
+        print_success(&format!("Saved encryption key path to local config: {}", canonical_key_path.display()));
+    }
+    
     let manager = ConfigManager::new(repo_path.clone());
     let git = GitRepo::new(&repo_path);
 
@@ -35,6 +57,16 @@ pub fn execute(dir: Option<std::path::PathBuf>, _password: Option<String>) -> Re
         print_error("Not a git repository. Initialize git first.");
         bail!("Not a git repository");
     }
+    
+    // Check if we're in a rebase state
+    if git.is_in_rebase()? {
+        print_error("Repository is in a rebase state.");
+        println!("\nUse {} to continue after resolving conflicts.", "dotfiles sync --continue".cyan().bold());
+        bail!("In rebase state");
+    }
+    
+    // Clean up any temporary conflict files from previous runs
+    cleanup_temp_dir(&repo_path)?;
 
     // --- SETUP ---
     let tracked = manager.load_tracked_files()?.clone();
@@ -99,10 +131,41 @@ pub fn execute(dir: Option<std::path::PathBuf>, _password: Option<String>) -> Re
             Err(e) => {
                 print_error("Merge conflict during update!");
                 println!("\n{}", "SAFETY LOCK ENGAGED: Home directory was NOT updated.".yellow().bold());
-                println!("  1. Go to repository directory");
-                println!("  2. Resolve conflicts manually");
-                println!("  3. Run 'git rebase --continue'");
-                println!("  4. Run 'dotfiles sync' again");
+                
+                // Get conflicted files and decrypt if needed
+                if let Ok(conflicted_files) = git.get_conflicted_files() {
+                    println!("\n{}", "Conflicted files:".yellow().bold());
+                    
+                    let encryption_key = if tracked.iter().any(|f| f.encrypted) {
+                        resolve_encryption_key(&repo_path).ok()
+                    } else {
+                        None
+                    };
+                    
+                    for file in &conflicted_files {
+                        println!("  {} {}", "✗".red(), file);
+                        
+                        // If it's an encrypted file, decrypt to temp for easier conflict resolution
+                        if file.ends_with(".enc") {
+                            if let Some(key) = encryption_key.as_ref() {
+                                let full_path = repo_path.join(file);
+                                if let Err(decrypt_err) = decrypt_to_temp(&repo_path, &full_path, key) {
+                                    print_warning(&format!("Could not decrypt {}: {}", file, decrypt_err));
+                                }
+                            }
+                        }
+                    }
+                    
+                    if encryption_key.is_some() {
+                        println!("\n{}", "Encrypted files have been decrypted to:".yellow());
+                        println!("  {}", repo_path.join(TEMP_CONFLICTS_DIR).display());
+                    }
+                }
+                
+                println!("\n{}", "To resolve:".yellow().bold());
+                println!("  1. Resolve conflicts in the files listed above");
+                println!("  2. Run {} to continue", "dotfiles sync --continue".cyan().bold());
+                
                 // Stop execution to protect the Home directory from conflict markers
                 return Err(e); 
             }
@@ -149,7 +212,37 @@ pub fn execute(dir: Option<std::path::PathBuf>, _password: Option<String>) -> Re
 
 // --- HELPER FUNCTIONS ---
 
-fn resolve_encryption_key(repo_path: &std::path::Path) -> Result<[u8; 32]> {
+fn decrypt_to_temp(repo_path: &Path, encrypted_file: &Path, key: &[u8; 32]) -> Result<()> {
+    let temp_dir = repo_path.join(TEMP_CONFLICTS_DIR);
+    std::fs::create_dir_all(&temp_dir)?;
+    
+    let rel_path = encrypted_file.strip_prefix(repo_path)
+        .context("Failed to get relative path")?;
+    
+    let decrypted_name = rel_path.with_extension("");
+    let decrypted_path = temp_dir.join(decrypted_name);
+    
+    if let Some(parent) = decrypted_path.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+    
+    FileEncryptor::decrypt_file(encrypted_file, &decrypted_path, key)?;
+    print_info(&format!("Decrypted to: {}", decrypted_path.display()));
+    
+    Ok(())
+}
+
+fn cleanup_temp_dir(repo_path: &Path) -> Result<()> {
+    let temp_dir = repo_path.join(TEMP_CONFLICTS_DIR);
+    
+    if temp_dir.exists() {
+        std::fs::remove_dir_all(&temp_dir).ok();
+    }
+    
+    Ok(())
+}
+
+fn resolve_encryption_key(repo_path: &Path) -> Result<[u8; 32]> {
     let has_marker = FileEncryptor::is_encryption_setup(repo_path);
     let has_key = FileEncryptor::has_local_key();
     

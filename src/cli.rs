@@ -18,6 +18,9 @@ pub enum Commands {
         
         #[arg(long, help = "Tag for organizing custom configurations")]
         tag: Option<String>,
+        
+        #[arg(long, help = "Path to encryption key file")]
+        encryption_key_path: Option<PathBuf>,
     },
 
     #[command(about = "Add a config file using stub name or direct path")]
@@ -57,6 +60,12 @@ pub enum Commands {
         #[arg(long, help = "Set dotfiles directory and save to local config")]
         dir: Option<PathBuf>,
         
+        #[arg(long, help = "Continue sync after resolving conflicts")]
+        r#continue: bool,
+        
+        #[arg(long, help = "Path to encryption key file")]
+        encryption_key_path: Option<PathBuf>,
+        
         #[arg(long, hide = true)]
         password: Option<String>,
     },
@@ -86,4 +95,13 @@ pub enum Commands {
 
     #[command(about = "Change to dotfiles repository directory")]
     Cd,
+    
+    #[command(about = "Get or set configuration values")]
+    Config {
+        #[arg(help = "Configuration key (repo_path, use_xdg, encryption_key_path, tag)")]
+        key: String,
+        
+        #[arg(help = "Value to set")]
+        value: String,
+    },
 }

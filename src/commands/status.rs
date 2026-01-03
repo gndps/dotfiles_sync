@@ -1,5 +1,6 @@
 use anyhow::{bail, Result};
 use crate::config::ConfigManager;
+use crate::encryption::FileEncryptor;
 use crate::sync::FileSyncer;
 use crate::utils::{print_error, print_section};
 use colored::Colorize;
@@ -9,8 +10,8 @@ use std::collections::HashMap;
 enum FileStatus {
     InSync,
     OutOfSync,
-    MissingInHome,
     MissingInRepo,
+    NotManaged,
 }
 
 pub fn execute() -> Result<()> {
@@ -32,12 +33,24 @@ pub fn execute() -> Result<()> {
 
     print_section("File Status");
 
+    // Get encryption key if needed
+    let has_encrypted = tracked.iter().any(|f| f.encrypted);
+    let encryption_key = if has_encrypted {
+        get_encryption_key_if_needed(&repo_path).ok()
+    } else {
+        None
+    };
+
     let mut by_stub: HashMap<String, Vec<(String, FileStatus)>> = HashMap::new();
 
     for file in tracked {
-        let status = check_file_status(&repo_path, &file.path);
+        let status = check_file_status(&repo_path, &file.path, file.encrypted, encryption_key.as_ref());
         let stub_name = file.stub.clone().unwrap_or_else(|| "direct".to_string());
-        by_stub.entry(stub_name).or_default().push((file.path, status));
+        
+        // Only add files that are tracked (not "not managed")
+        if status != FileStatus::NotManaged {
+            by_stub.entry(stub_name).or_default().push((file.path, status));
+        }
     }
 
     let mut stubs: Vec<_> = by_stub.keys().collect();
@@ -50,14 +63,14 @@ pub fn execute() -> Result<()> {
                 let status_str = match status {
                     FileStatus::InSync => "✓".green(),
                     FileStatus::OutOfSync => "✗".yellow(),
-                    FileStatus::MissingInHome => "⚠".red(),
                     FileStatus::MissingInRepo => "?".blue(),
+                    FileStatus::NotManaged => "−".dimmed(),
                 };
                 let status_text = match status {
                     FileStatus::InSync => "in sync",
                     FileStatus::OutOfSync => "out of sync",
-                    FileStatus::MissingInHome => "missing in home",
                     FileStatus::MissingInRepo => "missing in repo",
+                    FileStatus::NotManaged => "not managed",
                 };
                 println!("  {} {} {}", status_str, path, format!("({})", status_text).dimmed());
             }
@@ -67,28 +80,68 @@ pub fn execute() -> Result<()> {
     Ok(())
 }
 
-fn check_file_status(repo_path: &std::path::PathBuf, home_path: &str) -> FileStatus {
+fn check_file_status(repo_path: &std::path::PathBuf, home_path: &str, encrypted: bool, encryption_key: Option<&[u8; 32]>) -> FileStatus {
     let home_full = FileSyncer::expand_tilde(home_path);
-    let repo_file = repo_path.join(home_path.trim_start_matches("~/"));
+    let repo_file = repo_path.join(home_path.trim_start_matches("~/").trim_start_matches('/'));
 
     let home_exists = home_full.exists();
-    let repo_exists = repo_file.exists();
+    
+    // For encrypted files, check the .enc version in repo
+    let repo_exists = if encrypted {
+        let encrypted_path = repo_file.with_extension("enc");
+        encrypted_path.exists()
+    } else {
+        repo_file.exists()
+    };
 
     match (home_exists, repo_exists) {
-        (false, false) => FileStatus::MissingInHome,
-        (false, true) => FileStatus::MissingInHome,
+        // File doesn't exist locally - mark as not managed (don't show in status)
+        (false, _) => FileStatus::NotManaged,
+        // File exists locally but not in repo
         (true, false) => FileStatus::MissingInRepo,
+        // File exists in both locations
         (true, true) => {
-            if files_are_same(&home_full, &repo_file) {
-                FileStatus::InSync
+            if encrypted {
+                // Compare encrypted file with home file
+                if let Some(key) = encryption_key {
+                    if files_are_same_encrypted(&home_full, &repo_file.with_extension("enc"), key) {
+                        FileStatus::InSync
+                    } else {
+                        FileStatus::OutOfSync
+                    }
+                } else {
+                    // Can't decrypt, assume out of sync
+                    FileStatus::OutOfSync
+                }
             } else {
-                FileStatus::OutOfSync
+                // Compare unencrypted files
+                if files_are_same(&home_full, &repo_file) {
+                    FileStatus::InSync
+                } else {
+                    FileStatus::OutOfSync
+                }
             }
         }
     }
 }
 
+fn get_encryption_key_if_needed(repo_path: &std::path::PathBuf) -> Result<[u8; 32]> {
+    if FileEncryptor::has_local_key() {
+        FileEncryptor::load_key_from_home()
+    } else if FileEncryptor::is_encryption_setup(repo_path) {
+        // Ask for seed phrase
+        let mnemonic = FileEncryptor::prompt_for_seed_phrase()?;
+        let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
+        FileEncryptor::save_key_to_home(&key)?;
+        Ok(key)
+    } else {
+        bail!("No encryption key found")
+    }
+}
+
 fn files_are_same(path1: &std::path::Path, path2: &std::path::Path) -> bool {
+    use std::io::Read;
+    
     if path1.is_dir() != path2.is_dir() {
         return false;
     }
@@ -97,19 +150,48 @@ fn files_are_same(path1: &std::path::Path, path2: &std::path::Path) -> bool {
         return true;
     }
 
-    match (std::fs::metadata(path1), std::fs::metadata(path2)) {
-        (Ok(m1), Ok(m2)) => {
-            if m1.len() != m2.len() {
+    // Compare file contents directly
+    match (std::fs::File::open(path1), std::fs::File::open(path2)) {
+        (Ok(mut f1), Ok(mut f2)) => {
+            let mut buf1 = Vec::new();
+            let mut buf2 = Vec::new();
+            
+            if f1.read_to_end(&mut buf1).is_err() || f2.read_to_end(&mut buf2).is_err() {
                 return false;
             }
             
-            if let (Ok(t1), Ok(t2)) = (m1.modified(), m2.modified()) {
-                (t1.duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() as i64 
-                    - t2.duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() as i64).abs() < 2
-            } else {
-                false
-            }
+            buf1 == buf2
         }
         _ => false,
     }
+}
+
+fn files_are_same_encrypted(plaintext_path: &std::path::Path, encrypted_path: &std::path::Path, key: &[u8; 32]) -> bool {
+    use std::io::Read;
+    
+    // Decrypt the encrypted file to temp and compare
+    let temp_decrypted = std::env::temp_dir().join(format!("dotfiles_temp_{}", uuid::Uuid::new_v4()));
+    
+    if FileEncryptor::decrypt_file(encrypted_path, &temp_decrypted, key).is_err() {
+        return false;
+    }
+    
+    let result = match (std::fs::File::open(plaintext_path), std::fs::File::open(&temp_decrypted)) {
+        (Ok(mut f1), Ok(mut f2)) => {
+            let mut buf1 = Vec::new();
+            let mut buf2 = Vec::new();
+            
+            if f1.read_to_end(&mut buf1).is_err() || f2.read_to_end(&mut buf2).is_err() {
+                false
+            } else {
+                buf1 == buf2
+            }
+        }
+        _ => false,
+    };
+    
+    // Clean up temp file
+    let _ = std::fs::remove_file(temp_decrypted);
+    
+    result
 }

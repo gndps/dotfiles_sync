@@ -5,7 +5,7 @@ use crate::config::{ConfigManager, DotfilesConfig};
 use crate::git::GitRepo;
 use crate::utils::{print_success, print_info};
 
-pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
+pub fn execute(path: Option<PathBuf>, tag: Option<String>, encryption_key_path: Option<PathBuf>) -> Result<()> {
     let repo_path = path.unwrap_or_else(|| PathBuf::from("."));
     
     if !repo_path.exists() {
@@ -28,6 +28,12 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
     let mut config = DotfilesConfig::default();
     config.repo_path = canonical_repo_path.clone();
     config.tag = tag.clone();
+    
+    if let Some(key_path) = encryption_key_path {
+        let canonical_key_path = key_path.canonicalize()
+            .context("Failed to resolve encryption key path")?;
+        config.encryption_key_path = Some(canonical_key_path);
+    }
     
     if let Some(home) = dirs::home_dir() {
         config.home_path = home;
@@ -88,6 +94,12 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
     // Ensure backups stay local (they contain unencrypted sensitive data)
     if !gitignore_content.contains(".backup/") {
         gitignore_content.push_str("\n# Local backups (unencrypted, for emergency recovery)\n.backup/\n");
+        updated = true;
+    }
+    
+    // Ensure temp conflict files stay local
+    if !gitignore_content.contains(".dotfiles_conflicts_temp") {
+        gitignore_content.push_str("\n# Temporary decrypted conflict files\n.dotfiles_conflicts_temp/\n");
         updated = true;
     }
     
