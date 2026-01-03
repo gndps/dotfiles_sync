@@ -8,6 +8,11 @@ license = "MIT"
 repository = "https://github.com/gndps/dotfiles_sync"
 homepage = "https://github.com/gndps/dotfiles_sync"
 
+[package.metadata.release]
+publish = false
+push = true
+tag-prefix = "v"
+
 [[bin]]
 name = "dotfiles"
 path = "src/main.rs"

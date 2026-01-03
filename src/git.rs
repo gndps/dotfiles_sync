@@ -159,7 +159,20 @@ impl GitRepo {
         let branch = String::from_utf8_lossy(&output.stdout).trim().to_string();
         
         if branch.is_empty() {
-            Ok("main".to_string())
+            // In detached HEAD or old git, try to get branch from symbolic-ref
+            let output = Command::new("git")
+                .current_dir(&self.repo_path)
+                .args(&["symbolic-ref", "--short", "HEAD"])
+                .output()
+                .context("Failed to get symbolic ref")?;
+            
+            let symbolic_branch = String::from_utf8_lossy(&output.stdout).trim().to_string();
+            
+            if !symbolic_branch.is_empty() {
+                Ok(symbolic_branch)
+            } else {
+                bail!("Unable to determine current branch. Make sure you're on a branch, not in detached HEAD state.")
+            }
         } else {
             Ok(branch)
         }

@@ -265,13 +265,13 @@ fn sync_home_to_repo(manager: &ConfigManager, files: &[TrackedFile], encryption_
             if let Some(key) = encryption_key {
                 let encrypted_path = repo_file.with_extension("enc");
                 
-                // Check if file needs syncing (compare after encryption)
+                // Check if file needs syncing (decrypt existing and compare plaintext)
                 let needs_sync = if encrypted_path.exists() {
-                    // Encrypt to temp and compare
-                    let temp_encrypted = std::env::temp_dir().join(format!("dotfiles_temp_{}", uuid::Uuid::new_v4()));
-                    FileEncryptor::encrypt_file(&home_path, &temp_encrypted, key)?;
-                    let is_different = !files_are_identical(&temp_encrypted, &encrypted_path)?;
-                    let _ = std::fs::remove_file(temp_encrypted);
+                    // Decrypt existing encrypted file to temp and compare with source
+                    let temp_decrypted = std::env::temp_dir().join(format!("dotfiles_temp_{}", uuid::Uuid::new_v4()));
+                    FileEncryptor::decrypt_file(&encrypted_path, &temp_decrypted, key)?;
+                    let is_different = !files_are_identical(&home_path, &temp_decrypted)?;
+                    let _ = std::fs::remove_file(temp_decrypted);
                     is_different
                 } else {
                     true
