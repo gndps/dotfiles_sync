@@ -2,7 +2,6 @@ mod cli;
 mod commands;
 mod config;
 mod db;
-mod encryption;
 mod git;
 mod sync;
 mod utils;
@@ -16,11 +15,11 @@ fn main() -> Result<()> {
 
     match cli.command {
         Commands::Init { path, tag } => commands::init::execute(path, tag)?,
-        Commands::Add { stubs, encrypt, password } => commands::add::execute(stubs, encrypt, password)?,
+        Commands::Add { stubs } => commands::add::execute(stubs)?,
         Commands::Remove { stub_or_path } => commands::remove::execute(stub_or_path)?,
         Commands::List { all, stubs } => commands::list::execute(all, stubs)?,
         Commands::Status => commands::status::execute()?,
-        Commands::Sync { dir, password } => commands::sync::execute(dir, password)?,
+        Commands::Sync { dir } => commands::sync::execute(dir)?,
         Commands::SyncLocal => commands::sync_local::execute()?,
         Commands::Pull => commands::pull::execute()?,
         Commands::Push => commands::push::execute()?,

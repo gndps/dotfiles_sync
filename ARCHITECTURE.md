@@ -205,7 +205,6 @@ Each command is independent and follows this pattern:
 
 ### Planned Features
 - [ ] Watch mode (auto-sync on file changes)
-- [ ] Encrypted secrets support
 - [ ] Machine-specific configs
 - [ ] Pre/post sync hooks
 - [ ] Dry-run mode for all operations
@@ -254,7 +253,6 @@ strip target/release/dotfiles  # Reduce size
 
 - Never auto-commit sensitive files (use .gitignore)
 - SSH keys should be added carefully
-- Consider encrypted secrets in future versions
 - Repository permissions should be restricted
 
 ## Performance

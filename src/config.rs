@@ -32,7 +32,6 @@ impl Default for DotfilesConfig {
 pub struct TrackedFile {
     pub stub: Option<String>,
     pub path: String,
-    pub encrypted: bool,
 }
 
 pub struct ConfigManager {

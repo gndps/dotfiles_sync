@@ -24,12 +24,6 @@ pub enum Commands {
     Add {
         #[arg(help = "Stub names or paths (e.g., 'git', 'tmux', '~/.zshrc')")]
         stubs: Vec<String>,
-        
-        #[arg(long, help = "Encrypt the files (uses BIP39 seed phrase)")]
-        encrypt: bool,
-        
-        #[arg(long, hide = true)]
-        password: Option<String>,
     },
 
     #[command(visible_aliases = ["rm"])]
@@ -56,9 +50,6 @@ pub enum Commands {
     Sync {
         #[arg(long, help = "Set dotfiles directory and save to local config")]
         dir: Option<PathBuf>,
-        
-        #[arg(long, hide = true)]
-        password: Option<String>,
     },
 
     #[command(about = "Sync from repository to home directory only")]

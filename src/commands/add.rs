@@ -1,12 +1,10 @@
 use anyhow::{bail, Context, Result};
-use colored::Colorize;
 use crate::config::{ConfigManager, TrackedFile};
 use crate::db::ConfigDatabase;
-use crate::encryption::FileEncryptor;
 use crate::sync::FileSyncer;
 use crate::utils::{print_success, print_error, print_info};
 
-pub fn execute(stubs_or_paths: Vec<String>, encrypt: bool, _password: Option<String>) -> Result<()> {
+pub fn execute(stubs_or_paths: Vec<String>) -> Result<()> {
     let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path.clone());
 
@@ -22,13 +20,6 @@ pub fn execute(stubs_or_paths: Vec<String>, encrypt: bool, _password: Option<Str
 
     let mut tracked = manager.load_tracked_files()?;
     
-    // Handle encryption setup if needed
-    let encryption_key = if encrypt {
-        Some(setup_encryption_if_needed(&repo_path)?)
-    } else {
-        None
-    };
-    
     // Process each stub or path
     for stub_or_path in stubs_or_paths {
         // Check if it's a direct path or a stub
@@ -36,12 +27,12 @@ pub fn execute(stubs_or_paths: Vec<String>, encrypt: bool, _password: Option<Str
         
         if is_direct_path {
             // Direct file/folder path
-            if let Err(e) = add_direct_path(&repo_path, &manager, &mut tracked, &stub_or_path, encrypt, encryption_key.as_ref()) {
+            if let Err(e) = add_direct_path(&repo_path, &manager, &mut tracked, &stub_or_path) {
                 print_error(&format!("Failed to add {}: {}", stub_or_path, e));
             }
         } else {
             // Stub from database
-            if let Err(e) = add_from_stub(&repo_path, &manager, &mut tracked, &stub_or_path, encrypt, encryption_key.as_ref()) {
+            if let Err(e) = add_from_stub(&repo_path, &manager, &mut tracked, &stub_or_path) {
                 print_error(&format!("Failed to add {}: {}", stub_or_path, e));
             }
         }
@@ -51,56 +42,11 @@ pub fn execute(stubs_or_paths: Vec<String>, encrypt: bool, _password: Option<Str
     Ok(())
 }
 
-fn setup_encryption_if_needed(repo_path: &std::path::Path) -> Result<[u8; 32]> {
-    // Check if encryption is already configured
-    let has_marker = FileEncryptor::is_encryption_setup(repo_path);
-    let has_key = FileEncryptor::has_local_key();
-    
-    if has_marker && has_key {
-        // Both marker and key exist - load key
-        print_info("Using existing encryption key from home directory");
-        return FileEncryptor::load_key_from_home();
-    } else if has_marker && !has_key {
-        // Marker exists but no key - need seed phrase
-        print_info("Encryption is enabled but key not found in home directory.");
-        print_info("Please enter your 12-word seed phrase to restore encryption.");
-        let mnemonic = FileEncryptor::prompt_for_seed_phrase()?;
-        let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
-        FileEncryptor::save_key_to_home(&key)?;
-        print_success("Encryption key restored and saved to home directory");
-        return Ok(key);
-    }
-    
-    // First time setup
-    print_info("Setting up encryption for the first time...");
-    let mnemonic = FileEncryptor::generate_mnemonic()?;
-    FileEncryptor::display_seed_phrase(&mnemonic);
-    
-    // Prompt user to confirm they've saved it
-    println!("\n{}", "Press Enter after you have safely stored your seed phrase...".bright_yellow());
-    let mut input = String::new();
-    std::io::stdin().read_line(&mut input)?;
-    
-    let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
-    
-    // Save key to HOME directory (not repo!)
-    FileEncryptor::save_key_to_home(&key)?;
-    print_success("Encryption key saved to home directory");
-    
-    // Create marker file in repo
-    FileEncryptor::create_encryption_marker(repo_path)?;
-    print_success("Encryption marker file created in repository");
-    
-    Ok(key)
-}
-
 fn add_from_stub(
     repo_path: &std::path::Path,
     _manager: &ConfigManager,
     tracked: &mut Vec<TrackedFile>,
     stub: &str,
-    encrypt: bool,
-    encryption_key: Option<&[u8; 32]>
 ) -> Result<()> {
     let db = ConfigDatabase::new(repo_path);
     let entry = db.load_stub(stub)?;
@@ -128,16 +74,9 @@ fn add_from_stub(
         if full_home_path.exists() {
             let repo_file_path = repo_path.join(file_path.trim_start_matches("~/").trim_start_matches('/'));
             
-            if let Some(key) = encryption_key {
-                let encrypted_path = repo_file_path.with_extension("enc");
-                FileEncryptor::encrypt_file(&full_home_path, &encrypted_path, key)
-                    .context(format!("Failed to encrypt {}", home_path))?;
-                print_success(&format!("Encrypted and copied: {}", home_path));
-            } else {
-                FileSyncer::sync_file(&full_home_path, &repo_file_path)
-                    .context(format!("Failed to sync {}", home_path))?;
-                print_success(&format!("Copied: {}", home_path));
-            }
+            FileSyncer::sync_file(&full_home_path, &repo_file_path)
+                .context(format!("Failed to sync {}", home_path))?;
+            print_success(&format!("Copied: {}", home_path));
         } else {
             print_info(&format!("Not found (skipped): {}", home_path));
         }
@@ -146,7 +85,6 @@ fn add_from_stub(
             tracked.push(TrackedFile {
                 stub: Some(stub.to_string()),
                 path: home_path,
-                encrypted: encrypt,
             });
         }
     }
@@ -159,8 +97,6 @@ fn add_direct_path(
     _manager: &ConfigManager,
     tracked: &mut Vec<TrackedFile>,
     path: &str,
-    encrypt: bool,
-    encryption_key: Option<&[u8; 32]>
 ) -> Result<()> {
     let expanded_path = FileSyncer::expand_tilde(path);
     
@@ -184,22 +120,14 @@ fn add_direct_path(
     
     let repo_file_path = repo_path.join(normalized_path.trim_start_matches("~/").trim_start_matches('/'));
     
-    if let Some(key) = encryption_key {
-        let encrypted_path = repo_file_path.with_extension("enc");
-        FileEncryptor::encrypt_file(&expanded_path, &encrypted_path, key)
-            .context(format!("Failed to encrypt {}", normalized_path))?;
-        print_success(&format!("Encrypted and copied: {}", normalized_path));
-    } else {
-        FileSyncer::sync_file(&expanded_path, &repo_file_path)
-            .context(format!("Failed to sync {}", normalized_path))?;
-        print_success(&format!("Copied: {}", normalized_path));
-    }
+    FileSyncer::sync_file(&expanded_path, &repo_file_path)
+        .context(format!("Failed to sync {}", normalized_path))?;
+    print_success(&format!("Copied: {}", normalized_path));
     
     if !tracked.iter().any(|t| t.path == normalized_path) {
         tracked.push(TrackedFile {
             stub: None,
             path: normalized_path.clone(),
-            encrypted: encrypt,
         });
         print_success(&format!("Added to tracked files: {}", normalized_path));
     } else {

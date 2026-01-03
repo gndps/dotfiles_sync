@@ -79,15 +79,9 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
         updated = true;
     }
     
-    // Ensure old encryption key file is ignored (security - should be in home dir only)
-    if !gitignore_content.contains(".dotfiles.encryption.key") {
-        gitignore_content.push_str("\n# Encryption key (stored in home directory, NOT in repo!)\n.dotfiles.encryption.key\n");
-        updated = true;
-    }
-    
-    // Ensure backups stay local (they contain unencrypted sensitive data)
+    // Ensure backups stay local
     if !gitignore_content.contains(".backup/") {
-        gitignore_content.push_str("\n# Local backups (unencrypted, for emergency recovery)\n.backup/\n");
+        gitignore_content.push_str("\n# Local backups (for emergency recovery)\n.backup/\n");
         updated = true;
     }
     

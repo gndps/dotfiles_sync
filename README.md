@@ -8,7 +8,6 @@ A clean, hassle-free dotfiles manager built in Rust with native git integration.
 - 🔄 **Robust Sync Workflow** - 6-step bidirectional sync with automatic backups
 - 🔀 **Smart Git Integration** - Auto-commits, rebase strategy, conflict protection
 - 📦 **Flexible Tracking** - Use pre-configured stubs OR track files directly
-- 🔒 **Encryption Support** - AES-256-GCM encryption for sensitive files
 - 💾 **Automatic Backups** - Pre-export snapshots stored in repo before every sync
 - 🔍 **System Scanning** - Discover available dotfiles on your system
 - 🛡️ **Data Safety First** - Never overwrites home directory on conflicts
@@ -52,7 +51,7 @@ dotfiles init ~/my-dotfiles
 This creates:
 - `dotfiles.config.json` - Main configuration with tracked files
 - `custom_db/` - Custom stub definitions
-- `.backup/` - **Local-only backup directory (gitignored, unencrypted)**
+- `.backup/` - **Local-only backup directory (gitignored)**
 - `.gitignore` - Auto-configured
 - `.git/` - Git repository with initial commit
 - `~/.dotfiles.local.config.json` - **Global config saved in your home directory**
@@ -73,9 +72,6 @@ dotfiles add tmux     # Adds ~/.tmux.conf
 dotfiles add ~/.zshrc
 dotfiles add ~/.config/nvim
 
-# Add encrypted files for sensitive data
-dotfiles add --encrypt ~/.ssh/config
-
 # Scan system for available dotfiles
 dotfiles scan
 
@@ -86,7 +82,7 @@ dotfiles list --all
 ### 3. Sync Your Files
 
 ```bash
-# Full bidirectional sync (syncs ALL files - encrypted and non-encrypted)
+# Full bidirectional sync (syncs ALL files)
 # Works from ANY directory!
 dotfiles sync
 
@@ -144,8 +140,7 @@ Step 4/6: Backup Current Home Files
 
 Step 5/6: Export (Repo → Home)
    ├─ Copy resolved files from repo to home directory
-   ├─ Create parent directories if needed (first sync)
-   └─ Decrypt encrypted files on-the-fly
+   └─ Create parent directories if needed (first sync)
 
 Step 6/6: Push to Remote
    ├─ git push origin main (or -u for first push)
@@ -223,7 +218,7 @@ Creates initial commit, configures `.gitignore`, sets up directory structure, an
 
 ### File Management
 
-#### `dotfiles add <stub|path> [--encrypt] [--password <pwd>]`
+#### `dotfiles add <stub|path>`
 Add configuration files using a stub name OR direct path.
 
 ```bash
@@ -235,9 +230,6 @@ dotfiles add zsh                 # Add ~/.zshrc
 # Using direct paths
 dotfiles add ~/.zshrc            # Add any file directly
 dotfiles add ~/.config/nvim      # Add directories too
-
-# With encryption
-dotfiles add --encrypt ~/.ssh/config
 ```
 
 #### `dotfiles remove <stub|path>` (alias: `rm`)
@@ -301,7 +293,7 @@ Perfect for discovering what dotfiles exist on a new machine!
 ### Sync Operations
 
 #### `dotfiles sync [--dir <path>]`
-Full robust bidirectional sync with automatic backups. **Always syncs ALL files** (encrypted and non-encrypted).
+Full robust bidirectional sync with automatic backups.
 
 ```bash
 # Sync everything (all files)
@@ -313,8 +305,6 @@ dotfiles sync --dir ~/my-dotfiles
 # All subsequent commands will use this directory automatically
 # Works from anywhere after this!
 ```
-
-**Note**: Sync always processes all tracked files. If you have encrypted files and the encryption key is not found, you'll be prompted for your seed phrase once.
 
 **6-Step Process:**
 1. Import changes from home to repo
@@ -381,18 +371,15 @@ Main configuration file (committed to repo):
   "tracked_files": [
     {
       "stub": "git",
-      "path": "~/.gitconfig",
-      "encrypted": false
+      "path": "~/.gitconfig"
     },
     {
       "stub": null,
-      "path": "~/.zshrc",
-      "encrypted": false
+      "path": "~/.zshrc"
     },
     {
       "stub": "ssh",
-      "path": "~/.ssh/config",
-      "encrypted": true
+      "path": "~/.ssh/config"
     }
   ]
 }
@@ -410,161 +397,6 @@ Local overrides (gitignored, machine-specific):
 ```
 
 **Note:** Local config overrides main config, perfect for machine-specific settings.
-
-## Encryption
-
-Encryption uses a **BIP39 12-word seed phrase** for maximum simplicity and security. No passwords to remember - just write down your seed phrase once!
-
-### Adding Your First Encrypted File
-
-When you add your first encrypted file, the tool will:
-1. Generate a 12-word BIP39 seed phrase
-2. Display it prominently with warnings
-3. Derive an encryption key from the seed phrase
-4. **Save the encryption key to `~/.dotfiles.encryption.key` in your HOME directory (NEVER in repo!)**
-5. Create a marker file `.dotfiles.encryption.enabled` in the repo to indicate encryption is used
-6. Commit and push the marker file (the actual key stays on your machine)
-
-```bash
-# Add with encryption (first time)
-dotfiles add --encrypt ~/.ssh/config
-
-# You'll see:
-# ═══════════════════════════════════════════════════════════════
-#                   🔐 ENCRYPTION SEED PHRASE                   
-# ═══════════════════════════════════════════════════════════════
-# 
-# ⚠️  CRITICAL: SAVE THIS SEED PHRASE NOW! ⚠️
-# 
-# This is your 12-word BIP39 seed phrase:
-# 
-#  1. word1      2. word2      3. word3
-#  4. word4      5. word5      6. word6
-#  7. word7      8. word8      9. word9
-# 10. word10    11. word11    12. word12
-# 
-# ⚠️  IMPORTANT SECURITY NOTICE:
-#   • You will NOT see this seed phrase again
-#   • Write it down on paper (NOT digitally)
-#   • Keep it in a safe place
-#   • You need this to decrypt files on new machines
-#   • Anyone with this phrase can decrypt your files
-```
-
-### Adding More Encrypted Files
-
-After the first time, encryption is seamless:
-
-```bash
-# Add more encrypted files (uses existing key)
-dotfiles add --encrypt ~/.aws/credentials
-dotfiles add --encrypt ~/.gnupg/gpg.conf
-dotfiles add --encrypt ~/.config/secrets
-```
-
-### How It Works
-
-- **Seed Phrase**: BIP39 standard 12-word mnemonic (easy to write down)
-- **Algorithm**: AES-256-GCM encryption
-- **Key Derivation**: PBKDF2-HMAC-SHA256 (100,000 iterations)
-- **Storage**: Encrypted files stored as `.enc` in repo
-- **Encryption Key**: Stored in `~/.dotfiles.encryption.key` in your HOME directory (**NEVER in repo!**)
-- **Marker File**: `.dotfiles.encryption.enabled` in repo indicates encryption is used
-- **Security**: Only you have the key; new machines require seed phrase
-- **Sync**: Automatic once key is set up (no password prompts on same machine)
-
-### Setting Up on a New Machine
-
-When you clone your dotfiles to a new machine with encrypted files:
-
-```bash
-# Clone your dotfiles
-git clone https://github.com/you/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-
-# Initialize
-dotfiles init
-
-# Sync will detect encrypted files and prompt for seed phrase
-dotfiles sync --all
-
-# 🔐 Enter your 12-word seed phrase to decrypt files:
-#    (Enter all 12 words separated by spaces)
-# 
-#    Seed phrase: word1 word2 word3 ... word12
-```
-
-The tool will:
-1. Detect the `.dotfiles.encryption.enabled` marker file
-2. **Prompt for your 12-word seed phrase (one time only)**
-3. Derive the encryption key from your seed phrase
-4. **Save the key to `~/.dotfiles.encryption.key` in your HOME directory (not repo!)**
-5. Decrypt all encrypted files to your home directory
-
-**Security Note**: The encryption key is stored locally on each machine. Without your seed phrase, no one can decrypt your files on a new machine!
-
-### Security Model
-
-**Critical Security Design:**
-- 🔒 Encryption key is **NEVER** stored in the repository
-- 🏠 Key is stored in `~/.dotfiles.encryption.key` in your home directory
-- 📝 Only a marker file (`.dotfiles.encryption.enabled`) is in the repo
-- 🔑 New machines require your 12-word seed phrase to decrypt files
-- ⚠️ Keep your seed phrase safe - it's the only way to recover access!
-
-**What's in the Repo:**
-- ✅ Encrypted files (`.enc` extension)
-- ✅ Marker file indicating encryption is used
-- ❌ NO encryption keys or passwords
-
-**What's on Your Machine:**
-- 🔑 Encryption key in `~/.dotfiles.encryption.key`
-- 📝 Your 12-word seed phrase (write it down!)
-
-### Syncing Encrypted Files
-
-```bash
-# Sync always processes ALL files (encrypted + non-encrypted)
-dotfiles sync
-
-# First time on a new machine? 
-# You'll be prompted for your seed phrase once, then it's automatic!
-# No password prompts after initial setup!
-```
-
-### Backup Security
-
-**Local Backups are Unencrypted:**
-- 📁 `.backup/` directory contains **unencrypted** copies of all files
-- 🚫 `.backup/` is in `.gitignore` - **NEVER pushed to remote**
-- 🏠 Backups stay on your local machine only
-- 🆘 Allows emergency file recovery without seed phrase
-- ⚠️ Keep your machine secure - backups contain sensitive data in plain text
-
-**Why unencrypted local backups?**
-- Emergency recovery if you forget seed phrase
-- Quick file restoration without decryption
-- Safe because they never leave your machine
-
-### Security Model
-
-**Critical Security Design:**
-- � Encryption key is **NEVER** stored in the repository
-- 🏠 Key is stored in `~/.dotfiles.encryption.key` in your home directory
-- 📝 Only a marker file (`.dotfiles.encryption.enabled`) is in the repo
-- 🔑 New machines require your 12-word seed phrase to decrypt files
-- ⚠️ Keep your seed phrase safe - it's the only way to recover access!
-
-**What's in the Repo:**
-- ✅ Encrypted files (`.enc` extension)
-- ✅ Marker file indicating encryption is used
-- ❌ NO encryption keys or passwords
-- ❌ NO backups (they're local-only)
-
-**What's on Your Machine:**
-- 🔑 Encryption key in `~/.dotfiles.encryption.key`
-- 📝 Your 12-word seed phrase (write it down!)
-- 📁 Unencrypted backups in `.backup/` (local-only, gitignored)
 
 ## Automatic Backups
 
@@ -584,10 +416,7 @@ Every time files are exported to your home directory, a backup is created first:
 **Features:**
 - Created before every export (Step 4 of sync)
 - Timestamped: `YYYYMMDD_HHMMSS`
-- Committed to repo and pushed to remote
-- **✅ SECURITY:** Encrypted files are backed up **encrypted** (with `.enc` extension)
-  - Your sensitive data remains encrypted even in backups
-  - Backup directory is safe to push to public repositories
+- Local-only (gitignored, never pushed to remote)
 - Manual recovery if needed
 
 **Emergency Recovery:**
@@ -652,8 +481,7 @@ cd ~/dotfiles
 dotfiles init
 
 # First sync - creates missing files/directories
-dotfiles sync --all
-# Will prompt for your 12-word seed phrase if you have encrypted files
+dotfiles sync
 
 # Or scan to see what's available
 dotfiles scan
@@ -697,28 +525,6 @@ git rebase --continue  # Continue rebase
 # Continue sync (will create backup and export)
 dotfiles sync
 # ✓ Sync completed successfully!
-```
-
-### Working with Encrypted Files
-
-```bash
-# First time: Add sensitive files with encryption
-# This generates and displays your 12-word seed phrase
-dotfiles add --encrypt ~/.ssh/config
-# ⚠️  SAVE THE SEED PHRASE THAT IS DISPLAYED!
-
-# Add more encrypted files (uses existing encryption key)
-dotfiles add --encrypt ~/.aws/credentials
-dotfiles add --encrypt ~/.config/secrets
-
-# Sync encrypted files (no password prompts!)
-dotfiles sync --all
-
-# Or sync only encrypted files
-dotfiles sync --encrypted
-
-# On a new machine, you'll be prompted once for your seed phrase
-# After that, syncing is automatic
 ```
 
 ### Emergency Recovery from Backup
@@ -820,10 +626,9 @@ git status
 1. **Let sync handle git** - The tool auto-commits with timestamps
 2. **Use scan on new machines** - Discover available dotfiles: `dotfiles scan`
 3. **Track directly when needed** - Use `dotfiles add ~/.file` for quick additions
-4. **Encrypt sensitive files** - Use `--encrypt` for SSH keys, AWS credentials, etc.
-5. **Trust the backups** - Pre-export snapshots protect you automatically
-6. **Resolve conflicts carefully** - Home directory is protected until you resolve
-7. **Use local config** - Machine-specific settings go in `dotfiles.local.config.json`
+4. **Trust the backups** - Pre-export snapshots protect you automatically
+5. **Resolve conflicts carefully** - Home directory is protected until you resolve
+6. **Use local config** - Machine-specific settings go in `dotfiles.local.config.json`
 8. **Regular syncing** - Run `dotfiles sync` often to avoid large conflicts
 
 ## Git Integration

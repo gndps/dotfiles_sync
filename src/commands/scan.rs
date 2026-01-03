@@ -115,12 +115,7 @@ fn check_stub_sync(repo_path: &std::path::Path, files: &[String]) -> Result<bool
         
         // Check if repo file exists
         if !repo_file.exists() {
-            // Check for encrypted version
-            let encrypted_path = repo_file.with_extension("enc");
-            if !encrypted_path.exists() {
-                return Ok(false); // File in home but not in repo
-            }
-            continue; // Can't compare encrypted files easily
+                    return Ok(false); // File in home but not in repo
         }
         
         // Compare file contents
