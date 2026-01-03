@@ -85,6 +85,22 @@ impl GitRepo {
         Ok(())
     }
 
+    /// Extract a specific version of a conflicted file
+    /// stage: 1 = base, 2 = ours, 3 = theirs
+    pub fn get_file_version(&self, file_path: &str, stage: u8) -> Result<Vec<u8>> {
+        let output = Command::new("git")
+            .current_dir(&self.repo_path)
+            .args(&["show", &format!(":{}{}", stage, file_path)])
+            .output()
+            .context("Failed to extract file version from git")?;
+
+        if !output.status.success() {
+            bail!("Failed to get version {} of file {}", stage, file_path);
+        }
+
+        Ok(output.stdout)
+    }
+
     pub fn add_all(&self) -> Result<()> {
         let status = Command::new("git")
             .current_dir(&self.repo_path)

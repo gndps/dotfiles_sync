@@ -160,10 +160,58 @@ fn decrypt_to_temp(repo_path: &Path, encrypted_file: &Path, key: &[u8; 32]) -> R
         std::fs::create_dir_all(parent)?;
     }
     
-    // Decrypt
-    FileEncryptor::decrypt_file(encrypted_file, &decrypted_path, key)?;
+    // Check if this is a conflicted file by trying to extract both versions
+    let git = GitRepo::new(repo_path);
+    let file_path_str = rel_path.to_string_lossy();
     
-    print_info(&format!("Decrypted to: {}", decrypted_path.display()));
+    let has_ours = git.get_file_version(&file_path_str, 2).is_ok();
+    let has_theirs = git.get_file_version(&file_path_str, 3).is_ok();
+    
+    if has_ours && has_theirs {
+        // This is a conflicted encrypted file - extract both versions and create merged file with conflict markers
+        let ours_encrypted = git.get_file_version(&file_path_str, 2)?;
+        let theirs_encrypted = git.get_file_version(&file_path_str, 3)?;
+        
+        // Write encrypted versions to temp files
+        let temp_ours_enc = std::env::temp_dir().join(format!("dotfiles_ours_{}", uuid::Uuid::new_v4()));
+        let temp_theirs_enc = std::env::temp_dir().join(format!("dotfiles_theirs_{}", uuid::Uuid::new_v4()));
+        std::fs::write(&temp_ours_enc, &ours_encrypted)?;
+        std::fs::write(&temp_theirs_enc, &theirs_encrypted)?;
+        
+        // Decrypt both versions
+        let temp_ours_dec = std::env::temp_dir().join(format!("dotfiles_ours_dec_{}", uuid::Uuid::new_v4()));
+        let temp_theirs_dec = std::env::temp_dir().join(format!("dotfiles_theirs_dec_{}", uuid::Uuid::new_v4()));
+        
+        FileEncryptor::decrypt_file(&temp_ours_enc, &temp_ours_dec, key)?;
+        FileEncryptor::decrypt_file(&temp_theirs_enc, &temp_theirs_dec, key)?;
+        
+        // Read decrypted content
+        let ours_content = std::fs::read_to_string(&temp_ours_dec)
+            .unwrap_or_else(|_| String::from("<binary content>"));
+        let theirs_content = std::fs::read_to_string(&temp_theirs_dec)
+            .unwrap_or_else(|_| String::from("<binary content>"));
+        
+        // Create merged file with conflict markers
+        let merged_content = format!(
+            "<<<<<<< HEAD (ours - current)\n{}=======\n{}>>>>>>> theirs (incoming)\n",
+            ours_content,
+            theirs_content
+        );
+        
+        std::fs::write(&decrypted_path, merged_content)?;
+        
+        // Clean up temp files
+        let _ = std::fs::remove_file(temp_ours_enc);
+        let _ = std::fs::remove_file(temp_theirs_enc);
+        let _ = std::fs::remove_file(temp_ours_dec);
+        let _ = std::fs::remove_file(temp_theirs_dec);
+        
+        print_info(&format!("Decrypted conflicted file with markers to: {}", decrypted_path.display()));
+    } else {
+        // Not conflicted or can't extract versions - just decrypt as-is
+        FileEncryptor::decrypt_file(encrypted_file, &decrypted_path, key)?;
+        print_info(&format!("Decrypted to: {}", decrypted_path.display()));
+    }
     
     Ok(())
 }
@@ -174,23 +222,16 @@ fn check_for_conflict_markers(repo_path: &Path, tracked: &[TrackedFile]) -> Resu
     for file in tracked {
         let repo_file = repo_path.join(file.path.trim_start_matches("~/").trim_start_matches('/'));
         
-        // For encrypted files, check both encrypted and temp decrypted versions
+        // For encrypted files, ONLY check temp decrypted versions (not the encrypted file itself)
         if file.encrypted {
-            let encrypted_path = repo_file.with_extension("enc");
-            if encrypted_path.exists() {
-                if file_has_conflict_markers(&encrypted_path)? {
+            let temp_path = repo_path.join(TEMP_CONFLICTS_DIR).join(file.path.trim_start_matches("~/").trim_start_matches('/'));
+            if temp_path.exists() {
+                if file_has_conflict_markers(&temp_path)? {
                     files_with_markers.push(file.path.clone());
                 }
             }
-            
-            // Also check temp decrypted version
-            let temp_path = repo_path.join(TEMP_CONFLICTS_DIR).join(file.path.trim_start_matches("~/"));
-            if temp_path.exists() {
-                if file_has_conflict_markers(&temp_path)? {
-                    files_with_markers.push(format!("{} (in temp)", file.path));
-                }
-            }
         } else if repo_file.exists() {
+            // For unencrypted files, check the file directly
             if file_has_conflict_markers(&repo_file)? {
                 files_with_markers.push(file.path.clone());
             }
