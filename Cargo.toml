@@ -1,6 +1,6 @@
 [package]
 name = "dotfiles_sync"
-version = "1.0.14"
+version = "1.0.15"
 edition = "2021"
 authors = ["Gundeep Singh <gndp@live.com>"]
 description = "A clean, hassle-free dotfiles manager with git integration"
