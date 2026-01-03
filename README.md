@@ -23,14 +23,18 @@ A clean, hassle-free dotfiles manager built in Rust with native git integration.
 cargo install --path .
 ```
 
-### From Release (Coming Soon)
+### From Release
 
+#### Homebrew
 ```bash
 # Homebrew (macOS/Linux)
-brew install yourusername/tap/dotfiles
+brew install gndps/tap/dotfiles_sync
+```
 
-# Cargo
-cargo install dotfiles
+#### Shell
+```bash
+# Shell
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gndps/dotfiles_sync/releases/download/v1.0.8/dotfiles_sync-installer.sh | sh
 ```
 
 ## Quick Start
