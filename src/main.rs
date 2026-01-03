@@ -17,10 +17,10 @@ fn main() -> Result<()> {
     match cli.command {
         Commands::Init { path, tag } => commands::init::execute(path, tag)?,
         Commands::Add { stubs, encrypt, password } => commands::add::execute(stubs, encrypt, password)?,
-        Commands::Remove { stub } => commands::remove::execute(stub)?,
+        Commands::Remove { stub_or_path } => commands::remove::execute(stub_or_path)?,
         Commands::List { all, stubs } => commands::list::execute(all, stubs)?,
         Commands::Status => commands::status::execute()?,
-        Commands::Sync { all, encrypted, password } => commands::sync::execute(all, encrypted, password)?,
+        Commands::Sync { all, encrypted, dir, password } => commands::sync::execute(all, encrypted, dir, password)?,
         Commands::SyncLocal => commands::sync_local::execute()?,
         Commands::Pull => commands::pull::execute()?,
         Commands::Push => commands::push::execute()?,

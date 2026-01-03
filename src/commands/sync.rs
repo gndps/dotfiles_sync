@@ -1,4 +1,4 @@
-use anyhow::{bail, Result};
+use anyhow::{bail, Context, Result};
 use colored::Colorize;
 use crate::config::{ConfigManager, TrackedFile};
 use crate::encryption::FileEncryptor;
@@ -6,8 +6,22 @@ use crate::git::GitRepo;
 use crate::sync::FileSyncer;
 use crate::utils::{print_error, print_info, print_success, print_warning};
 
-pub fn execute(sync_all: bool, sync_encrypted: bool, _password: Option<String>) -> Result<()> {
-    let repo_path = std::env::current_dir()?;
+pub fn execute(sync_all: bool, sync_encrypted: bool, dir: Option<std::path::PathBuf>, _password: Option<String>) -> Result<()> {
+    // Handle --dir argument to change and save repo directory
+    let repo_path = if let Some(dir_path) = dir {
+        let canonical_path = dir_path.canonicalize()
+            .context("Failed to resolve directory path")?;
+        
+        // Save to local config
+        let temp_manager = ConfigManager::new(canonical_path.clone());
+        temp_manager.save_local_config(canonical_path.clone())?;
+        print_success(&format!("Saved dotfiles directory to local config: {}", canonical_path.display()));
+        
+        canonical_path
+    } else {
+        std::env::current_dir()?
+    };
+    
     let manager = ConfigManager::new(repo_path.clone());
     let git = GitRepo::new(&repo_path);
 

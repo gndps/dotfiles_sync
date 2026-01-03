@@ -230,15 +230,19 @@ dotfiles add ~/.config/nvim      # Add directories too
 
 # With encryption
 dotfiles add --encrypt ~/.ssh/config
-dotfiles add --encrypt --password mypass ~/.aws/credentials
 ```
 
-#### `dotfiles remove <stub>` (alias: `rm`)
-Stop tracking files for a stub.
+#### `dotfiles remove <stub|path>` (alias: `rm`)
+Stop tracking files for a stub or path.
 
 ```bash
+# Remove by stub name
 dotfiles remove vim
 dotfiles rm tmux
+
+# Remove by direct path
+dotfiles remove ~/.zshrc
+dotfiles rm ~/.config/nvim
 ```
 
 #### `dotfiles list` (alias: `ls`)
@@ -288,14 +292,18 @@ Perfect for discovering what dotfiles exist on a new machine!
 
 ### Sync Operations
 
-#### `dotfiles sync [--all] [--encrypted] [--password <pwd>]`
+#### `dotfiles sync [--all] [--encrypted] [--dir <path>]`
 Full robust bidirectional sync with automatic backups.
 
 ```bash
 dotfiles sync                    # Sync non-encrypted files
 dotfiles sync --all              # Sync all files including encrypted
 dotfiles sync --encrypted        # Sync only encrypted files
-dotfiles sync --all --password secret  # Provide password via CLI
+
+# Set dotfiles directory and save to local config
+dotfiles sync --dir ~/my-dotfiles
+# This saves the directory to ~/.dotfiles.local.config.json
+# All subsequent commands will use this directory automatically
 ```
 
 **6-Step Process:**

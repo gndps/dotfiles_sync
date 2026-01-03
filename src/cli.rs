@@ -35,8 +35,8 @@ pub enum Commands {
     #[command(visible_aliases = ["rm"])]
     #[command(about = "Remove a config file from tracking")]
     Remove {
-        #[arg(help = "Stub name to remove")]
-        stub: String,
+        #[arg(help = "Stub name or path to remove (e.g., 'git', '~/.zshrc')")]
+        stub_or_path: String,
     },
 
     #[command(visible_aliases = ["ls"])]
@@ -59,6 +59,9 @@ pub enum Commands {
         
         #[arg(long, help = "Sync only encrypted files")]
         encrypted: bool,
+        
+        #[arg(long, help = "Set dotfiles directory and save to local config")]
+        dir: Option<PathBuf>,
         
         #[arg(long, hide = true)]
         password: Option<String>,

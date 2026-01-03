@@ -99,6 +99,29 @@ impl ConfigManager {
         Ok(())
     }
 
+    pub fn save_local_config(&self, repo_path: PathBuf) -> Result<()> {
+        let local_config_path = self.get_local_config_path();
+        
+        let mut local_config = if local_config_path.exists() {
+            let content = fs::read_to_string(&local_config_path)
+                .context("Failed to read local config file")?;
+            serde_json::from_str(&content)
+                .context("Failed to parse local config file")?
+        } else {
+            DotfilesConfig::default()
+        };
+        
+        local_config.repo_path = repo_path;
+        
+        let content = serde_json::to_string_pretty(&local_config)
+            .context("Failed to serialize local config")?;
+        
+        fs::write(&local_config_path, content)
+            .context("Failed to write local config file")?;
+        
+        Ok(())
+    }
+
     pub fn load_tracked_files(&self) -> Result<Vec<TrackedFile>> {
         let config = self.load_config()?;
         
