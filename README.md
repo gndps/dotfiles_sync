@@ -34,7 +34,7 @@ brew install gndps/tap/dotfiles_sync
 #### Shell
 ```bash
 # Shell
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gndps/dotfiles_sync/releases/download/v1.0.8/dotfiles_sync-installer.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gndps/dotfiles_sync/releases/latest/download/dotfiles_sync-installer.sh | sh
 ```
 
 ## Quick Start
@@ -178,13 +178,13 @@ cd ~/my-dotfiles
 vim .gitconfig
 
 # You'll see standard git conflict markers:
-<<<<<<< Updated upstream
+<<<<<<< HEAD
 [user]
     name = John Doe (from remote)
 =======
 [user]
     name = Jane Doe (from local)
->>>>>>> Stashed changes
+>>>>>>> dotfiles sync: 2024-01-02 15:30:00
 
 # Edit to keep what you want:
 [user]
@@ -395,34 +395,119 @@ Local overrides (gitignored, machine-specific):
 
 ## Encryption
 
-### Adding Encrypted Files
+Encryption uses a **BIP39 12-word seed phrase** for maximum simplicity and security. No passwords to remember - just write down your seed phrase once!
+
+### Adding Your First Encrypted File
+
+When you add your first encrypted file, the tool will:
+1. Generate a 12-word BIP39 seed phrase
+2. Display it prominently with warnings
+3. Derive an encryption key from the seed phrase
+4. Save the encryption key to `.dotfiles.encryption.key` in your repo
+5. Commit and push the key file (safe to share, useless without seed phrase)
 
 ```bash
-# Add with encryption
+# Add with encryption (first time)
 dotfiles add --encrypt ~/.ssh/config
+
+# You'll see:
+# ═══════════════════════════════════════════════════════════════
+#                   🔐 ENCRYPTION SEED PHRASE                   
+# ═══════════════════════════════════════════════════════════════
+# 
+# ⚠️  CRITICAL: SAVE THIS SEED PHRASE NOW! ⚠️
+# 
+# This is your 12-word BIP39 seed phrase:
+# 
+#  1. word1      2. word2      3. word3
+#  4. word4      5. word5      6. word6
+#  7. word7      8. word8      9. word9
+# 10. word10    11. word11    12. word12
+# 
+# ⚠️  IMPORTANT SECURITY NOTICE:
+#   • You will NOT see this seed phrase again
+#   • Write it down on paper (NOT digitally)
+#   • Keep it in a safe place
+#   • You need this to decrypt files on new machines
+#   • Anyone with this phrase can decrypt your files
+```
+
+### Adding More Encrypted Files
+
+After the first time, encryption is seamless:
+
+```bash
+# Add more encrypted files (uses existing key)
 dotfiles add --encrypt ~/.aws/credentials
 dotfiles add --encrypt ~/.gnupg/gpg.conf
+dotfiles add --encrypt ~/.config/secrets
 ```
 
 ### How It Works
 
-- **Algorithm**: AES-256-GCM
-- **Key Derivation**: Argon2 (secure password hashing)
+- **Seed Phrase**: BIP39 standard 12-word mnemonic (easy to write down)
+- **Algorithm**: AES-256-GCM encryption
+- **Key Derivation**: PBKDF2-HMAC-SHA256 (100,000 iterations)
 - **Storage**: Encrypted files stored as `.enc` in repo
-- **Sync**: Password prompted during sync (or use `--password` flag)
+- **Encryption Key**: Stored in `.dotfiles.encryption.key` (committed to repo)
+- **Sync**: Automatic - no password prompts!
+
+### Setting Up on a New Machine
+
+When you clone your dotfiles to a new machine with encrypted files:
+
+```bash
+# Clone your dotfiles
+git clone https://github.com/you/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+
+# Initialize
+dotfiles init
+
+# Sync will detect encrypted files and prompt for seed phrase
+dotfiles sync --all
+
+# 🔐 Enter your 12-word seed phrase to decrypt files:
+#    (Enter all 12 words separated by spaces)
+# 
+#    Seed phrase: word1 word2 word3 ... word12
+```
+
+The tool will:
+1. Prompt for your seed phrase (one time only)
+2. Derive the encryption key
+3. Save it to the repo
+4. Decrypt all encrypted files to your home directory
 
 ### Syncing Encrypted Files
 
 ```bash
-# Sync all files (prompts for password)
+# Sync all files (encrypted and non-encrypted)
 dotfiles sync --all
 
 # Sync only encrypted files
 dotfiles sync --encrypted
 
-# Provide password via CLI
-dotfiles sync --all --password mypassword
+# No password prompts - it just works!
 ```
+
+### Security Model
+
+**What's committed to the repository:**
+- ✅ Encrypted files (`.enc` extension) - safe to share publicly
+- ✅ Encryption key file (`.dotfiles.encryption.key`) - useless without seed phrase
+- ✅ Encrypted backups (`.backup/*/*.enc`) - safe to share publicly
+
+**What you must protect:**
+- 🔐 Your 12-word seed phrase - **NEVER commit this to git**
+- 🔐 Keep it on paper in a safe place
+- 🔐 Anyone with the seed phrase + your repo can decrypt your files
+
+**Why this is secure:**
+- The encryption key in the repo is derived from your seed phrase using PBKDF2
+- Without the seed phrase, the key file alone cannot decrypt new files
+- The seed phrase is never stored anywhere digitally
+- Even if someone gets your repo, they can't decrypt without your seed phrase
 
 ## Automatic Backups
 
@@ -443,7 +528,9 @@ Every time files are exported to your home directory, a backup is created first:
 - Created before every export (Step 4 of sync)
 - Timestamped: `YYYYMMDD_HHMMSS`
 - Committed to repo and pushed to remote
-- Plain text backups (even for encrypted files)
+- **✅ SECURITY:** Encrypted files are backed up **encrypted** (with `.enc` extension)
+  - Your sensitive data remains encrypted even in backups
+  - Backup directory is safe to push to public repositories
 - Manual recovery if needed
 
 **Emergency Recovery:**
@@ -509,7 +596,7 @@ dotfiles init
 
 # First sync - creates missing files/directories
 dotfiles sync --all
-# Will prompt for password if you have encrypted files
+# Will prompt for your 12-word seed phrase if you have encrypted files
 
 # Or scan to see what's available
 dotfiles scan
@@ -558,18 +645,23 @@ dotfiles sync
 ### Working with Encrypted Files
 
 ```bash
-# Add sensitive files with encryption
+# First time: Add sensitive files with encryption
+# This generates and displays your 12-word seed phrase
 dotfiles add --encrypt ~/.ssh/config
-dotfiles add --encrypt ~/.aws/credentials
+# ⚠️  SAVE THE SEED PHRASE THAT IS DISPLAYED!
 
-# Sync encrypted files (prompts for password)
+# Add more encrypted files (uses existing encryption key)
+dotfiles add --encrypt ~/.aws/credentials
+dotfiles add --encrypt ~/.config/secrets
+
+# Sync encrypted files (no password prompts!)
 dotfiles sync --all
 
 # Or sync only encrypted files
 dotfiles sync --encrypted
 
-# Provide password to avoid prompt
-dotfiles sync --all --password mypassword
+# On a new machine, you'll be prompted once for your seed phrase
+# After that, syncing is automatic
 ```
 
 ### Emergency Recovery from Backup
@@ -622,7 +714,7 @@ cd ~/dotfiles
 git status                    # See conflicts
 vim <conflicted-file>         # Resolve
 git add <resolved-file>
-git stash drop
+git rebase --continue         # Complete the rebase
 dotfiles sync                 # Continue
 ```
 

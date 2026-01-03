@@ -6,13 +6,6 @@ use crate::db::ConfigDatabase;
 use crate::sync::FileSyncer;
 use crate::utils::{print_section, print_info};
 
-#[derive(Debug, PartialEq)]
-enum StubStatus {
-    Synced,      // Tracked and files match between home and repo
-    OutOfSync,   // Tracked but files differ
-    Unmanaged,   // Files exist but not tracked
-}
-
 pub fn execute() -> Result<()> {
     let repo_path = std::env::current_dir()?;
     let manager = ConfigManager::new(repo_path.clone());
@@ -150,22 +143,28 @@ fn print_results(title: &str, stubs: &[(String, Vec<String>)], color: &str) {
     }
 
     println!();
-    match color {
-        "green" => println!("{}", title.green().bold()),
-        "yellow" => println!("{}", title.yellow().bold()),
-        "cyan" => println!("{}", title.cyan().bold()),
-        _ => println!("{}", title.bold()),
-    }
+    println!("{}", title.bold());
     
     for (stub_name, files) in stubs {
-        let file_count = files.iter()
-            .filter(|f| FileSyncer::expand_tilde(f).exists())
-            .count();
+        println!("\n{}", stub_name.green().bold());
         
-        println!("  {} ({} file{})", 
-            stub_name, 
-            file_count,
-            if file_count == 1 { "" } else { "s" }
-        );
+        for file_path in files {
+            let home_path = FileSyncer::expand_tilde(file_path);
+            if home_path.exists() {
+                let status_icon = match color {
+                    "green" => "✓".green(),
+                    "yellow" => "✗".yellow(),
+                    "cyan" => "○".cyan(),
+                    _ => "?".white(),
+                };
+                let status_text = match color {
+                    "green" => "in sync",
+                    "yellow" => "out of sync",
+                    "cyan" => "unmanaged",
+                    _ => "unknown",
+                };
+                println!("  {} {} {}", status_icon, file_path, format!("({})", status_text).dimmed());
+            }
+        }
     }
 }

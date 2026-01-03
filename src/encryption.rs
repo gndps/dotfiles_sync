@@ -2,52 +2,109 @@ use aes_gcm::{
     aead::{Aead, KeyInit, OsRng},
     Aes256Gcm, Nonce,
 };
-use anyhow::{Context, Result};
-use argon2::{
-    password_hash::{PasswordHasher, SaltString},
-    Argon2,
-};
+use anyhow::{bail, Context, Result};
+use bip39::{Language, Mnemonic};
+use pbkdf2::pbkdf2_hmac;
 use rand::RngCore;
+use sha2::Sha256;
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 const NONCE_SIZE: usize = 12;
+const KEY_SIZE: usize = 32;
+const PBKDF2_ITERATIONS: u32 = 100_000;
+const ENCRYPTION_KEY_FILE: &str = ".dotfiles.encryption.key";
 
 pub struct FileEncryptor;
 
 impl FileEncryptor {
-    pub fn encrypt_file(source: &Path, dest: &Path, password: &str) -> Result<()> {
-        let content = fs::read(source).context("Failed to read source file")?;
+    /// Get the path to the encryption key file in the repository
+    pub fn get_key_file_path(repo_path: &Path) -> PathBuf {
+        repo_path.join(ENCRYPTION_KEY_FILE)
+    }
+
+    /// Check if encryption is already set up in the repository
+    pub fn is_encryption_setup(repo_path: &Path) -> bool {
+        Self::get_key_file_path(repo_path).exists()
+    }
+
+    /// Generate a new BIP39 mnemonic (12 words)
+    pub fn generate_mnemonic() -> Result<Mnemonic> {
+        let mut entropy = [0u8; 16]; // 16 bytes = 128 bits = 12 words
+        OsRng.fill_bytes(&mut entropy);
         
-        let encrypted = Self::encrypt_data(&content, password)?;
+        Mnemonic::from_entropy_in(Language::English, &entropy)
+            .map_err(|e| anyhow::anyhow!("Failed to generate mnemonic: {}", e))
+    }
+
+    /// Derive encryption key from mnemonic seed phrase
+    pub fn derive_key_from_mnemonic(mnemonic: &Mnemonic) -> [u8; KEY_SIZE] {
+        let seed = mnemonic.to_seed("");
+        let mut key = [0u8; KEY_SIZE];
+        pbkdf2_hmac::<Sha256>(&seed[..32], b"dotfiles-encryption", PBKDF2_ITERATIONS, &mut key);
+        key
+    }
+
+    /// Save encryption key to repository
+    pub fn save_key_to_repo(repo_path: &Path, key: &[u8; KEY_SIZE]) -> Result<()> {
+        let key_path = Self::get_key_file_path(repo_path);
+        let encoded = base64::encode(key);
+        fs::write(&key_path, encoded)
+            .context("Failed to write encryption key to repository")?;
+        Ok(())
+    }
+
+    /// Load encryption key from repository
+    pub fn load_key_from_repo(repo_path: &Path) -> Result<[u8; KEY_SIZE]> {
+        let key_path = Self::get_key_file_path(repo_path);
+        
+        if !key_path.exists() {
+            bail!("Encryption key not found. Please set up encryption first with 'dotfiles add --encrypt <file>'");
+        }
+
+        let encoded = fs::read_to_string(&key_path)
+            .context("Failed to read encryption key file")?;
+        
+        let decoded = base64::decode(encoded.trim())
+            .context("Failed to decode encryption key")?;
+        
+        if decoded.len() != KEY_SIZE {
+            bail!("Invalid encryption key size");
+        }
+
+        let mut key = [0u8; KEY_SIZE];
+        key.copy_from_slice(&decoded);
+        Ok(key)
+    }
+
+    /// Encrypt a file using the provided key
+    pub fn encrypt_file(source: &Path, dest: &Path, key: &[u8; KEY_SIZE]) -> Result<()> {
+        let content = fs::read(source).context("Failed to read source file")?;
+        let encrypted = Self::encrypt_data(&content, key)?;
+        
+        if let Some(parent) = dest.parent() {
+            fs::create_dir_all(parent)?;
+        }
         
         fs::write(dest, encrypted).context("Failed to write encrypted file")?;
-        
         Ok(())
     }
 
-    pub fn decrypt_file(source: &Path, dest: &Path, password: &str) -> Result<()> {
+    /// Decrypt a file using the provided key
+    pub fn decrypt_file(source: &Path, dest: &Path, key: &[u8; KEY_SIZE]) -> Result<()> {
         let encrypted = fs::read(source).context("Failed to read encrypted file")?;
+        let decrypted = Self::decrypt_data(&encrypted, key)?;
         
-        let decrypted = Self::decrypt_data(&encrypted, password)?;
+        if let Some(parent) = dest.parent() {
+            fs::create_dir_all(parent)?;
+        }
         
         fs::write(dest, decrypted).context("Failed to write decrypted file")?;
-        
         Ok(())
     }
 
-    pub fn encrypt_data(data: &[u8], password: &str) -> Result<Vec<u8>> {
-        let salt = SaltString::generate(&mut OsRng);
-        
-        let argon2 = Argon2::default();
-        let password_hash = argon2
-            .hash_password(password.as_bytes(), &salt)
-            .map_err(|e| anyhow::anyhow!("Failed to hash password: {}", e))?;
-        
-        let hash = password_hash.hash.context("No hash generated")?;
-        let key_bytes = hash.as_bytes();
-        let key = &key_bytes[..32];
-        
+    /// Encrypt data using the provided key
+    pub fn encrypt_data(data: &[u8], key: &[u8; KEY_SIZE]) -> Result<Vec<u8>> {
         let cipher = Aes256Gcm::new_from_slice(key)
             .map_err(|e| anyhow::anyhow!("Failed to create cipher: {}", e))?;
         
@@ -60,42 +117,23 @@ impl FileEncryptor {
             .map_err(|e| anyhow::anyhow!("Encryption failed: {}", e))?;
         
         let mut result = Vec::new();
-        result.extend_from_slice(salt.as_str().as_bytes());
-        result.push(0);
         result.extend_from_slice(&nonce_bytes);
         result.extend_from_slice(&ciphertext);
         
         Ok(result)
     }
 
-    pub fn decrypt_data(data: &[u8], password: &str) -> Result<Vec<u8>> {
-        let null_pos = data
-            .iter()
-            .position(|&b| b == 0)
-            .context("Invalid encrypted data format")?;
-        
-        let salt_str = std::str::from_utf8(&data[..null_pos])
-            .context("Invalid salt format")?;
-        let salt = SaltString::from_b64(salt_str)
-            .map_err(|e| anyhow::anyhow!("Failed to parse salt: {}", e))?;
-        
-        let argon2 = Argon2::default();
-        let password_hash = argon2
-            .hash_password(password.as_bytes(), &salt)
-            .map_err(|e| anyhow::anyhow!("Failed to hash password: {}", e))?;
-        
-        let hash = password_hash.hash.context("No hash generated")?;
-        let key_bytes = hash.as_bytes();
-        let key = &key_bytes[..32];
-        
+    /// Decrypt data using the provided key
+    pub fn decrypt_data(data: &[u8], key: &[u8; KEY_SIZE]) -> Result<Vec<u8>> {
+        if data.len() < NONCE_SIZE {
+            bail!("Invalid encrypted data: too short");
+        }
+
         let cipher = Aes256Gcm::new_from_slice(key)
             .map_err(|e| anyhow::anyhow!("Failed to create cipher: {}", e))?;
         
-        let nonce_start = null_pos + 1;
-        let nonce_end = nonce_start + NONCE_SIZE;
-        let nonce = Nonce::from_slice(&data[nonce_start..nonce_end]);
-        
-        let ciphertext = &data[nonce_end..];
+        let nonce = Nonce::from_slice(&data[..NONCE_SIZE]);
+        let ciphertext = &data[NONCE_SIZE..];
         
         let plaintext = cipher
             .decrypt(nonce, ciphertext)
@@ -104,23 +142,61 @@ impl FileEncryptor {
         Ok(plaintext)
     }
 
-    pub fn prompt_password(confirm: bool) -> Result<String> {
-        let password = rpassword::prompt_password("Enter password: ")
-            .context("Failed to read password")?;
+    /// Display the seed phrase to the user with prominent warnings
+    pub fn display_seed_phrase(mnemonic: &Mnemonic) {
+        use colored::Colorize;
         
-        if confirm {
-            let confirm_password = rpassword::prompt_password("Confirm password: ")
-                .context("Failed to read confirmation password")?;
-            
-            if password != confirm_password {
-                anyhow::bail!("Passwords do not match");
+        println!();
+        println!("{}", "═══════════════════════════════════════════════════════════════".yellow().bold());
+        println!("{}", "                  🔐 ENCRYPTION SEED PHRASE                   ".yellow().bold());
+        println!("{}", "═══════════════════════════════════════════════════════════════".yellow().bold());
+        println!();
+        println!("{}", "⚠️  CRITICAL: SAVE THIS SEED PHRASE NOW! ⚠️".red().bold());
+        println!();
+        println!("   {}", "This is your 12-word BIP39 seed phrase:".bold());
+        println!();
+        
+        let words: Vec<&str> = mnemonic.word_iter().collect();
+        for (i, word) in words.iter().enumerate() {
+            print!("   {:2}. {:12}", i + 1, word.green().bold());
+            if (i + 1) % 3 == 0 {
+                println!();
             }
         }
+        println!();
+        println!();
+        println!("{}", "⚠️  IMPORTANT SECURITY NOTICE:".yellow().bold());
+        println!("   • {}", "You will NOT see this seed phrase again".bold());
+        println!("   • {}", "Write it down on paper (NOT digitally)".bold());
+        println!("   • {}", "Keep it in a safe place".bold());
+        println!("   • {}", "You need this to decrypt files on new machines".bold());
+        println!("   • {}", "Anyone with this phrase can decrypt your files".bold());
+        println!();
+        println!("{}", "═══════════════════════════════════════════════════════════════".yellow().bold());
+        println!();
+    }
+
+    /// Prompt user to enter their seed phrase for decryption
+    pub fn prompt_for_seed_phrase() -> Result<Mnemonic> {
+        use colored::Colorize;
         
-        if password.is_empty() {
-            anyhow::bail!("Password cannot be empty");
+        println!();
+        println!("{}", "🔐 Enter your 12-word seed phrase to decrypt files:".bold());
+        println!("   (Enter all 12 words separated by spaces)");
+        println!();
+        print!("   Seed phrase: ");
+        
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input)
+            .context("Failed to read seed phrase")?;
+        
+        let mnemonic = Mnemonic::parse_in(Language::English, input.trim())
+            .map_err(|e| anyhow::anyhow!("Invalid seed phrase: {}", e))?;
+        
+        if mnemonic.word_count() != 12 {
+            bail!("Seed phrase must be exactly 12 words");
         }
         
-        Ok(password)
+        Ok(mnemonic)
     }
 }

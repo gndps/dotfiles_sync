@@ -25,9 +25,11 @@ dirs = "5.0"
 regex = "1.10"
 rpassword = "7.3"
 aes-gcm = "0.10"
-argon2 = "0.5"
 base64 = "0.21"
 rand = "0.8"
+bip39 = "2.0"
+sha2 = "0.10"
+pbkdf2 = { version = "0.12", features = ["simple"] }
 
 [dev-dependencies]
 tempfile = "3.9"

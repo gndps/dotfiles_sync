@@ -49,7 +49,11 @@ impl ConfigManager {
     }
 
     pub fn get_local_config_path(&self) -> PathBuf {
-        self.repo_path.join(DOTFILES_LOCAL_CONFIG)
+        if let Some(home) = dirs::home_dir() {
+            home.join(".dotfiles.local.config.json")
+        } else {
+            self.repo_path.join(DOTFILES_LOCAL_CONFIG)
+        }
     }
 
     pub fn load_config(&self) -> Result<DotfilesConfig> {

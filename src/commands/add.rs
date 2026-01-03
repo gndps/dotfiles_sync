@@ -5,7 +5,7 @@ use crate::encryption::FileEncryptor;
 use crate::sync::FileSyncer;
 use crate::utils::{print_success, print_error, print_info};
 
-pub fn execute(stub_or_path: String, encrypt: bool, password: Option<String>) -> Result<()> {
+pub fn execute(stubs_or_paths: Vec<String>, encrypt: bool, _password: Option<String>) -> Result<()> {
     let repo_path = std::env::current_dir()?;
     let manager = ConfigManager::new(repo_path.clone());
 
@@ -14,21 +14,73 @@ pub fn execute(stub_or_path: String, encrypt: bool, password: Option<String>) ->
         bail!("Repository not initialized");
     }
 
+    if stubs_or_paths.is_empty() {
+        print_error("No stubs or paths provided.");
+        bail!("No stubs or paths provided");
+    }
+
     let mut tracked = manager.load_tracked_files()?;
     
-    // Check if it's a direct path or a stub
-    let is_direct_path = stub_or_path.contains('/') || stub_or_path.starts_with('~') || stub_or_path.starts_with('.');
-    
-    if is_direct_path {
-        // Direct file/folder path
-        add_direct_path(&repo_path, &manager, &mut tracked, &stub_or_path, encrypt, password)?;
+    // Handle encryption setup if needed
+    let encryption_key = if encrypt {
+        Some(setup_encryption_if_needed(&repo_path)?)
     } else {
-        // Stub from database
-        add_from_stub(&repo_path, &manager, &mut tracked, &stub_or_path, encrypt, password)?;
+        None
+    };
+    
+    // Process each stub or path
+    for stub_or_path in stubs_or_paths {
+        // Check if it's a direct path or a stub
+        let is_direct_path = stub_or_path.contains('/') || stub_or_path.starts_with('~') || stub_or_path.starts_with('.');
+        
+        if is_direct_path {
+            // Direct file/folder path
+            if let Err(e) = add_direct_path(&repo_path, &manager, &mut tracked, &stub_or_path, encrypt, encryption_key.as_ref()) {
+                print_error(&format!("Failed to add {}: {}", stub_or_path, e));
+            }
+        } else {
+            // Stub from database
+            if let Err(e) = add_from_stub(&repo_path, &manager, &mut tracked, &stub_or_path, encrypt, encryption_key.as_ref()) {
+                print_error(&format!("Failed to add {}: {}", stub_or_path, e));
+            }
+        }
     }
     
     manager.save_tracked_files(&tracked)?;
     Ok(())
+}
+
+fn setup_encryption_if_needed(repo_path: &std::path::Path) -> Result<[u8; 32]> {
+    if FileEncryptor::is_encryption_setup(repo_path) {
+        // Encryption already set up, load the key
+        print_info("Using existing encryption key from repository");
+        FileEncryptor::load_key_from_repo(repo_path)
+    } else {
+        // First time encryption - generate seed phrase
+        print_info("Setting up encryption for the first time...");
+        
+        let mnemonic = FileEncryptor::generate_mnemonic()?;
+        FileEncryptor::display_seed_phrase(&mnemonic);
+        
+        // Prompt user to confirm they saved it
+        use std::io::{self, Write};
+        print!("Type 'yes' to confirm you have saved the seed phrase: ");
+        io::stdout().flush()?;
+        
+        let mut confirmation = String::new();
+        io::stdin().read_line(&mut confirmation)?;
+        
+        if confirmation.trim().to_lowercase() != "yes" {
+            bail!("Encryption setup cancelled. Please save your seed phrase before continuing.");
+        }
+        
+        // Derive and save the key
+        let key = FileEncryptor::derive_key_from_mnemonic(&mnemonic);
+        FileEncryptor::save_key_to_repo(repo_path, &key)?;
+        print_success("Encryption key saved to repository");
+        
+        Ok(key)
+    }
 }
 
 fn add_from_stub(
@@ -37,7 +89,7 @@ fn add_from_stub(
     tracked: &mut Vec<TrackedFile>,
     stub: &str,
     encrypt: bool,
-    password: Option<String>
+    encryption_key: Option<&[u8; 32]>
 ) -> Result<()> {
     let db = ConfigDatabase::new(repo_path);
     let entry = db.load_stub(stub)?;
@@ -58,16 +110,6 @@ fn add_from_stub(
     }
 
     print_info(&format!("Adding {} ({})...", entry.name, stub));
-    
-    let password = if encrypt {
-        Some(if let Some(pwd) = password {
-            pwd
-        } else {
-            FileEncryptor::prompt_password(true)?
-        })
-    } else {
-        None
-    };
 
     for file_path in &files_to_track {
         let (home_path, full_home_path) = resolve_file_path(file_path);
@@ -75,9 +117,9 @@ fn add_from_stub(
         if full_home_path.exists() {
             let repo_file_path = repo_path.join(file_path.trim_start_matches("~/").trim_start_matches('/'));
             
-            if let Some(ref pwd) = password {
+            if let Some(key) = encryption_key {
                 let encrypted_path = repo_file_path.with_extension("enc");
-                FileEncryptor::encrypt_file(&full_home_path, &encrypted_path, pwd)
+                FileEncryptor::encrypt_file(&full_home_path, &encrypted_path, key)
                     .context(format!("Failed to encrypt {}", home_path))?;
                 print_success(&format!("Encrypted and copied: {}", home_path));
             } else {
@@ -107,7 +149,7 @@ fn add_direct_path(
     tracked: &mut Vec<TrackedFile>,
     path: &str,
     encrypt: bool,
-    password: Option<String>
+    encryption_key: Option<&[u8; 32]>
 ) -> Result<()> {
     let expanded_path = FileSyncer::expand_tilde(path);
     
@@ -129,21 +171,11 @@ fn add_direct_path(
     
     print_info(&format!("Adding direct path: {}...", normalized_path));
     
-    let password = if encrypt {
-        Some(if let Some(pwd) = password {
-            pwd
-        } else {
-            FileEncryptor::prompt_password(true)?
-        })
-    } else {
-        None
-    };
-    
     let repo_file_path = repo_path.join(normalized_path.trim_start_matches("~/").trim_start_matches('/'));
     
-    if let Some(ref pwd) = password {
+    if let Some(key) = encryption_key {
         let encrypted_path = repo_file_path.with_extension("enc");
-        FileEncryptor::encrypt_file(&expanded_path, &encrypted_path, pwd)
+        FileEncryptor::encrypt_file(&expanded_path, &encrypted_path, key)
             .context(format!("Failed to encrypt {}", normalized_path))?;
         print_success(&format!("Encrypted and copied: {}", normalized_path));
     } else {

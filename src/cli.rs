@@ -20,15 +20,15 @@ pub enum Commands {
         tag: Option<String>,
     },
 
-    #[command(about = "Add a config file using stub name")]
+    #[command(about = "Add a config file using stub name or direct path")]
     Add {
-        #[arg(help = "Stub name (e.g., 'git', 'tmux', 'vim')")]
-        stub: String,
+        #[arg(help = "Stub names or paths (e.g., 'git', 'tmux', '~/.zshrc')")]
+        stubs: Vec<String>,
         
-        #[arg(long, help = "Encrypt the files for this stub")]
+        #[arg(long, help = "Encrypt the files (uses BIP39 seed phrase)")]
         encrypt: bool,
         
-        #[arg(long, help = "Password for encryption (will prompt if not provided)")]
+        #[arg(long, hide = true)]
         password: Option<String>,
     },
 
@@ -40,10 +40,13 @@ pub enum Commands {
     },
 
     #[command(visible_aliases = ["ls"])]
-    #[command(about = "List tracked config files")]
+    #[command(about = "Show status of tracked files (or list all available stubs with --all)")]
     List {
         #[arg(short, long, help = "Show all available stubs from database")]
         all: bool,
+        
+        #[arg(help = "Filter by specific stub names (only works without --all)")]
+        stubs: Vec<String>,
     },
 
     #[command(about = "Show status of tracked files")]
@@ -57,7 +60,7 @@ pub enum Commands {
         #[arg(long, help = "Sync only encrypted files")]
         encrypted: bool,
         
-        #[arg(long, help = "Password for encrypted files")]
+        #[arg(long, hide = true)]
         password: Option<String>,
     },
 
@@ -83,4 +86,7 @@ pub enum Commands {
 
     #[command(about = "Scan system for available dotfiles and show their status")]
     Scan,
+
+    #[command(about = "Change to dotfiles repository directory")]
+    Cd,
 }

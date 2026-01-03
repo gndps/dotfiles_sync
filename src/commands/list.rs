@@ -1,11 +1,12 @@
 use anyhow::{bail, Result};
 use crate::config::ConfigManager;
 use crate::db::ConfigDatabase;
+use crate::sync::FileSyncer;
 use crate::utils::{print_error, print_section};
 use colored::Colorize;
 use std::collections::HashMap;
 
-pub fn execute(all: bool) -> Result<()> {
+pub fn execute(all: bool, stub_filters: Vec<String>) -> Result<()> {
     let repo_path = std::env::current_dir()?;
     let manager = ConfigManager::new(repo_path.clone());
 
@@ -17,27 +18,44 @@ pub fn execute(all: bool) -> Result<()> {
     if all {
         list_all_available(&repo_path)?;
     } else {
-        list_tracked(&manager)?;
+        show_status(&manager, &repo_path, stub_filters)?;
     }
 
     Ok(())
 }
 
-fn list_tracked(manager: &ConfigManager) -> Result<()> {
+fn show_status(manager: &ConfigManager, repo_path: &std::path::PathBuf, stub_filters: Vec<String>) -> Result<()> {
     let tracked = manager.load_tracked_files()?;
 
     if tracked.is_empty() {
-        println!("No files are currently tracked.");
-        println!("\nUse {} to add files.", "dotfiles add <stub>".cyan());
+        println!("No files are tracked yet.");
+        println!("\nUse {} to start tracking files.", "dotfiles add <stub>".cyan());
         return Ok(());
     }
 
-    print_section("Tracked Files");
+    print_section("File Status");
 
-    let mut by_stub: HashMap<String, Vec<String>> = HashMap::new();
+    let mut by_stub: HashMap<String, Vec<(String, FileStatus)>> = HashMap::new();
+
     for file in tracked {
         let stub_name = file.stub.clone().unwrap_or_else(|| "direct".to_string());
-        by_stub.entry(stub_name).or_default().push(file.path);
+        
+        // Apply stub filter if provided
+        if !stub_filters.is_empty() && !stub_filters.contains(&stub_name) {
+            continue;
+        }
+        
+        let status = check_file_status(repo_path, &file.path);
+        by_stub.entry(stub_name).or_default().push((file.path, status));
+    }
+
+    if by_stub.is_empty() {
+        if !stub_filters.is_empty() {
+            println!("No tracked files found for the specified stubs.");
+        } else {
+            println!("No files are tracked yet.");
+        }
+        return Ok(());
     }
 
     let mut stubs: Vec<_> = by_stub.keys().collect();
@@ -45,9 +63,21 @@ fn list_tracked(manager: &ConfigManager) -> Result<()> {
 
     for stub in stubs {
         println!("\n{}", stub.green().bold());
-        if let Some(paths) = by_stub.get(stub) {
-            for path in paths {
-                println!("  {}", path.dimmed());
+        if let Some(files) = by_stub.get(stub) {
+            for (path, status) in files {
+                let status_str = match status {
+                    FileStatus::InSync => "✓".green(),
+                    FileStatus::OutOfSync => "✗".yellow(),
+                    FileStatus::MissingInHome => "⚠".red(),
+                    FileStatus::MissingInRepo => "?".blue(),
+                };
+                let status_text = match status {
+                    FileStatus::InSync => "in sync",
+                    FileStatus::OutOfSync => "out of sync",
+                    FileStatus::MissingInHome => "missing in home",
+                    FileStatus::MissingInRepo => "missing in repo",
+                };
+                println!("  {} {} {}", status_str, path, format!("({})", status_text).dimmed());
             }
         }
     }
@@ -82,4 +112,59 @@ fn list_all_available(repo_path: &std::path::PathBuf) -> Result<()> {
     }
 
     Ok(())
+}
+
+#[derive(Debug, PartialEq)]
+enum FileStatus {
+    InSync,
+    OutOfSync,
+    MissingInHome,
+    MissingInRepo,
+}
+
+fn check_file_status(repo_path: &std::path::PathBuf, home_path: &str) -> FileStatus {
+    let home_full = FileSyncer::expand_tilde(home_path);
+    let repo_file = repo_path.join(home_path.trim_start_matches("~/"));
+
+    let home_exists = home_full.exists();
+    let repo_exists = repo_file.exists();
+
+    match (home_exists, repo_exists) {
+        (false, false) => FileStatus::MissingInHome,
+        (false, true) => FileStatus::MissingInHome,
+        (true, false) => FileStatus::MissingInRepo,
+        (true, true) => {
+            if files_are_same(&home_full, &repo_file) {
+                FileStatus::InSync
+            } else {
+                FileStatus::OutOfSync
+            }
+        }
+    }
+}
+
+fn files_are_same(path1: &std::path::Path, path2: &std::path::Path) -> bool {
+    if path1.is_dir() != path2.is_dir() {
+        return false;
+    }
+
+    if path1.is_dir() {
+        return true;
+    }
+
+    match (std::fs::metadata(path1), std::fs::metadata(path2)) {
+        (Ok(m1), Ok(m2)) => {
+            if m1.len() != m2.len() {
+                return false;
+            }
+            
+            if let (Ok(t1), Ok(t2)) = (m1.modified(), m2.modified()) {
+                (t1.duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() as i64 
+                    - t2.duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() as i64).abs() < 2
+            } else {
+                false
+            }
+        }
+        _ => false,
+    }
 }

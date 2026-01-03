@@ -9,3 +9,4 @@ pub mod pull;
 pub mod push;
 pub mod create;
 pub mod scan;
+pub mod cd;
