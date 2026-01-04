@@ -62,6 +62,19 @@ impl FileSyncer {
         PathBuf::from(path)
     }
 
+    pub fn resolve_home_path(path: &str, home_dir: &Path) -> PathBuf {
+        if path.starts_with("~/") {
+            home_dir.join(&path[2..])
+        } else if path.starts_with('/') {
+            // Absolute path, use as-is
+            PathBuf::from(path)
+        } else {
+            // Relative path without ~/ prefix
+            // Assume it's relative to home directory
+            home_dir.join(path)
+        }
+    }
+
     pub fn strip_tilde(path: &Path) -> Option<String> {
         if let Some(home) = dirs::home_dir() {
             if let Ok(relative) = path.strip_prefix(&home) {

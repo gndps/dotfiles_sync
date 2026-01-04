@@ -19,8 +19,8 @@ pub fn execute(stub: String, paths: Vec<String>, tag: Option<String>) -> Result<
         bail!("No paths provided");
     }
 
-    let config = manager.load_config()?;
-    let tag_to_use = tag.or(config.tag.clone());
+    let local_config = manager.load_local_config()?;
+    let tag_to_use = tag.or(local_config.tag.clone());
     let db = ConfigDatabase::new_with_tag(&repo_path, tag_to_use.as_deref());
 
     if db.load_stub(&stub)?.is_some() {

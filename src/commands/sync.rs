@@ -8,19 +8,38 @@ use crate::utils::{print_error, print_info, print_success, print_warning};
 pub fn execute(dir: Option<std::path::PathBuf>) -> Result<()> {
     use anyhow::Context;
     
-    // Handle --dir argument to change and save repo directory
+    // Determine repo path
     let repo_path = if let Some(dir_path) = dir {
+        // --dir flag provided: use it and save to local config
         let canonical_path = dir_path.canonicalize()
             .context("Failed to resolve directory path")?;
         
-        // Save to local config
         let temp_manager = ConfigManager::new(canonical_path.clone());
-        temp_manager.save_local_config(canonical_path.clone())?;
+        let mut local_config = temp_manager.load_local_config()?;
+        local_config.repo_path = canonical_path.clone();
+        temp_manager.save_local_config(&local_config)?;
         print_success(&format!("Saved dotfiles directory to local config: {}", canonical_path.display()));
         
         canonical_path
     } else {
-        ConfigManager::resolve_repo_path()?
+        // No --dir flag: check if we're in a repo directory
+        let cwd = std::env::current_dir()
+            .context("Failed to get current directory")?;
+        let cwd_canonical = cwd.canonicalize().unwrap_or(cwd.clone());
+        
+        // Check if current directory has dotfiles.config.json
+        if cwd_canonical.join("dotfiles.config.json").exists() {
+            // We're in a repo directory - update local config
+            let temp_manager = ConfigManager::new(cwd_canonical.clone());
+            let mut local_config = temp_manager.load_local_config()?;
+            local_config.repo_path = cwd_canonical.clone();
+            temp_manager.save_local_config(&local_config)?;
+            print_info(&format!("Running from repo directory: {}", cwd_canonical.display()));
+            cwd_canonical
+        } else {
+            // Use repo path from local config
+            ConfigManager::resolve_repo_path()?
+        }
     };
     
     let manager = ConfigManager::new(repo_path.clone());
@@ -38,12 +57,15 @@ pub fn execute(dir: Option<std::path::PathBuf>) -> Result<()> {
     }
 
     // --- SETUP ---
-    let tracked = manager.load_tracked_files()?.clone();
+    let runtime_config = manager.load_runtime_config()?;
+    let tracked = runtime_config.tracked_files.clone();
     
     if tracked.is_empty() {
         print_info("No files to track. Use 'dotfiles add' to add files.");
         return Ok(());
     }
+    
+    let home_path = runtime_config.home_path;
 
     // Check for remote and warn if local-only
     let has_remote = git.has_remote()?;
@@ -58,7 +80,7 @@ pub fn execute(dir: Option<std::path::PathBuf>) -> Result<()> {
 
     // --- STEP 1: IMPORT (Home -> Repo) ---
     print_info("Step 1/5: Importing local changes...");
-    sync_home_to_repo(&manager, &tracked)?;
+    sync_home_to_repo(&manager, &tracked, &home_path)?;
 
     // --- STEP 2: STAGE & COMMIT ---
     // Check if the import actually changed anything in the repo structure
@@ -109,7 +131,7 @@ pub fn execute(dir: Option<std::path::PathBuf>) -> Result<()> {
     // --- STEP 4: BACKUP & EXPORT (Repo -> Home) ---
     // We only reach here if Step 3 succeeded (Repo is clean, merged, and valid)
     print_info("Step 4/6: Creating backup of current home files...");
-    let backup_created = backup_home_files(&repo_path, &tracked)?;
+    let backup_created = backup_home_files(&repo_path, &tracked, &home_path)?;
     if backup_created {
         print_success("Backup created");
     } else {
@@ -117,7 +139,7 @@ pub fn execute(dir: Option<std::path::PathBuf>) -> Result<()> {
     }
     
     print_info("Step 5/6: Exporting to Home directory...");
-    sync_repo_to_home(&manager, &tracked)?;
+    sync_repo_to_home(&manager, &tracked, &home_path)?;
 
     // Note: Backups are local-only (in .gitignore), not committed
 
@@ -142,7 +164,7 @@ pub fn execute(dir: Option<std::path::PathBuf>) -> Result<()> {
 
 // --- HELPER FUNCTIONS ---
 
-fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile]) -> Result<bool> {
+fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile], home_dir: &std::path::Path) -> Result<bool> {
     use std::fs;
     
     // Create timestamp directory name
@@ -152,7 +174,7 @@ fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile]) -> Resu
     let mut any_backed_up = false;
     
     for file in files {
-        let home_path = FileSyncer::expand_tilde(&file.path);
+        let home_path = FileSyncer::resolve_home_path(&file.path, home_dir);
         
         // Only backup if file exists in home
         if !home_path.exists() {
@@ -188,12 +210,12 @@ fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile]) -> Resu
     Ok(any_backed_up)
 }
 
-fn sync_home_to_repo(manager: &ConfigManager, files: &[TrackedFile]) -> Result<()> {
+fn sync_home_to_repo(manager: &ConfigManager, files: &[TrackedFile], home_dir: &std::path::Path) -> Result<()> {
     let repo_path = manager.get_repo_path();
     let mut synced_count = 0;
 
     for file in files {
-        let home_path = FileSyncer::expand_tilde(&file.path);
+        let home_path = FileSyncer::resolve_home_path(&file.path, home_dir);
         
         if !home_path.exists() {
             continue;
@@ -243,12 +265,12 @@ fn files_are_identical(path1: &std::path::Path, path2: &std::path::Path) -> Resu
     Ok(buf1 == buf2)
 }
 
-fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile]) -> Result<()> {
+fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile], home_dir: &std::path::Path) -> Result<()> {
     let repo_path = manager.get_repo_path();
     let mut synced_count = 0;
 
     for file in files {
-        let home_path = FileSyncer::expand_tilde(&file.path);
+        let home_path = FileSyncer::resolve_home_path(&file.path, home_dir);
         let repo_file = repo_path.join(file.path.trim_start_matches("~/").trim_start_matches('/'));
 
         // Skip directories - we only sync files

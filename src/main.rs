@@ -8,7 +8,7 @@ mod utils;
 
 use anyhow::Result;
 use clap::Parser;
-use cli::{Cli, Commands};
+use cli::{Cli, Commands, ConfigAction};
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
@@ -26,6 +26,10 @@ fn main() -> Result<()> {
         Commands::Create { stub, paths, tag } => commands::create::execute(stub, paths, tag)?,
         Commands::Scan => commands::scan::execute()?,
         Commands::Cd => commands::cd::execute()?,
+        Commands::Config { action } => match action {
+            ConfigAction::Set { field, value } => commands::config::execute_set(field, value)?,
+            ConfigAction::Show => commands::config::execute_show()?,
+        },
     }
 
     Ok(())

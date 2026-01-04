@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use std::fs;
 use std::path::PathBuf;
-use crate::config::{ConfigManager, DotfilesConfig};
+use crate::config::{ConfigManager, DotfilesConfig, LocalConfig};
 use crate::git::GitRepo;
 use crate::utils::{print_success, print_info};
 
@@ -25,21 +25,23 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
 
     print_info("Initializing dotfiles repository...");
 
-    let mut config = DotfilesConfig::default();
-    config.repo_path = canonical_repo_path.clone();
-    config.tag = tag.clone();
-    
-    if let Some(home) = dirs::home_dir() {
-        config.home_path = home;
-    }
-
+    // Create repo config (only tracked files)
+    let config = DotfilesConfig::default();
     manager.save_config(&config)
         .context("Failed to save config")?;
     print_success("Created dotfiles.config.json");
     
-    // Save repo path to local config in home directory
-    manager.save_local_config(canonical_repo_path.clone())?;
-    print_success(&format!("Saved dotfiles directory to local config: {}", canonical_repo_path.display()));
+    // Create local config with settings
+    let mut local_config = LocalConfig::default();
+    local_config.repo_path = canonical_repo_path.clone();
+    local_config.tag = tag.clone();
+    
+    if let Some(home) = dirs::home_dir() {
+        local_config.home_path = home;
+    }
+    
+    manager.save_local_config(&local_config)?;
+    print_success(&format!("Saved local config to: {}", manager.get_local_config_path().display()));
     
     if let Some(ref t) = tag {
         print_info(&format!("Using tag: {}", t));
@@ -74,10 +76,7 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
     
     let mut updated = false;
     
-    if !gitignore_content.contains("dotfiles.local.config.json") {
-        gitignore_content.push_str("\n# Dotfiles local configuration\ndotfiles.local.config.json\n");
-        updated = true;
-    }
+    // Note: local config is in home directory, not in repo
     
     // Ensure backups stay local
     if !gitignore_content.contains(".backup/") {

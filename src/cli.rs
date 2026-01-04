@@ -77,4 +77,24 @@ pub enum Commands {
 
     #[command(about = "Change to dotfiles repository directory")]
     Cd,
+
+    #[command(about = "Manage local configuration")]
+    Config {
+        #[command(subcommand)]
+        action: ConfigAction,
+    },
+}
+
+#[derive(Subcommand)]
+pub enum ConfigAction {
+    #[command(about = "Set a configuration value")]
+    Set {
+        #[arg(help = "Config field (use_xdg, repo_path, home_path, tag)")]
+        field: String,
+        #[arg(help = "Value to set")]
+        value: String,
+    },
+    
+    #[command(about = "Show current configuration")]
+    Show,
 }
