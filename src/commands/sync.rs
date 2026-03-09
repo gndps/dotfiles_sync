@@ -176,30 +176,33 @@ fn backup_home_files(repo_path: &std::path::Path, files: &[TrackedFile], home_di
     for file in files {
         let home_path = FileSyncer::resolve_home_path(&file.path, home_dir);
         
-        // Only backup if file exists in home
+        // Only backup if file/directory exists in home
         if !home_path.exists() {
-            continue;
-        }
-        
-        // Skip directories - we only backup files
-        if home_path.is_dir() {
             continue;
         }
         
         // Create backup path mirroring the home structure
         let relative_path = file.path.trim_start_matches("~/").trim_start_matches('/');
-        let backup_file = backup_dir.join(relative_path);
+        let backup_path = backup_dir.join(relative_path);
         
-        // Create parent directory
-        if let Some(parent) = backup_file.parent() {
-            fs::create_dir_all(parent)?;
+        // Handle both files and directories
+        if home_path.is_dir() {
+            // Backup entire directory recursively
+            FileSyncer::sync_directory(&home_path, &backup_path)?;
+            any_backed_up = true;
+        } else {
+            // Backup single file
+            // Create parent directory
+            if let Some(parent) = backup_path.parent() {
+                fs::create_dir_all(parent)?;
+            }
+            
+            // IMPORTANT: Backups are stored locally only
+            // This is safe because .backup/ is in .gitignore (never pushed to remote)
+            // This allows emergency recovery
+            FileSyncer::sync_file(&home_path, &backup_path)?;
+            any_backed_up = true;
         }
-        
-        // IMPORTANT: Backups are stored locally only
-        // This is safe because .backup/ is in .gitignore (never pushed to remote)
-        // This allows emergency recovery
-        FileSyncer::sync_file(&home_path, &backup_file)?;
-        any_backed_up = true;
     }
     
     // If no files were backed up, remove the empty directory
@@ -221,30 +224,36 @@ fn sync_home_to_repo(manager: &ConfigManager, files: &[TrackedFile], home_dir: &
             continue;
         }
         
-        // Skip directories - we only sync files
-        if home_path.is_dir() {
-            continue;
-        }
-        
-        let repo_file = repo_path.join(file.path.trim_start_matches("~/").trim_start_matches('/'));
+        let repo_path_item = repo_path.join(file.path.trim_start_matches("~/").trim_start_matches('/'));
 
-        // Check if file needs syncing
-        let needs_sync = if repo_file.exists() {
-            !files_are_identical(&home_path, &repo_file)?
+        // Handle both files and directories
+        if home_path.is_dir() {
+            // Check if directory needs syncing (always sync for simplicity with directories)
+            let needs_sync = !repo_path_item.exists() || !directories_are_identical(&home_path, &repo_path_item)?;
+            
+            if needs_sync {
+                FileSyncer::sync_directory(&home_path, &repo_path_item)?;
+                synced_count += 1;
+            }
         } else {
-            true
-        };
-        
-        if needs_sync {
-            FileSyncer::sync_file(&home_path, &repo_file)?;
-            synced_count += 1;
+            // Check if file needs syncing
+            let needs_sync = if repo_path_item.exists() {
+                !files_are_identical(&home_path, &repo_path_item)?
+            } else {
+                true
+            };
+            
+            if needs_sync {
+                FileSyncer::sync_file(&home_path, &repo_path_item)?;
+                synced_count += 1;
+            }
         }
     }
     
     if synced_count > 0 {
-        print_info(&format!("Synced {} file(s) with changes", synced_count));
+        print_info(&format!("Synced {} item(s) with changes", synced_count));
     } else {
-        print_info("All files already in sync (no changes)");
+        print_info("All items already in sync (no changes)");
     }
     
     Ok(())
@@ -265,20 +274,91 @@ fn files_are_identical(path1: &std::path::Path, path2: &std::path::Path) -> Resu
     Ok(buf1 == buf2)
 }
 
+fn directories_are_identical(path1: &std::path::Path, path2: &std::path::Path) -> Result<bool> {
+    use std::collections::HashMap;
+    use walkdir::WalkDir;
+    
+    // If either path doesn't exist or isn't a directory, they're not identical
+    if !path1.exists() || !path2.exists() || !path1.is_dir() || !path2.is_dir() {
+        return Ok(false);
+    }
+    
+    // Build a map of relative paths to file metadata for both directories
+    let mut files1: HashMap<std::path::PathBuf, std::fs::Metadata> = HashMap::new();
+    let mut files2: HashMap<std::path::PathBuf, std::fs::Metadata> = HashMap::new();
+    
+    // Collect files from first directory
+    for entry in WalkDir::new(path1).min_depth(1) {
+        let entry = entry?;
+        if let Ok(relative) = entry.path().strip_prefix(path1) {
+            if let Ok(metadata) = entry.metadata() {
+                files1.insert(relative.to_path_buf(), metadata);
+            }
+        }
+    }
+    
+    // Collect files from second directory
+    for entry in WalkDir::new(path2).min_depth(1) {
+        let entry = entry?;
+        if let Ok(relative) = entry.path().strip_prefix(path2) {
+            if let Ok(metadata) = entry.metadata() {
+                files2.insert(relative.to_path_buf(), metadata);
+            }
+        }
+    }
+    
+    // If different number of files, not identical
+    if files1.len() != files2.len() {
+        return Ok(false);
+    }
+    
+    // Check each file exists in both and has same content
+    for (rel_path, meta1) in &files1 {
+        if let Some(meta2) = files2.get(rel_path) {
+            // Check if both are files or both are directories
+            if meta1.is_file() != meta2.is_file() || meta1.is_dir() != meta2.is_dir() {
+                return Ok(false);
+            }
+            
+            // If they're files, compare content
+            if meta1.is_file() {
+                let file1_path = path1.join(rel_path);
+                let file2_path = path2.join(rel_path);
+                if !files_are_identical(&file1_path, &file2_path)? {
+                    return Ok(false);
+                }
+            }
+        } else {
+            // File exists in path1 but not in path2
+            return Ok(false);
+        }
+    }
+    
+    Ok(true)
+}
+
 fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile], home_dir: &std::path::Path) -> Result<()> {
     let repo_path = manager.get_repo_path();
     let mut synced_count = 0;
 
     for file in files {
         let home_path = FileSyncer::resolve_home_path(&file.path, home_dir);
-        let repo_file = repo_path.join(file.path.trim_start_matches("~/").trim_start_matches('/'));
+        let repo_path_item = repo_path.join(file.path.trim_start_matches("~/").trim_start_matches('/'));
 
-        // Skip directories - we only sync files
-        if repo_file.exists() && repo_file.is_dir() {
+        if !repo_path_item.exists() {
             continue;
         }
 
-        if repo_file.exists() {
+        // Handle both files and directories
+        if repo_path_item.is_dir() {
+            // Check if directory needs syncing
+            let needs_sync = !home_path.exists() || !directories_are_identical(&repo_path_item, &home_path)?;
+            
+            if needs_sync {
+                FileSyncer::sync_directory(&repo_path_item, &home_path)?;
+                synced_count += 1;
+            }
+        } else {
             // Create parent directory if it doesn't exist
             if let Some(parent) = home_path.parent() {
                 std::fs::create_dir_all(parent)?;
@@ -286,22 +366,22 @@ fn sync_repo_to_home(manager: &ConfigManager, files: &[TrackedFile], home_dir: &
             
             // Check if file needs syncing
             let needs_sync = if home_path.exists() {
-                !files_are_identical(&repo_file, &home_path)?
+                !files_are_identical(&repo_path_item, &home_path)?
             } else {
                 true
             };
             
             if needs_sync {
-                FileSyncer::sync_file(&repo_file, &home_path)?;
+                FileSyncer::sync_file(&repo_path_item, &home_path)?;
                 synced_count += 1;
             }
         }
     }
     
     if synced_count > 0 {
-        print_info(&format!("Exported {} file(s) with changes", synced_count));
+        print_info(&format!("Exported {} item(s) with changes", synced_count));
     } else {
-        print_info("All files already in sync (no changes)");
+        print_info("All items already in sync (no changes)");
     }
     
     Ok(())
