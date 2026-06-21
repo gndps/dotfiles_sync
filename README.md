@@ -36,27 +36,46 @@ brew install gndps/tap/dotfiles_sync
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gndps/dotfiles_sync/releases/latest/download/dotfiles_sync-installer.sh | sh
 ```
 
-## Quick Start
+## How the Dotfiles Directory Works
 
-### 1. Initialize Repository
+The tool manages files through a dedicated **dotfiles directory** — a plain git repository that stores copies of your config files. The relationship looks like this:
 
-```bash
-# In an empty directory or existing dotfiles repo
-dotfiles init
+```
+~/.gitconfig          ←──── sync ────→   ~/dotfiles/.gitconfig
+~/.tmux.conf          ←──── sync ────→   ~/dotfiles/.tmux.conf
+~/Library/.../settings.json  ←── sync →  ~/dotfiles/Library/.../settings.json
 
-# Or specify a path
-dotfiles init ~/my-dotfiles
+                                          ~/dotfiles/  (git repo)
+                                               │
+                                          git push/pull
+                                               │
+                                          github.com/you/dotfiles
 ```
 
-This creates:
-- `dotfiles.config.json` - Main configuration with tracked files
+You **must** initialize a dotfiles directory before any syncing can happen. This directory is the single source of truth. All other dotfiles commands work relative to it — and once initialized, they work from **any directory** on your machine.
+
+## Quick Start
+
+### 1. Create and Initialize the Dotfiles Directory
+
+```bash
+# In an empty directory you want to use as your dotfiles repo
+mkdir ~/dotfiles && cd ~/dotfiles
+dotfiles init
+
+# Or let init create the directory for you
+dotfiles init ~/dotfiles
+```
+
+This creates the dotfiles directory and registers it as the active repo on your machine:
+- `dotfiles.config.json` - Tracked files list (committed to git, shared across machines)
 - `custom_db/` - Custom stub definitions
-- `.backup/` - **Local-only backup directory (gitignored)**
+- `.backup/` - **Local-only backup snapshots (gitignored)**
 - `.gitignore` - Auto-configured
 - `.git/` - Git repository with initial commit
-- `~/.dotfiles.local.config.json` - **Global config saved in your home directory**
+- `~/.dotfiles.local.config.json` - **Machine-local config (path to your dotfiles dir)**
 
-**Important**: After initialization, the dotfiles directory path is saved to `~/.dotfiles.local.config.json` in your home directory. This allows you to run **all dotfiles commands from anywhere** without being in the dotfiles directory!
+**After init, all dotfiles commands work from anywhere on this machine** — the path is stored in `~/.dotfiles.local.config.json`.
 
 **Note**: The tool embeds 600+ application configurations from the [mackup repository](https://github.com/lra/mackup) in the binary.
 
@@ -79,22 +98,31 @@ dotfiles scan
 dotfiles list --all
 ```
 
-### 3. Sync Your Files
+### 3. Connect a Git Remote (recommended)
 
 ```bash
-# Full bidirectional sync (syncs ALL files)
-# Works from ANY directory!
+# Create a repo on GitHub, then:
+cd ~/dotfiles
+git remote add origin git@github.com:you/dotfiles.git
+```
+
+Once a remote is added, **`dotfiles sync` automatically pushes to it** — no manual push needed. Without a remote, sync still works as a local backup.
+
+### 4. Sync Your Files
+
+```bash
+# Full bidirectional sync: imports from home, commits, pulls, exports to home, pushes
 dotfiles sync
 
-# Or use specific operations
-dotfiles pull         # Pull from remote
-dotfiles sync_local   # Sync repo → home only
-dotfiles push         # Push to remote
-
-# All commands work from anywhere:
+# Works from ANY directory after init!
 cd /tmp
-dotfiles add vim      # Still works!
-dotfiles status       # Shows your dotfiles status
+dotfiles sync         # Still works!
+dotfiles status       # Shows status from anywhere
+
+# Individual operations
+dotfiles pull         # Pull from remote only
+dotfiles sync-local   # Copy repo → home only (no git)
+dotfiles push         # Push to remote only
 ```
 
 ## How It Works
@@ -472,20 +500,22 @@ The tool embeds 600+ default stubs from mackup in the binary. No need to downloa
 
 ### Setting Up on a New Machine
 
+On a new machine, the dotfiles directory doesn't exist yet. Clone it from your remote and register it:
+
 ```bash
-# Clone your dotfiles
+# 1. Clone your existing dotfiles repo
 git clone https://github.com/you/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 
-# Initialize (creates local config, reads tracked files from JSON)
+# 2. Register it as the active dotfiles directory on this machine
+#    (saves path to ~/.dotfiles.local.config.json so commands work from anywhere)
 dotfiles init
 
-# First sync - creates missing files/directories
+# 3. Restore all tracked files to your home directory
 dotfiles sync
-
-# Or scan to see what's available
-dotfiles scan
 ```
+
+`dotfiles init` on an existing repo is safe — it skips re-initialization but always registers the path on the current machine. Without this step, other commands won't know where your dotfiles directory is.
 
 ### Daily Usage
 
@@ -494,8 +524,8 @@ dotfiles scan
 vim ~/.vimrc
 vim ~/.gitconfig
 
-# Sync everything (automatic commit, pull, backup, export, push)
-cd ~/dotfiles
+# Sync everything — works from anywhere!
+# Automatically: imports changes → commits → pulls remote → exports to home → pushes
 dotfiles sync
 
 # Check what's tracked and status
@@ -633,44 +663,52 @@ git status
 
 ## Git Integration
 
-This tool automates git operations for safety:
+`dotfiles sync` is a fully automated git workflow — no manual git commands needed for day-to-day use.
+
+### What Happens During `dotfiles sync`
 
 ```bash
-# Sync handles everything automatically
-dotfiles sync
-# - Auto-commits with timestamp
-# - Pulls with rebase
-# - Creates backup commits
-# - Pushes everything including backups
+# Behind the scenes:
+git add -A
+git commit -m "dotfiles sync: 2024-01-02 15:30:00"   # auto-commit
+git pull --rebase origin main                          # safe merge
+# → export tracked files to home directory
+git push origin main                                   # auto-push (if remote configured)
+```
 
-# But you can still use git directly
+### Automatic Push Behavior
+
+| Remote configured? | Behavior |
+|---|---|
+| Yes | `sync` automatically pushes after every export |
+| No | `sync` works locally only — warns you that backup is local-only |
+
+To add a remote at any time:
+```bash
 cd ~/dotfiles
-git log                    # View history
-git diff                   # See changes
+git remote add origin git@github.com:you/dotfiles.git
+# Next `dotfiles sync` will push automatically
+```
+
+### Empty Remote / First Push
+
+```bash
+# First sync to empty remote? No problem!
+dotfiles sync
+# → Detects empty remote, skips pull
+# → Uses 'git push -u origin main' to set upstream
+# → All subsequent syncs use regular push
+```
+
+### Manual Git Access
+
+You can still use git directly in the dotfiles directory:
+```bash
+cd ~/dotfiles
+git log                    # View sync history
+git diff                   # See uncommitted changes
 git log --all -- .backup/  # View backup history
 git branch feature         # Create branches
-```
-
-### What Sync Does Automatically
-
-```bash
-# Behind the scenes, sync runs:
-git add -A
-git commit -m "dotfiles sync: 2024-01-02 15:30:00"
-git pull --rebase origin main
-git add -A  # Backup files
-git commit -m "backup: pre-export snapshot 2024-01-02 15:30:00"
-git push origin main
-```
-
-### Empty Remote Handling
-
-```bash
-# First push to empty remote? No problem!
-dotfiles sync
-# Automatically detects empty remote
-# Uses 'git push -u origin main' for first push
-# Subsequent syncs use regular push
 ```
 
 ## Development

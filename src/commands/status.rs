@@ -94,22 +94,43 @@ fn files_are_same(path1: &std::path::Path, path2: &std::path::Path) -> bool {
     }
 
     if path1.is_dir() {
-        return true;
+        return dirs_are_same(path1, path2);
     }
 
-    match (std::fs::metadata(path1), std::fs::metadata(path2)) {
-        (Ok(m1), Ok(m2)) => {
-            if m1.len() != m2.len() {
-                return false;
-            }
-            
-            if let (Ok(t1), Ok(t2)) = (m1.modified(), m2.modified()) {
-                (t1.duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() as i64 
-                    - t2.duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() as i64).abs() < 2
-            } else {
-                false
-            }
-        }
+    use std::io::Read;
+    let read = |p: &std::path::Path| -> Option<Vec<u8>> {
+        let mut f = std::fs::File::open(p).ok()?;
+        let mut buf = Vec::new();
+        f.read_to_end(&mut buf).ok()?;
+        Some(buf)
+    };
+
+    match (read(path1), read(path2)) {
+        (Some(b1), Some(b2)) => b1 == b2,
         _ => false,
     }
+}
+
+fn dirs_are_same(path1: &std::path::Path, path2: &std::path::Path) -> bool {
+    use walkdir::WalkDir;
+    use std::collections::HashSet;
+
+    let collect_rel_paths = |base: &std::path::Path| -> HashSet<std::path::PathBuf> {
+        WalkDir::new(base)
+            .min_depth(1)
+            .into_iter()
+            .filter_map(|e| e.ok())
+            .filter(|e| e.file_type().is_file())
+            .filter_map(|e| e.path().strip_prefix(base).ok().map(|p| p.to_path_buf()))
+            .collect()
+    };
+
+    let files1 = collect_rel_paths(path1);
+    let files2 = collect_rel_paths(path2);
+
+    if files1 != files2 {
+        return false;
+    }
+
+    files1.iter().all(|rel| files_are_same(&path1.join(rel), &path2.join(rel)))
 }

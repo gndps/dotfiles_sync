@@ -20,6 +20,17 @@ pub fn execute(path: Option<PathBuf>, tag: Option<String>) -> Result<()> {
     
     if manager.is_initialized() {
         print_info("Dotfiles repository already initialized");
+        // Still register the path so commands work from anywhere on this machine
+        let mut local_config = manager.load_local_config()?;
+        local_config.repo_path = canonical_repo_path.clone();
+        if local_config.home_path.as_os_str().is_empty() {
+            if let Some(home) = dirs::home_dir() {
+                local_config.home_path = home;
+            }
+        }
+        manager.save_local_config(&local_config)?;
+        print_success(&format!("Registered repo path in local config: {}", canonical_repo_path.display()));
+        print_info("Run 'dotfiles sync' to restore tracked files to your home directory.");
         return Ok(());
     }
 
