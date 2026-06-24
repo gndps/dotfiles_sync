@@ -11,3 +11,4 @@ pub mod create;
 pub mod scan;
 pub mod cd;
 pub mod config;
+pub mod edit;

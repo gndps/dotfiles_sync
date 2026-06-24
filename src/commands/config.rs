@@ -20,6 +20,7 @@ pub fn execute_show() -> Result<()> {
     let local_config = manager.load_local_config()?;
     
     println!("\n{}", "Local Configuration:".bold().cyan());
+    println!("  {} {}", "editor:".bold(), local_config.editor);
     println!("  {} {}", "use_xdg:".bold(), local_config.use_xdg);
     println!("  {} {}", "repo_path:".bold(), local_config.repo_path.display());
     println!("  {} {}", "home_path:".bold(), local_config.home_path.display());

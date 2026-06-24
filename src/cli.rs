@@ -78,6 +78,12 @@ pub enum Commands {
     #[command(about = "Change to dotfiles repository directory")]
     Cd,
 
+    #[command(about = "Open a managed file (repo copy) in the configured editor")]
+    Edit {
+        #[arg(help = "File to edit: stub-relative path, ~/ path, or omit to pick with fzf")]
+        path: Option<String>,
+    },
+
     #[command(about = "Manage local configuration")]
     Config {
         #[command(subcommand)]

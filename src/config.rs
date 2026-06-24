@@ -21,6 +21,12 @@ pub struct LocalConfig {
     pub repo_path: PathBuf,
     pub home_path: PathBuf,
     pub tag: Option<String>,
+    #[serde(default = "default_editor")]
+    pub editor: String,
+}
+
+fn default_editor() -> String {
+    "vim".to_string()
 }
 
 impl Default for DotfilesConfig {
@@ -38,6 +44,7 @@ impl Default for LocalConfig {
             repo_path: PathBuf::from("."),
             home_path: dirs::home_dir().unwrap_or_else(|| PathBuf::from("~")),
             tag: None,
+            editor: default_editor(),
         }
     }
 }
@@ -188,6 +195,9 @@ impl ConfigManager {
                 } else {
                     Some(value.to_string())
                 };
+            }
+            "editor" => {
+                local_config.editor = value.to_string();
             }
             _ => anyhow::bail!("Unknown config field: {}", field),
         }

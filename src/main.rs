@@ -26,6 +26,7 @@ fn main() -> Result<()> {
         Commands::Create { stub, paths, tag } => commands::create::execute(stub, paths, tag)?,
         Commands::Scan => commands::scan::execute()?,
         Commands::Cd => commands::cd::execute()?,
+        Commands::Edit { path } => commands::edit::execute(path)?,
         Commands::Config { action } => match action {
             ConfigAction::Set { field, value } => commands::config::execute_set(field, value)?,
             ConfigAction::Show => commands::config::execute_show()?,
