@@ -1,9 +1,10 @@
 use anyhow::{bail, Result};
-use crate::config::ConfigManager;
+use crate::config::{ConfigManager, TrackedFile};
+use dialoguer::FuzzySelect;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-pub fn execute(path: Option<String>) -> Result<()> {
+pub fn execute(input: Option<String>) -> Result<()> {
     let repo_path = ConfigManager::resolve_repo_path()?;
     let manager = ConfigManager::new(repo_path.clone());
 
@@ -13,25 +14,15 @@ pub fn execute(path: Option<String>) -> Result<()> {
 
     let local_config = manager.load_local_config()?;
     let editor = &local_config.editor;
+    let tracked = manager.load_tracked_files()?;
 
-    let open_path: PathBuf = match path {
-        Some(p) => resolve_to_repo_copy(&p, &repo_path),
+    let open_path: PathBuf = match input {
+        Some(ref s) => resolve_input(s, &tracked, &repo_path)?,
         None => {
-            // Try fzf picker over tracked files; fall back to opening the repo folder
-            let tracked = manager.load_tracked_files()?;
-            if !tracked.is_empty() && is_fzf_available() {
-                let choices: Vec<String> = tracked
-                    .iter()
-                    .map(|f| f.path.trim_start_matches("~/").to_string())
-                    .collect();
-                let input = choices.join("\n");
-                let selected = run_fzf(&input, "📄 Managed file> ")?;
-                if selected.is_empty() {
-                    return Ok(());
-                }
-                repo_path.join(&selected)
-            } else {
+            if tracked.is_empty() {
                 repo_path.clone()
+            } else {
+                pick_from_tracked(&tracked, &repo_path)?
             }
         }
     };
@@ -45,13 +36,78 @@ pub fn execute(path: Option<String>) -> Result<()> {
     Ok(())
 }
 
-/// Resolve user-provided path to the repo copy (never the home directory version).
-/// - Relative path  → joined with repo_path
-/// - Absolute path inside repo_path → used as-is
-/// - home-relative (~/) → strip ~/ and join with repo_path
-/// - Any other absolute → strip home prefix if present, then join with repo_path
+/// Decide whether input is a stub name or a path, then resolve to the repo copy.
+fn resolve_input(input: &str, tracked: &[TrackedFile], repo_path: &Path) -> Result<PathBuf> {
+    // Treat as a path if it contains '/' or starts with '~'
+    let looks_like_path = input.contains('/') || input.starts_with('~');
+
+    if !looks_like_path {
+        // Try stub lookup first
+        let stub_files: Vec<&TrackedFile> = tracked
+            .iter()
+            .filter(|f| f.stub.as_deref() == Some(input))
+            .collect();
+
+        if !stub_files.is_empty() {
+            return resolve_stub_files(&stub_files, repo_path);
+        }
+    }
+
+    // Path: resolve to the repo copy
+    Ok(resolve_to_repo_copy(input, repo_path))
+}
+
+/// One file → open it directly. Multiple files → fuzzy picker.
+fn resolve_stub_files(files: &[&TrackedFile], repo_path: &Path) -> Result<PathBuf> {
+    if files.len() == 1 {
+        let rel = files[0].path.trim_start_matches("~/");
+        return Ok(repo_path.join(rel));
+    }
+
+    let labels: Vec<String> = files
+        .iter()
+        .map(|f| f.path.trim_start_matches("~/").to_string())
+        .collect();
+
+    let idx = FuzzySelect::new()
+        .with_prompt("Select file to edit")
+        .items(&labels)
+        .interact_opt()?
+        .ok_or_else(|| anyhow::anyhow!("Cancelled"))?;
+
+    Ok(repo_path.join(&labels[idx]))
+}
+
+/// All tracked files → fuzzy picker. Falls back to repo folder if empty.
+fn pick_from_tracked(tracked: &[TrackedFile], repo_path: &Path) -> Result<PathBuf> {
+    let labels: Vec<String> = tracked
+        .iter()
+        .map(|f| {
+            let rel = f.path.trim_start_matches("~/");
+            match &f.stub {
+                Some(s) => format!("{:<20} {}", s, rel),
+                None => rel.to_string(),
+            }
+        })
+        .collect();
+
+    let idx = FuzzySelect::new()
+        .with_prompt("📄 Managed file")
+        .items(&labels)
+        .interact_opt()?
+        .ok_or_else(|| anyhow::anyhow!("Cancelled"))?;
+
+    let rel = tracked[idx].path.trim_start_matches("~/");
+    Ok(repo_path.join(rel))
+}
+
+/// Resolve a path argument to the repo copy (never the home directory version).
+/// - `~/foo`     → repo_path/foo
+/// - `./foo`     → repo_path/foo (relative)
+/// - absolute inside repo_path → as-is
+/// - absolute inside home dir  → swap to repo copy
+/// - folder     → opened as-is (editor handles directories)
 fn resolve_to_repo_copy(input: &str, repo_path: &Path) -> PathBuf {
-    // Tilde-relative: strip ~/ and join with repo
     if let Some(rel) = input.strip_prefix("~/") {
         return repo_path.join(rel);
     }
@@ -62,45 +118,15 @@ fn resolve_to_repo_copy(input: &str, repo_path: &Path) -> PathBuf {
         return repo_path.join(p);
     }
 
-    // Already inside the repo copy
     if p.starts_with(repo_path) {
         return p.to_path_buf();
     }
 
-    // Strip home dir prefix if present
     if let Some(home) = dirs::home_dir() {
         if let Ok(rel) = p.strip_prefix(&home) {
             return repo_path.join(rel);
         }
     }
 
-    // Fallback: use as-is
     p.to_path_buf()
-}
-
-fn is_fzf_available() -> bool {
-    Command::new("fzf")
-        .arg("--version")
-        .stdout(std::process::Stdio::null())
-        .stderr(std::process::Stdio::null())
-        .status()
-        .map(|s| s.success())
-        .unwrap_or(false)
-}
-
-fn run_fzf(input: &str, prompt: &str) -> Result<String> {
-    use std::io::Write;
-    let mut child = Command::new("fzf")
-        .args(["--no-sort", "--prompt", prompt, "--height=~40%", "--border"])
-        .stdin(std::process::Stdio::piped())
-        .stdout(std::process::Stdio::piped())
-        .spawn()
-        .map_err(|e| anyhow::anyhow!("Failed to launch fzf: {}", e))?;
-
-    if let Some(stdin) = child.stdin.as_mut() {
-        let _ = stdin.write_all(input.as_bytes());
-    }
-
-    let out = child.wait_with_output()?;
-    Ok(String::from_utf8_lossy(&out.stdout).trim().to_string())
 }
