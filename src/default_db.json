@@ -909,6 +909,12 @@
     ],
     "name": "Doom Emacs"
   },
+  "dotfiles": {
+    "config_files": [
+      ".dotfiles.local.config.json"
+    ],
+    "name": "dotfiles_sync"
+  },
   "doublecmd": {
     "config_files": [
       "doublecmd/wfx.ini"

@@ -84,10 +84,10 @@ pub enum Commands {
         path: Option<String>,
     },
 
-    #[command(about = "Manage local configuration")]
+    #[command(about = "Manage local configuration (shows config + file path when run without subcommand)")]
     Config {
         #[command(subcommand)]
-        action: ConfigAction,
+        action: Option<ConfigAction>,
     },
 }
 

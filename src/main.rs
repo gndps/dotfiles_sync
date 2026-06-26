@@ -28,8 +28,8 @@ fn main() -> Result<()> {
         Commands::Cd => commands::cd::execute()?,
         Commands::Edit { path } => commands::edit::execute(path)?,
         Commands::Config { action } => match action {
-            ConfigAction::Set { field, value } => commands::config::execute_set(field, value)?,
-            ConfigAction::Show => commands::config::execute_show()?,
+            Some(ConfigAction::Set { field, value }) => commands::config::execute_set(field, value)?,
+            Some(ConfigAction::Show) | None => commands::config::execute_show()?,
         },
     }
 
