@@ -15,6 +15,7 @@ impl FileSyncer {
         if source.is_dir() {
             Self::sync_directory(source, dest)?;
         } else {
+            Self::ensure_writable(dest);
             fs::copy(source, dest)
                 .context(format!("Failed to copy {:?} to {:?}", source, dest))?;
         }
@@ -37,11 +38,25 @@ impl FileSyncer {
                 if let Some(parent) = dest_path.parent() {
                     fs::create_dir_all(parent)?;
                 }
+                Self::ensure_writable(&dest_path);
                 fs::copy(entry.path(), &dest_path)?;
             }
         }
 
         Ok(())
+    }
+
+    /// Make an existing file writable before overwriting it.
+    /// fs::copy on macOS (via copyfile) propagates source permissions to the
+    /// destination, so a previous sync can leave the dest read-only.
+    fn ensure_writable(path: &Path) {
+        if let Ok(meta) = fs::metadata(path) {
+            let mut perms = meta.permissions();
+            if perms.readonly() {
+                perms.set_readonly(false);
+                let _ = fs::set_permissions(path, perms);
+            }
+        }
     }
 
     pub fn expand_tilde(path: &str) -> PathBuf {
